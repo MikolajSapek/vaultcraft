@@ -1,0 +1,24 @@
+{
+  // Disable rules that don't make sense for this repo:
+  "config": {
+    // MD013: line length — table rows and intentional long descriptions exceed 80
+    "MD013": false,
+    // MD041: first line H1 — agent file legitimately starts with YAML frontmatter
+    "MD041": false,
+    // MD024: duplicate headings — issue templates may use same H2 across files
+    "MD024": false,
+    // MD033: inline HTML — README uses <div align="center">
+    "MD033": false,
+    // MD026: trailing punctuation in headings — "## What's in this repo" is fine
+    "MD026": false,
+    // MD036: emphasis as heading — "**An obsidian study vault builder.**" is intentional tagline
+    "MD036": false
+  },
+  "globs": [
+    "**/*.md"
+  ],
+  "ignores": [
+    "node_modules/**",
+    "**/templates/**"
+  ]
+}

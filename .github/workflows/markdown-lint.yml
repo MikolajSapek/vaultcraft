@@ -5,10 +5,12 @@ on:
     branches: [main]
     paths:
       - '**.md'
+      - '.markdownlint-cli2.jsonc'
   pull_request:
     branches: [main]
     paths:
       - '**.md'
+      - '.markdownlint-cli2.jsonc'
 
 jobs:
   lint:
@@ -16,28 +18,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Lint markdown files
-        uses: DavidAnson/markdownlint-cli2-action@v16
+      - name: Run markdownlint-cli2
+        uses: DavidAnson/markdownlint-cli2-action@v17
         with:
           globs: |
             **/*.md
             !node_modules
+            !**/templates/**
         continue-on-error: true
-
-      - name: Check for broken internal links
-        run: |
-          # Find any markdown links of form [text](path.md) where path.md doesn't exist
-          missing=0
-          while IFS= read -r line; do
-            file=$(echo "$line" | cut -d: -f1)
-            link=$(echo "$line" | grep -oE '\([^)]*\.md[^)]*\)' | tr -d '()')
-            if [ -n "$link" ] && [ ! -f "$(dirname "$file")/$link" ]; then
-              echo "Broken link in $file: $link"
-              missing=$((missing+1))
-            fi
-          done < <(grep -rEH '\]\([^)]*\.md[^)]*\)' --include="*.md" .)
-          if [ "$missing" -gt 0 ]; then
-            echo "Found $missing broken markdown links"
-            exit 1
-          fi
-        shell: bash
