@@ -1,6 +1,21 @@
+<div align="center">
+
+![vaultcraft banner](.github/banner.png)
+
 # vaultcraft
 
-> A [Claude Code](https://claude.com/claude-code) agent that turns lecture slides, lab notebooks, and textbook PDFs into a navigable, exam-ready Obsidian knowledge vault — with hover-visible definitions, ELI5 analogies, comparison tables, and spaced-repetition flashcards.
+**An obsidian study vault builder.**
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-violet.svg)](LICENSE)
+[![Claude Code](https://img.shields.io/badge/Claude%20Code-agent-7C5CB8)](https://claude.com/claude-code)
+[![Obsidian](https://img.shields.io/badge/Obsidian-compatible-7C5CB8)](https://obsidian.md)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
+
+A [Claude Code](https://claude.com/claude-code) agent that turns lecture slides, lab notebooks, and textbook PDFs into a navigable, exam-ready [Obsidian](https://obsidian.md) knowledge vault — with hover-visible definitions, ELI5 analogies, comparison tables, and spaced-repetition flashcards.
+
+[Quick start](#installation) · [How to use](#how-to-use) · [Examples](docs/examples.md) · [Conventions](docs/conventions.md) · [Contributing](CONTRIBUTING.md)
+
+</div>
 
 ---
 
@@ -66,7 +81,7 @@ cd vaultcraft
 
 # 2. Copy the agent into your Claude Code agents folder
 mkdir -p ~/.claude/agents
-cp agents/obsidian-study-notes-builder.md ~/.claude/agents/
+cp agents/vaultcraft-builder.md ~/.claude/agents/
 
 # 3. (Optional) Copy templates if you want to author notes manually too
 mkdir -p ~/Documents/ObsidianVaults/_templates
@@ -80,7 +95,7 @@ The agent is now available to Claude Code. Invoke it like:
 > Build me an exam-ready Obsidian vault at ~/Documents/ObsidianVaults/NLP/.
 ```
 
-Claude Code will recognize the task and spawn the `obsidian-study-notes-builder` sub-agent.
+Claude Code will recognize the task and spawn the `vaultcraft-builder` sub-agent.
 
 See [`docs/installation.md`](docs/installation.md) for full setup including Obsidian plugin recommendations.
 
@@ -111,7 +126,7 @@ See [`docs/usage.md`](docs/usage.md) for example prompts and full workflow.
 ```
 vaultcraft/
 ├── agents/
-│   └── obsidian-study-notes-builder.md   ← The agent definition
+│   └── vaultcraft-builder.md   ← The agent definition
 ├── docs/
 │   ├── installation.md                    ← Detailed setup
 │   ├── usage.md                            ← Example invocations
@@ -125,6 +140,28 @@ vaultcraft/
 ├── README.md                               ← This file
 └── LICENSE                                 ← MIT
 ```
+
+---
+
+## The crafting pipeline
+
+vaultcraft thinks of vault generation as a Minecraft-style crafting workflow. Internally the agent runs nine numbered phases — here's the themed map of what each one does:
+
+| Phase | Themed name | What it does |
+|---|---|---|
+| 0 | 🗺 **Site survey** | Detect whether you're starting a new vault, adding to one, or resuming an unfinished build |
+| 1 | 📜 **Recipe selection** | Ask 9 intake questions: course, exam format, depth, sources, language |
+| 1.5 | ⚖️ **Budget & blueprint** | Estimate tool budget and write `.vault-progress.md` so runs are resumable |
+| 2 | ⛏ **Mining** | Read every PDF/PPTX/notebook and extract the full inventory of named concepts |
+| 2.5 | 🏗 **Foundation** | Bootstrap `.obsidian/` config — graph colours, hotkeys, CSS, plugin recommendations |
+| 3 | 🧱 **Layout** | Plan and propose the folder structure |
+| 4 | 💎 **Forging concepts** | Generate atomic concept notes — one crystal per concept, all linked |
+| 5 | 📚 **Crafting study sheets** | Build per-lecture and per-lab notes that link back to concept crystals |
+| 6 | 🗺 **Cartography** *(low priority)* | Optional JSON Canvas course map |
+| 7 | 🧭 **Hub & beacon** | Build the entry MOC + `Tables.md` for oral exams |
+| 8 | 🔎 **Inspection** | Quality pass: broken links, depth check, orphans, hover-preview verification |
+
+You don't need to know the phase names to use vaultcraft — but the agent announces each one as it runs so you always know what's happening.
 
 ---
 

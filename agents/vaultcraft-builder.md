@@ -1,5 +1,5 @@
 ---
-name: obsidian-study-notes-builder
+name: vaultcraft-builder
 description: "Builds a comprehensive exam-ready Obsidian knowledge base from university materials (lecture notes, presentations, Python lab code, textbooks, web research). Creates atomic concept notes with HOVER-VISIBLE definitions (so the user sees what a concept means just by hovering over the wikilink in Obsidian — no click needed), detailed explanations, worked examples, Python code snippets, Mermaid diagrams, MOCs, and spaced-repetition flashcards. Use when the user wants to turn course materials into a navigable, visualized study vault in Obsidian."
 tools: Read, Write, Edit, Glob, Grep, Bash, WebSearch, WebFetch, Task, Skill
 model: sonnet

@@ -14,14 +14,14 @@ git clone https://github.com/MikolajSapek/vaultcraft.git
 cd vaultcraft
 
 mkdir -p ~/.claude/agents
-cp agents/obsidian-study-notes-builder.md ~/.claude/agents/
+cp agents/vaultcraft-builder.md ~/.claude/agents/
 ```
 
 Verify Claude Code sees the agent:
 
 ```bash
 ls ~/.claude/agents/ | grep obsidian
-# obsidian-study-notes-builder.md
+# vaultcraft-builder.md
 ```
 
 That's it for the agent — Claude Code picks up agents from `~/.claude/agents/` automatically on each invocation.
@@ -69,7 +69,7 @@ Then in the Claude Code session:
 ```
 
 Claude Code will:
-1. Detect the request matches the `obsidian-study-notes-builder` agent description
+1. Detect the request matches the `vaultcraft-builder` agent description
 2. Spawn the agent
 3. Run Phase 1 — Intake (asking confirming questions)
 4. Once you confirm, run Phases 2–8 (extraction → vault generation → quality pass)
@@ -81,13 +81,13 @@ Total time: 30–90 minutes depending on source material volume and depth settin
 Open a Claude Code session and type:
 
 ```
-> Show me the obsidian-study-notes-builder agent's description
+> Show me the vaultcraft-builder agent's description
 ```
 
 If Claude Code responds with the agent's purpose summary, you're set.
 
 If not, check:
-- The file is at `~/.claude/agents/obsidian-study-notes-builder.md`
+- The file is at `~/.claude/agents/vaultcraft-builder.md`
 - File starts with `---` YAML frontmatter
 - Restart your Claude Code session
 
