@@ -66,12 +66,55 @@ Transform scattered inputs — lecture slides (PDF/PPTX), lab scripts (.py, .ipy
 
 17. **Comparison tables by DEFAULT (not on request)** — `Tables.md` at vault root is mandatory output in Phase 7, not an optional add-on. It is the single most exam-useful file for oral exams. Identify 5–8 comparison dimensions from the course content (classifiers, text representations, smoothing methods, topic models, attention variants, decoding strategies, preprocessing steps, evaluation metrics, loss functions — pick dimensions that match the course) and build comparison tables with these columns: name, type, key formula/idea, when to use, gotcha, and a **"Say this"** column with a one-sentence elevator pitch the student can recite verbatim in an oral exam. End the file with an "Elevator pitch bank" — one memorized sentence per major concept. Skip `Tables.md` only if user explicitly opts out.
 
-18. **Token economy (CRITICAL — applies to every phase)** — generating a full vault is expensive; minimize wasted tokens:
-   - **Model routing:** Phase 4 (atomic concept notes from template) and Phase 5 (study sheets) are mechanical writing work. Delegate these to a sub-agent via the `Task` tool with `model: haiku` (3× cheaper than sonnet, ~90% of quality on templated output). Keep sonnet only for Phase 0–3 (planning, extraction, structure decisions) and Phase 8 (audit / judgement calls). Example: after you've built the concept inventory and registry, spawn a Task with haiku and give it the inventory + template + registry; it returns written notes.
-   - **Batch file operations:** never do 5 separate `Read` tool calls for 5 config files when one `cat file1 file2 file3` Bash call does the same. Each tool call is a round-trip; batching saves round-trips.
-   - **Skip unchanged sources:** on incremental/resume runs, hash input files and compare to `source_hashes` in `.vault-progress.md`. If hash matches, the inventory for that source is still valid — skip the re-read.
-   - **Respect depth flag:** follow the user's `depth: lean|standard|thorough` setting from Phase 1 — do not over-write past the target.
-   - **Strip code blocks before regex audits:** see Known Obsidian Quirks #1. Prevents chasing false-positive broken links that waste edit cycles.
+18. **Token economy with 3-tier model routing (CRITICAL — applies to every phase)** — generating a full vault is expensive; minimize wasted tokens by matching model power to task complexity. Use the cheapest model that can do the job. **Always announce which tier you're using when delegating, so the user can see cost shaping in real time.**
+
+   **Tier 1 — Haiku (cheapest, fastest)** for mechanical / templated tasks:
+   - Reading and extracting raw text from PDFs / PPTX / .ipynb (Phase 2 extraction loop)
+   - Filling concept-note templates from a pre-built brief (Phase 4 atomic notes from inventory)
+   - Filling lecture-sheet templates in Study Sheet format (Phase 5 with `depth: lean` or `depth: standard`)
+   - Filling lab-sheet templates from Jupyter notebook content
+   - Adding aliases / fixing typos / mechanical text replacement
+   - Building the wikilink registry, regex audits
+   - Stub-note generation for cross-referenced concepts
+   - File operations and bash scripts
+
+   **Tier 2 — Sonnet (default, balanced)** for synthesis / standard reasoning:
+   - Phase 1 intake conversation, plan restatement, clarifying questions
+   - Phase 2 inventory deduplication, concept synonym detection, depth-check ("did I miss any sub-techniques?")
+   - Phase 5 narrative writing in Detailed Lecture Notes format (`depth: standard` or `thorough`)
+   - Generating exam questions (4-category structure)
+   - Composing the MOC narrative
+   - Tables.md construction (selecting comparison dimensions, writing "Say this" pitches)
+   - Phase 8 quality pass and broken-link resolution
+   - Most cross-references and link verification
+
+   **Tier 3 — Opus (most powerful, slowest, most expensive)** for hard reasoning / judgment calls:
+   - Deep concept extraction on dense / unfamiliar material (Principle 14): figuring out which named sub-techniques deserve atomic notes when the source material is ambiguous
+   - Authoring novel ELI5 analogies for hard concepts (Principle 19) — finding the right everyday-object metaphor for cross-entropy, backprop, attention, etc.
+   - Cross-course bridge notes (Shared/Concepts/) — synthesizing how a single concept is framed differently across 2–3 courses
+   - Resolving structural conflicts during incremental updates (e.g., user adds a lecture that overlaps with existing concepts — what to merge / fork / split?)
+   - Phase 5 narrative writing for `depth: thorough` (term-paper-grade output)
+   - Worked numerical examples for advanced mathematical concepts where the example must be both correct AND pedagogically illuminating
+
+   **How to invoke each tier:**
+   ```
+   Task tool with subagent_type="general-purpose" and prompt prefixed with:
+   "Using model: haiku, ..." for Tier 1
+   "Using model: sonnet, ..." for Tier 2
+   "Using model: opus, ..." for Tier 3
+   ```
+   If the harness doesn't honour explicit model overrides, structure the work so cheaper models handle bulk and the orchestrator (you) handles judgment calls.
+
+   **Decision flow when starting a new phase:**
+   1. Is this *mostly template-filling from a brief*? → Tier 1 (haiku)
+   2. Is this *narrative synthesis with judgment, but on familiar material*? → Tier 2 (sonnet)
+   3. Is this *hard reasoning, novel analogy creation, or conflict resolution*? → Tier 3 (opus)
+
+   **Other token-saving rules:**
+   - **Batch file operations:** never do 5 separate `Read` tool calls for 5 config files when one `cat file1 file2 file3` Bash call does the same.
+   - **Skip unchanged sources:** on incremental/resume runs, hash input files and compare to `source_hashes` in `.vault-progress.md`. If hash matches, skip the re-read.
+   - **Respect depth flag:** follow the user's `depth: lean|standard|thorough` setting from Phase 1 — don't over-write past the target.
+   - **Strip code blocks before regex audits:** see Known Obsidian Quirks #1. Prevents chasing false-positive broken links.
    - **No repeated full-vault walks:** cache the file list and wikilink registry at start of each phase; reuse in sub-phases.
 
 19. **ELI5 section for complicated concepts (CRITICAL for memory under exam stress)** — for any concept note that is either (a) mathematically heavy (contains ≥1 non-trivial formula), (b) abstract/counterintuitive (attention, backprop, LDA, RLHF, VAE, chain rule, PPMI, Dirichlet, cross-entropy), or (c) has `difficulty: 4` or `5` in frontmatter — append a `## Simple explanation (ELI5)` section near the end of the note (after "When to use vs avoid", before Flashcards).
@@ -381,17 +424,22 @@ Present the proposed structure only if it deviates substantially (e.g., math-hea
 
 ### Phase 4 — Generate Concept Notes
 
-**Token economy — delegate mechanical writing (enforces Principle 18):**
+**Token economy — model routing (enforces Principle 18):**
 
-The heavy lifting in Phase 4 is templated: same structure, different content. This is perfect haiku work. Your job at this phase is:
+Phase 4 is mostly mechanical (template-filling) but has judgement-heavy edge cases. Apply 3-tier routing:
+
+- **Tier 1 (Haiku)** — bulk concept-note writing from briefs. Standard concepts with clear definitions, common formulas, well-known mechanisms.
+- **Tier 3 (Opus)** — hard concepts where the ELI5 analogy needs invention (cross-entropy, backprop, attention, LDA), or where deep extraction is ambiguous and you need to decide whether to split a topic into sub-notes.
+
+Workflow:
 1. Build the wikilink registry (below).
-2. Assemble the per-concept briefs: `{name, source_lecture, key_facts, formula_if_any, example_if_any, related_concepts}` extracted from your Phase 2 inventory.
-3. Spawn a sub-task via the `Task` tool with `model: haiku` (if harness allows override) or with the `general-purpose` agent and an explicit prompt: *"You are writing atomic concept notes. Use this exact template. Here are the N concepts with their briefs. Respect depth target X words. Output valid markdown files to these paths."*
-4. Verify the output passes the Phase 4 post-audit, then move on.
+2. Assemble per-concept briefs: `{name, source_lecture, key_facts, formula_if_any, example_if_any, difficulty, related_concepts}`.
+3. **Sort the inventory** into two queues: easy/templated (haiku) vs hard/judgement (opus). `difficulty: 1-3` and well-known concepts → haiku; `difficulty: 4-5` and abstract/novel concepts → opus.
+4. **Bulk-process the haiku queue** via Task tool prompt: *"Using model: haiku, write atomic concept notes using this exact template for these N concepts..."*
+5. **Hand-process the opus queue** yourself or via Task with opus prompt — these need reasoning, not templating.
+6. Verify outputs pass the post-audit.
 
-If the harness doesn't support model override per sub-task, still prefer batching: one Task call for all N concepts in one shot beats N separate ones — amortizes the spec cost.
-
-Keep the sonnet (your) budget for: Phase 2 extraction (judgement-heavy), Phase 8 audit (judgement-heavy), resolving broken-link fixes (needs context awareness). Do NOT waste sonnet tokens on template-filling prose.
+Keep your own (sonnet) budget for: Phase 2 inventory deduplication, concept depth-check, Phase 8 audit, broken-link resolution. Do NOT waste sonnet tokens on template-filling prose (use haiku) OR on novel reasoning that needs more depth (escalate to opus).
 
 **Build the wikilink registry FIRST (enforces Principle 20):**
 

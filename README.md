@@ -117,19 +117,79 @@ See [`docs/installation.md`](docs/installation.md) for full setup including Obsi
 
 ## How to use
 
-The agent always runs Phase 1 — Intake first, asking 9 questions:
+The agent always runs **Phase 1 — Intake** first, asking nine quick questions before touching any files. Answer them, the agent restates the plan, you confirm, and it runs.
 
-1. Which course are the notes from?
-2. What's the purpose of the vault? (written exam, oral exam, term paper, daily reference, interview prep, making hard material approachable)
-3. Which topics are must-know vs. nice-to-have?
-4. Exam format? (test/essay/project/oral/coding)
-5. Exam date?
-6. Lecture format preference: Study Sheet (400–750w scannable) or Detailed Notes (1200–2500w narrative)?
-7. Depth setting: lean / standard / thorough
-8. Vault path?
-9. Input sources?
+### 📋 Intake form
 
-Answer those, then the agent runs the full pipeline. Total time: 30–60 minutes for a typical 12-lecture course on a fast Claude model.
+<table>
+  <tr>
+    <td colspan="3"><strong>📚 Context</strong> — what the agent needs to understand the material</td>
+  </tr>
+  <tr>
+    <td>1️⃣</td>
+    <td><strong>Course</strong></td>
+    <td>Name, university, level (BSc/MSc/PhD), semester</td>
+  </tr>
+  <tr>
+    <td>2️⃣</td>
+    <td><strong>Purpose</strong></td>
+    <td>Written exam · oral exam · term paper · daily reference · interview prep · making hard material approachable</td>
+  </tr>
+  <tr>
+    <td>3️⃣</td>
+    <td><strong>Priority topics</strong></td>
+    <td>Must-know vs. nice-to-have</td>
+  </tr>
+  <tr>
+    <td colspan="3"><strong>🎯 Exam</strong> — what you're optimising the vault for</td>
+  </tr>
+  <tr>
+    <td>4️⃣</td>
+    <td><strong>Exam format</strong></td>
+    <td>Test · essay · project · oral · coding</td>
+  </tr>
+  <tr>
+    <td>5️⃣</td>
+    <td><strong>Exam date</strong></td>
+    <td>Drives pacing suggestions in the MOC</td>
+  </tr>
+  <tr>
+    <td colspan="3"><strong>✍️ Format</strong> — how the agent should write</td>
+  </tr>
+  <tr>
+    <td>6️⃣</td>
+    <td><strong>Lecture format</strong></td>
+    <td>📄 <strong>Study Sheet</strong> (400–750w, scannable) <br> 📖 <strong>Detailed Notes</strong> (1,200–2,500w, narrative) <em>← default</em></td>
+  </tr>
+  <tr>
+    <td>7️⃣</td>
+    <td><strong>Depth</strong></td>
+    <td>🪶 <strong>lean</strong> (~40% cheaper) · ⚖️ <strong>standard</strong> <em>← default</em> · 📚 <strong>thorough</strong></td>
+  </tr>
+  <tr>
+    <td colspan="3"><strong>📁 Inputs &amp; outputs</strong> — paths the agent should work with</td>
+  </tr>
+  <tr>
+    <td>8️⃣</td>
+    <td><strong>Vault path</strong></td>
+    <td>Where to build the vault, e.g. <code>~/Documents/ObsidianVaults/my-course/</code></td>
+  </tr>
+  <tr>
+    <td>9️⃣</td>
+    <td><strong>Source files</strong></td>
+    <td>Paths to PDFs · PPTX · .py · .ipynb · textbook excerpts</td>
+  </tr>
+</table>
+
+### ⏱ Typical run time
+
+| Course size | Time on Sonnet | Time on Haiku |
+|---|---|---|
+| Light (5–7 lectures, no labs) | ~15 min | ~8 min |
+| Standard (10–12 lectures + labs) | 30–60 min | 15–30 min |
+| Heavy (16+ lectures + many labs) | 60–120 min | 30–60 min |
+
+The agent uses **3-tier model routing** — haiku for mechanical writing, sonnet for synthesis, opus only for hard reasoning (novel ELI5 analogies, ambiguous concept extraction). See [Principle 18](agents/vaultcraft-builder.md#token-economy) for the full decision flow.
 
 See [`docs/usage.md`](docs/usage.md) for example prompts and full workflow.
 

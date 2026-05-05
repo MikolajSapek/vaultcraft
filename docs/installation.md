@@ -13,9 +13,16 @@
 git clone https://github.com/MikolajSapek/vaultcraft.git
 cd vaultcraft
 
+# Install the agent
 mkdir -p ~/.claude/agents
 cp agents/vaultcraft-builder.md ~/.claude/agents/
+
+# Install the bundled Obsidian skills (recommended)
+mkdir -p ~/.claude/skills
+cp -r skills/obsidian-markdown skills/obsidian-bases skills/obsidian-cli skills/json-canvas ~/.claude/skills/
 ```
+
+The `skills/` install is **recommended but optional** — the agent gracefully falls back to direct tools if any skill is missing. See [`skills/README.md`](../skills/README.md) for which skills do what.
 
 Verify Claude Code sees the agent:
 
