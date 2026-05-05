@@ -119,69 +119,38 @@ See [`docs/installation.md`](docs/installation.md) for full setup including Obsi
 
 The agent always runs **Phase 1 — Intake** first, asking nine quick questions before touching any files. Answer them, the agent restates the plan, you confirm, and it runs.
 
-### 📋 Intake form
+### Intake form
 
-<table>
-  <tr>
-    <td colspan="3"><strong>📚 Context</strong> — what the agent needs to understand the material</td>
-  </tr>
-  <tr>
-    <td>1️⃣</td>
-    <td><strong>Course</strong></td>
-    <td>Name, university, level (BSc/MSc/PhD), semester</td>
-  </tr>
-  <tr>
-    <td>2️⃣</td>
-    <td><strong>Purpose</strong></td>
-    <td>Written exam · oral exam · term paper · daily reference · interview prep · making hard material approachable</td>
-  </tr>
-  <tr>
-    <td>3️⃣</td>
-    <td><strong>Priority topics</strong></td>
-    <td>Must-know vs. nice-to-have</td>
-  </tr>
-  <tr>
-    <td colspan="3"><strong>🎯 Exam</strong> — what you're optimising the vault for</td>
-  </tr>
-  <tr>
-    <td>4️⃣</td>
-    <td><strong>Exam format</strong></td>
-    <td>Test · essay · project · oral · coding</td>
-  </tr>
-  <tr>
-    <td>5️⃣</td>
-    <td><strong>Exam date</strong></td>
-    <td>Drives pacing suggestions in the MOC</td>
-  </tr>
-  <tr>
-    <td colspan="3"><strong>✍️ Format</strong> — how the agent should write</td>
-  </tr>
-  <tr>
-    <td>6️⃣</td>
-    <td><strong>Lecture format</strong></td>
-    <td>📄 <strong>Study Sheet</strong> (400–750w, scannable) <br> 📖 <strong>Detailed Notes</strong> (1,200–2,500w, narrative) <em>← default</em></td>
-  </tr>
-  <tr>
-    <td>7️⃣</td>
-    <td><strong>Depth</strong></td>
-    <td>🪶 <strong>lean</strong> (~40% cheaper) · ⚖️ <strong>standard</strong> <em>← default</em> · 📚 <strong>thorough</strong></td>
-  </tr>
-  <tr>
-    <td colspan="3"><strong>📁 Inputs &amp; outputs</strong> — paths the agent should work with</td>
-  </tr>
-  <tr>
-    <td>8️⃣</td>
-    <td><strong>Vault path</strong></td>
-    <td>Where to build the vault, e.g. <code>~/Documents/ObsidianVaults/my-course/</code></td>
-  </tr>
-  <tr>
-    <td>9️⃣</td>
-    <td><strong>Source files</strong></td>
-    <td>Paths to PDFs · PPTX · .py · .ipynb · textbook excerpts</td>
-  </tr>
-</table>
+**Context** — what the agent needs to understand the material
 
-### ⏱ Typical run time
+| # | Field | Expected answer |
+|---|---|---|
+| 1 | Course | Name, university, level (BSc/MSc/PhD), semester |
+| 2 | Purpose | Written exam · oral exam · term paper · daily reference · interview prep · making hard material approachable |
+| 3 | Priority topics | Must-know vs. nice-to-have |
+
+**Exam** — what you're optimising the vault for
+
+| # | Field | Expected answer |
+|---|---|---|
+| 4 | Exam format | Test · essay · project · oral · coding |
+| 5 | Exam date | Drives pacing suggestions in the MOC |
+
+**Format** — how the agent should write
+
+| # | Field | Expected answer |
+|---|---|---|
+| 6 | Lecture format | **Study Sheet** (400–750w, scannable) **·** **Detailed Notes** (1,200–2,500w, narrative — default) |
+| 7 | Depth | **lean** (~40% cheaper) **·** **standard** (default) **·** **thorough** |
+
+**Inputs and outputs** — paths the agent should work with
+
+| # | Field | Expected answer |
+|---|---|---|
+| 8 | Vault path | Where to build the vault, e.g. `~/Documents/ObsidianVaults/my-course/` |
+| 9 | Source files | Paths to PDFs · PPTX · .py · .ipynb · textbook excerpts |
+
+### Typical run time
 
 | Course size | Time on Sonnet | Time on Haiku |
 |---|---|---|
