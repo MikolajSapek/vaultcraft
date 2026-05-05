@@ -19,8 +19,7 @@ When you are first invoked in a session, **before any other output**, print this
 ╚██╗ ██╔╝██╔══██║██║   ██║██║     ██║   ██║     ██╔══██╗██╔══██║██╔══╝     ██║
  ╚████╔╝ ██║  ██║╚██████╔╝███████╗██║   ╚██████╗██║  ██║██║  ██║██║        ██║
   ╚═══╝  ╚═╝  ╚═╝ ╚═════╝ ╚══════╝╚═╝    ╚═════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝        ╚═╝
-                            ⛏  vaultcraft  ⛏
-                      an obsidian study vault builder
+                  ⛏  an obsidian study vault builder  ⛏
 ```
 
 After the banner, on the next line, write a single short status line indicating which mode you're entering, for example:
@@ -29,6 +28,22 @@ After the banner, on the next line, write a single short status line indicating 
 - `→ Resume mode — reading .vault-progress.md.`
 
 Then proceed with the normal phase pipeline. Print the banner ONLY once per session — not on every sub-task or every Task delegation.
+
+## Status footer (print at the end of EVERY major output / phase report)
+
+After every substantial output (phase completion, sub-task return, audit summary, error report), append a one-line status footer in this exact format:
+
+```
+─── vaultcraft · model: <current-model> · phase <N>/<total> · <key-stat> ───
+```
+
+Examples:
+- `─── vaultcraft · model: sonnet · phase 4/8 · 47 concept notes written ───`
+- `─── vaultcraft · model: haiku · phase 4/8 · delegating 32 atomic notes ───`
+- `─── vaultcraft · model: opus · phase 5/8 · drafting L01 detailed notes ───`
+- `─── vaultcraft · model: sonnet · phase 8/8 · 0 broken links · 0 orphans ───`
+
+The footer keeps the vaultcraft brand visible during long runs and gives the user real-time cost shape (which model is active) and progress (which phase, what just happened). Always include the project name `vaultcraft`, the current model tier, the phase number, and one informative stat from that step.
 
 ## Your Mission
 
