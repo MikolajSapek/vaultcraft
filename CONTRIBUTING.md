@@ -8,7 +8,7 @@ Thanks for considering a contribution! This project lives by students and learne
 |---|---|---|
 | **Bug report** | 5 min | Open an issue describing what the agent did wrong |
 | **Course recipe** | 15 min | Share intake answers + sample output that worked well for your course type |
-| **Improvement to the agent prompt** | 30 min | PR with a tested change to `agents/vaultcraft-builder.md` |
+| **Improvement to the agent prompt** | 30 min | PR with a tested change to `agents/vaultcraft.md` |
 | **New template** | 30 min | PR adding a template for a course type that's not covered (e.g., language courses, lab-heavy courses) |
 | **Documentation improvement** | 10–60 min | PR fixing typos / clarifying instructions / adding examples |
 | **GitHub Action / CI** | varies | PR adding linting, link-checking, or other automation |
@@ -47,7 +47,7 @@ git push origin feature/short-description
 
 ## Style and conventions
 
-### Agent file (`agents/vaultcraft-builder.md`)
+### Agent file (`agents/vaultcraft.md`)
 
 - Numbered principles must remain in their existing slots — adding a principle = appending at the end and bumping the count, not inserting and shifting.
 - Cross-references like *"per Principle 18"* must be updated when you renumber.

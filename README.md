@@ -113,7 +113,7 @@ cd vaultcraft
 
 # 2. Copy the agent into your Claude Code agents folder
 mkdir -p ~/.claude/agents
-cp agents/vaultcraft-builder.md ~/.claude/agents/
+cp agents/vaultcraft.md ~/.claude/agents/
 
 # 3. (Optional) Copy templates if you want to author notes manually too
 mkdir -p ~/Documents/ObsidianVaults/_templates
@@ -127,7 +127,7 @@ The agent is now available to Claude Code. Invoke it like:
 > Build me an exam-ready Obsidian vault at ~/Documents/ObsidianVaults/NLP/.
 ```
 
-Claude Code will recognise the task and spawn the `vaultcraft-builder` sub-agent. You'll know it's alive when it prints its banner.
+Claude Code will recognise the task and spawn the `vaultcraft` sub-agent. You'll know it's alive when it prints its banner.
 
 See [`docs/installation.md`](docs/installation.md) for full setup including Obsidian plugin recommendations and skill installation. New to vaultcraft? Check [`docs/faq.md`](docs/faq.md) first.
 
@@ -176,7 +176,7 @@ The agent always runs **Phase 1 — Intake** first, asking nine quick questions 
 | Standard (10–12 lectures + labs) | 30–60 min | 15–30 min |
 | Heavy (16+ lectures + many labs) | 60–120 min | 30–60 min |
 
-The agent uses **3-tier model routing** — Haiku for mechanical writing, Sonnet for synthesis, Opus only for hard reasoning (novel ELI5 analogies, ambiguous concept extraction). Full decision flow lives in Principle 18 of [`agents/vaultcraft-builder.md`](agents/vaultcraft-builder.md).
+The agent uses **3-tier model routing** — Haiku for mechanical writing, Sonnet for synthesis, Opus only for hard reasoning (novel ELI5 analogies, ambiguous concept extraction). Full decision flow lives in Principle 18 of [`agents/vaultcraft.md`](agents/vaultcraft.md).
 
 See [`docs/usage.md`](docs/usage.md) for example prompts and full workflow.
 
@@ -187,7 +187,7 @@ See [`docs/usage.md`](docs/usage.md) for example prompts and full workflow.
 ```
 vaultcraft/
 ├── agents/
-│   └── vaultcraft-builder.md   ← The agent definition
+│   └── vaultcraft.md   ← The agent definition
 ├── skills/                      ← Obsidian skills the agent uses
 │   ├── obsidian-markdown/
 │   ├── obsidian-bases/

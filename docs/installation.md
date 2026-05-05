@@ -15,7 +15,7 @@ cd vaultcraft
 
 # Install the agent
 mkdir -p ~/.claude/agents
-cp agents/vaultcraft-builder.md ~/.claude/agents/
+cp agents/vaultcraft.md ~/.claude/agents/
 
 # Install the bundled Obsidian skills (recommended)
 mkdir -p ~/.claude/skills
@@ -28,7 +28,7 @@ Verify Claude Code sees the agent:
 
 ```bash
 ls ~/.claude/agents/ | grep obsidian
-# vaultcraft-builder.md
+# vaultcraft.md
 ```
 
 That's it for the agent — Claude Code picks up agents from `~/.claude/agents/` automatically on each invocation.
@@ -76,7 +76,7 @@ Then in the Claude Code session:
 ```
 
 Claude Code will:
-1. Detect the request matches the `vaultcraft-builder` agent description
+1. Detect the request matches the `vaultcraft` agent description
 2. Spawn the agent
 3. Run Phase 1 — Intake (asking confirming questions)
 4. Once you confirm, run Phases 2–8 (extraction → vault generation → quality pass)
@@ -88,13 +88,13 @@ Total time: 30–90 minutes depending on source material volume and depth settin
 Open a Claude Code session and type:
 
 ```
-> Show me the vaultcraft-builder agent's description
+> Show me the vaultcraft agent's description
 ```
 
 If Claude Code responds with the agent's purpose summary, you're set.
 
 If not, check:
-- The file is at `~/.claude/agents/vaultcraft-builder.md`
+- The file is at `~/.claude/agents/vaultcraft.md`
 - File starts with `---` YAML frontmatter
 - Restart your Claude Code session
 

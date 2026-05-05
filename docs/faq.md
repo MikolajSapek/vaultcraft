@@ -23,7 +23,7 @@ Yes — Claude Code supports macOS, Linux, and Windows (via WSL or native). Obsi
 ```bash
 cd vaultcraft
 git pull
-cp agents/vaultcraft-builder.md ~/.claude/agents/
+cp agents/vaultcraft.md ~/.claude/agents/
 ```
 
 The agent file is a single document — overwrite to update.
@@ -108,7 +108,7 @@ Yes. Hit Ctrl+C / close terminal. The agent writes `.vault-progress.md` after ea
 
 ### Can I change the prompt / behaviour?
 
-Yes — the agent is just a markdown file at `~/.claude/agents/vaultcraft-builder.md`. Edit it. The `description` and `tools` in YAML frontmatter are load-bearing; the body of the prompt is yours to modify.
+Yes — the agent is just a markdown file at `~/.claude/agents/vaultcraft.md`. Edit it. The `description` and `tools` in YAML frontmatter are load-bearing; the body of the prompt is yours to modify.
 
 If your changes work well, please open a PR — others would benefit.
 
@@ -169,7 +169,7 @@ If still missing, the agent should fall back to direct tools — but if it doesn
 
 ```yaml
 ---
-name: vaultcraft-builder
+name: vaultcraft
 description: ...
 tools: Read, Write, Edit, Glob, Grep, Bash, WebSearch, WebFetch, Task
 # remove "Skill" from tools if you don't have any skills installed
