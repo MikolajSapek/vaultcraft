@@ -4,7 +4,7 @@
 
 # vaultcraft
 
-**An obsidian study vault builder.**
+**vaultcraft.**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-violet.svg)](LICENSE)
 [![Claude Code](https://img.shields.io/badge/Claude%20Code-agent-7C5CB8)](https://claude.com/claude-code)

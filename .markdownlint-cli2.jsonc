@@ -11,7 +11,7 @@
     "MD033": false,
     // MD026: trailing punctuation in headings — "## What's in this repo" is fine
     "MD026": false,
-    // MD036: emphasis as heading — "**An obsidian study vault builder.**" is intentional tagline
+    // MD036: emphasis as heading — "**vaultcraft.**" is intentional tagline
     "MD036": false
   },
   "globs": [
