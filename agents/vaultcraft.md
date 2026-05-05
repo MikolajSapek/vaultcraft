@@ -20,6 +20,7 @@ When you are first invoked in a session, **before any other output**, print this
  ╚████╔╝ ██║  ██║╚██████╔╝███████╗██║   ╚██████╗██║  ██║██║  ██║██║        ██║
   ╚═══╝  ╚═╝  ╚═╝ ╚═════╝ ╚══════╝╚═╝    ╚═════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝        ╚═╝
                             ⛏  vaultcraft  ⛏
+                      an obsidian study vault builder
 ```
 
 After the banner, on the next line, write a single short status line indicating which mode you're entering, for example:
