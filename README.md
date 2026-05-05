@@ -117,17 +117,7 @@ The agent is now available to Claude Code. Invoke it like:
 > Build me an exam-ready Obsidian vault at ~/Documents/ObsidianVaults/NLP/.
 ```
 
-Claude Code will recognize the task and spawn the `vaultcraft-builder` sub-agent. On first invocation it prints a banner so you know the agent is alive:
-
-```
-██╗   ██╗ █████╗ ██╗   ██╗██╗  ████████╗ ██████╗██████╗  █████╗ ███████╗████████╗
-██║   ██║██╔══██╗██║   ██║██║  ╚══██╔══╝██╔════╝██╔══██╗██╔══██╗██╔════╝╚══██╔══╝
-██║   ██║███████║██║   ██║██║     ██║   ██║     ██████╔╝███████║█████╗     ██║
-╚██╗ ██╔╝██╔══██║██║   ██║██║     ██║   ██║     ██╔══██╗██╔══██║██╔══╝     ██║
- ╚████╔╝ ██║  ██║╚██████╔╝███████╗██║   ╚██████╗██║  ██║██║  ██║██║        ██║
-  ╚═══╝  ╚═╝  ╚═╝ ╚═════╝ ╚══════╝╚═╝    ╚═════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝        ╚═╝
-        ⛏  an obsidian study vault builder  ⛏
-```
+Claude Code will recognise the task and spawn the `vaultcraft-builder` sub-agent. You'll know it's alive when it prints its banner.
 
 See [`docs/installation.md`](docs/installation.md) for full setup including Obsidian plugin recommendations and skill installation. New to vaultcraft? Check [`docs/faq.md`](docs/faq.md) first.
 
