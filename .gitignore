@@ -1,0 +1,22 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# Editors
+.vscode/
+.idea/
+*.swp
+
+# Personal Obsidian state
+.obsidian/workspace.json
+.obsidian/workspace-mobile.json
+.obsidian/plugins/claudian/
+.claudian/
+.claude/
+
+# Generated vault progress files
+.vault-progress.md
+
+# Test outputs
+/tmp/
+*.log
