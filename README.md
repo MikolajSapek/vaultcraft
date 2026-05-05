@@ -170,19 +170,56 @@ See [`docs/usage.md`](docs/usage.md) for example prompts and full workflow.
 vaultcraft/
 ├── agents/
 │   └── vaultcraft-builder.md   ← The agent definition
+├── skills/                      ← Obsidian skills the agent uses
+│   ├── obsidian-markdown/
+│   ├── obsidian-bases/
+│   ├── obsidian-cli/
+│   ├── json-canvas/
+│   └── README.md
 ├── docs/
-│   ├── installation.md                    ← Detailed setup
-│   ├── usage.md                            ← Example invocations
-│   ├── conventions.md                      ← Vault structure spec
-│   └── examples.md                         ← Sample concept / lecture notes
+│   ├── installation.md          ← Detailed setup
+│   ├── usage.md                  ← Example invocations
+│   ├── conventions.md            ← Vault structure spec
+│   └── examples.md               ← Sample concept / lecture notes
 ├── templates/
-│   ├── concept.md                          ← Atomic concept template
-│   ├── lecture.md                          ← Lecture study sheet template
-│   ├── lab.md                              ← Lab study sheet template
-│   └── bridge.md                           ← Cross-course bridge template
-├── README.md                               ← This file
-└── LICENSE                                 ← MIT
+│   ├── concept.md                ← Atomic concept template
+│   ├── lecture.md                ← Lecture study sheet template
+│   ├── lab.md                    ← Lab study sheet template
+│   └── bridge.md                 ← Cross-course bridge template
+├── examples/screenshots/         ← Graph view example image
+├── .github/                      ← Banner, issue templates, CI workflow
+├── README.md                     ← This file
+├── CONTRIBUTING.md
+└── LICENSE                       ← MIT
 ```
+
+---
+
+## Skills the agent uses
+
+The agent calls Claude Code skills to handle Obsidian-specific syntax and supplementary research. Four are bundled in `skills/`; six others are optional and the agent gracefully falls back if they're missing.
+
+### Bundled (recommended install — copy to `~/.claude/skills/`)
+
+| Skill | Purpose | When the agent invokes it |
+|---|---|---|
+| `obsidian-markdown` | Valid Obsidian Flavored Markdown — wikilinks, embeds, callouts, properties, frontmatter | Any time the agent writes a note (avoids syntax mistakes) |
+| `obsidian-bases` | Generate `.base` files (Obsidian Bases — filterable database views) | Phase 7, when building the optional Study Dashboard |
+| `obsidian-cli` | Bulk vault operations (rename, move, link verification) | Optional, used when doing >20 file operations in one pass |
+| `json-canvas` | Generate `.canvas` JSON Canvas files (visual concept maps) | Phase 6, optional Course Map |
+
+### Optional (not bundled — install separately if you want full functionality)
+
+| Skill | Purpose | When the agent invokes it |
+|---|---|---|
+| `defuddle` | Clean markdown extraction from web pages | Phase 2, when supplementary web research has noisy HTML (ads, nav, comments) |
+| `deep-research` | Multi-source research with synthesis (firecrawl + exa MCPs) | Phase 2, when a concept is under-explained in slides and needs >2 sources |
+| `exa-search` | Neural search via Exa MCP | Phase 2, when finding a specific paper or reference implementation |
+| `docs` | Context7 documentation lookup for libraries | Phase 5, when generating lab notes that use unfamiliar libraries (verifies API signatures) |
+| `iterative-retrieval` | Progressive context retrieval for very long PDFs | Phase 2, only for >100-page PDFs |
+| `context-engineering` | Meta-skill for agent context optimisation | Rare — only if the agent thrashes on setup |
+
+**The agent works without any of these skills.** Skills speed things up and reduce mistakes; they are not strict dependencies. See [`skills/README.md`](skills/README.md) for full install instructions and fallback behaviour.
 
 ---
 
