@@ -47,15 +47,29 @@ This agent inverts the workflow: take the same source material everyone else has
 
 ## Example output
 
-After running on 12 NLP lectures + 9 Python labs, you get something like:
+After running across four full courses (NLP, ML, Predictive Analytics, Digital Platforms), the resulting Obsidian graph view looks like this:
+
+![Graph view of a 4-course vault built by vaultcraft](examples/screenshots/graph-view-example.png)
+
+**What you're looking at:**
+- Each colour cluster is one course (path-based colouring — no tag pollution)
+- ~640 atomic notes across 4 courses, ~4,700 wikilinks holding them together
+- Red dots: cross-course bridge notes in `_Shared/` connecting concepts across courses (e.g., *AIC/BIC* shared between PA and ML)
+- White dots: lecture / lab study sheets — they sit at the centre of each course's concept cluster because every concept they introduce links back to them
+- Smaller dots on the periphery: leaf concepts (definitions, formulas) referenced once or twice
+- Larger dots in the middle of clusters: hub concepts (e.g., *Transformer*, *ARIMA*, *Logistic Regression*) referenced from many other notes
+
+This is what semantic structure *looks like* — clusters emerge naturally from how concepts are wikilinked, not from any manual layout.
+
+After running on a typical single course (12 lectures + 9 labs):
 
 ```
-NLP/
-├── 00 — NLP Start Here.md          ← entry MOC
-├── Tables.md                        ← oral-exam comparison tables
-├── Lectures/  12 study sheets        ← TL;DR + narrative + exam Qs
-├── Concepts/  171 atomic notes       ← hover-friendly definitions
-└── Labs/       9 Python walkthroughs
+my-course/
+├── 00 — Start Here.md               ← entry MOC
+├── Tables.md                         ← oral-exam comparison tables
+├── Lectures/   12 study sheets        ← TL;DR + narrative + exam Qs
+├── Concepts/  ~150 atomic notes       ← hover-friendly definitions
+└── Labs/        9 Python walkthroughs
 ```
 
 Each concept note has:
