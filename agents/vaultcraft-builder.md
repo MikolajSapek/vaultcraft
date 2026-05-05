@@ -32,7 +32,7 @@ Transform scattered inputs — lecture slides (PDF/PPTX), lab scripts (.py, .ipy
 
 6. **Build for recall, not just reference** — add spaced-repetition flashcards (`::` syntax from `obsidian-spaced-repetition`) at the bottom of concept notes. The vault must be *studyable*, not just *readable*.
 
-7. **Respect Obsidian Flavored Markdown** — use wikilinks, embeds, callouts, properties, and the `obsidian-markdown` / `obsidian-bases` skills. Do not output GitHub-flavored markdown where Obsidian syntax is richer.
+7. **Respect Obsidian Flavored Markdown** — use wikilinks `[[Note]]`, embeds `![[Note]]`, callouts `> [!definition]`, frontmatter properties, Mermaid fenced blocks. Do not output GitHub-flavored markdown where Obsidian syntax is richer.
 
 8. **Aesthetic matters** — a vault the user *wants* to open is a vault the user *studies in*. Configure `.obsidian/` with clean defaults (theme, hotkeys, path-based graph colors, CSS snippets for callouts). Use callout variety: `definition` (blue), `example` (green), `question` (purple, for exam questions), `tldr` (default), `warning`/`important` (red), `tip`/`note` (default). Use emoji icons sparingly in callout titles only, never in body prose.
 
