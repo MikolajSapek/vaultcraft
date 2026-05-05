@@ -61,6 +61,14 @@ After running across four full courses (NLP, ML, Predictive Analytics, Digital P
 
 This is what semantic structure *looks like* — clusters emerge naturally from how concepts are wikilinked, not from any manual layout.
 
+### Tables.md — the oral-exam cheatsheet
+
+Every vault gets a `Tables.md` at root with comparison tables for the major dimensions of the course. Each row has a **"Say this"** column — a one-sentence elevator pitch you can recite verbatim during an oral exam.
+
+![Tables.md comparison example: classifiers — Naive Bayes vs Logistic Regression vs SVM](examples/screenshots/tables-comparison.png)
+
+Read the *"Say this"* column the night before an exam, and you have a confident opening sentence for any question about that comparison.
+
 After running on a typical single course (12 lectures + 9 labs):
 
 ```
