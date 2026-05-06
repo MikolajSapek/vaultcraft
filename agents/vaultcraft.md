@@ -254,18 +254,49 @@ Announce the detected mode before proceeding to Phase 1.5.
 
 **HOW TO ASK — use the `AskUserQuestion` tool, not plain markdown text (CRITICAL).** The intake must surface as interactive option chips above the user's input field, not as a wall of markdown bullets they have to read and type back. Plain-text question lists are a regression — they make the user copy/retype answers and offer no preview of trade-offs. Use `AskUserQuestion` so each option appears as a clickable chip with a short description.
 
-**Batching rules** (the tool accepts max 4 questions per call, max 4 options per question):
-- **Batch A** (always first, 4 questions): vault type · format · depth · language
-- **Batch B** (after Batch A, 3 questions): explanation styles (`multiSelect: true`, max 4 options shown — pick the 4 defaults for the chosen vault type and let "Other" capture the rest) · note format (Study Sheet vs Detailed) · output language confirmation if not in Batch A
-- **Batch C** (free-text questions — these don't fit option chips, so ask as a single short markdown block AFTER Batch A and B succeed): course/project name, goal, priority topics, deadline, vault path, input sources. These need open-ended text answers, so use plain prompt text but keep it tight — one line per question, numbered, no decorative formatting.
+**Tool constraints to respect:**
+- Max 4 questions per call · max 4 options per question · headers ≤12 chars
+- Recommended option goes **first** with `(Recommended)` suffix in label
+- `multiSelect: true` for questions where multiple answers make sense (e.g., explanation styles)
+- Use the `preview` field on options when visual comparison helps the user (Format, Theme, Note format) — preview content renders as a markdown block on the right; use small Mermaid diagrams or sample callout snippets
 
-**Headers must be ≤12 chars** (tool constraint). Examples: `Vault type`, `Format`, `Depth`, `Language`, `Styles`, `Note depth`.
+**Batch sequence (always in this order):**
 
-**Recommended option goes first** with `(Recommended)` suffix. For `Vault type`, recommend `studies`. For `Format`, recommend `Narrative`. For `Depth`, recommend `standard`. For `Language`, recommend `English`.
+**Resume chip (Batch 0 — only if `.vault-progress.md` exists in detected vault path):**
+Single question, header `Mode`, options: `Resume from last step (Recommended)` / `Start over fresh` / `Inspect progress first`. If user picks Resume, skip to the saved `next_action`. If Start over, archive the old vault first (move to `<vault>.archive-<YYYYMMDD>/`) before bootstrapping. If Inspect, print the progress file then re-ask.
 
-If the user's initial prompt already answered some questions, skip those. Never ask vault type if the prompt clearly states it. Never ask language if user wrote a clear preference.
+**Batch A — Vault shape (always first, 4 questions, all single-select):**
+1. `Vault type` — studies (Recommended) · work · research · personal *(reference and teaching go to "Other")*
+2. `Format` — Detailed narrative (Recommended) · Study sheet · Reference *(use `preview` field to show a 6-line sample of how each format renders — Detailed shows a paragraph-style intro, Study sheet shows a mini-box with bullets, Reference shows a code block)*
+3. `Depth` — standard (Recommended) · lean · thorough
+4. `Language` — English (Recommended) · Polish · German · Spanish
 
-After all batches return, restate the plan in markdown (not as a question) and wait for confirmation. Use Batch D if you need explicit "proceed?" confirmation as an option chip — single yes/no question with `Proceed` (Recommended) and `Adjust` options.
+**Batch B — Style preferences (3 questions):**
+1. `Styles` (multiSelect: true) — pick the 4 most relevant explanation styles for the chosen vault type. Defaults by type: `studies` → ELI5 + Worked example + Historical + Real-world. `work` → Real-world + Counter-example + Worked example + Devil's advocate. `research` → Counter-example + Historical + Devil's advocate + Worked example. `personal` → ELI5 + Real-world + Historical + Visual metaphor.
+2. `Flashcards` — Every concept (Recommended) · Key only · None
+3. `Urgency` — depends on vault type. For `studies`: <1 week · 1–4 weeks (Recommended) · 1–3 months · No rush. For `work`/`research`: weekly · monthly (Recommended) · quarterly · ongoing.
+
+**Batch C — Free-text intake (markdown prompt, NOT chips):**
+The remaining answers are open-ended and don't fit option chips. Ask as a single tight markdown block, numbered, one line per question:
+```
+1. Course / project name?
+2. Specific goal? (e.g., "exam 28 June", "onboarding doc by Q3")
+3. Priority topics? (must-know vs nice-to-have, or "extract from materials")
+4. Deadline / target date? (YYYY-MM-DD or "no rush")
+5. Vault path? (default: ~/Documents/ObsidianVaults/<name>/)
+6. Input sources? (file paths, folder paths, URLs)
+```
+
+**Batch D — Plan confirmation (after restating the plan in markdown):**
+Single question, header `Confirm`, options: `Proceed (Recommended)` / `Adjust answers` / `Show estimated cost first`. Restate plan as a normal markdown block before this batch — don't put the plan inside the question text (UI doesn't render markdown in `AskUserQuestion` question fields well).
+
+**Skip rules:**
+- If user's initial prompt clearly states an answer (vault type, language, name, path, sources), skip that question.
+- Never re-ask language if user already wrote in or specified a non-English preference.
+- In INCREMENTAL mode (Phase 0 detected existing vault), skip Batches A and B entirely — read existing config from `.vault-progress.md` and only run Batch C for new sources.
+
+**Error recovery chips (use during Phase 2 file ingestion):**
+When PDF/PPTX parsing fails, show a chip question instead of dumping the error: header `File error`, options: `Skip this file` / `Retry with different parser` / `Paste text manually` / `Abort run`. Print the failing path and 1-line error reason in the question text. Same pattern for missing dependencies (LibreOffice not installed → chip: `Install hint` / `Skip PPTX files` / `Convert manually first`).
 
 **Question content (what to ask in each batch):**
 

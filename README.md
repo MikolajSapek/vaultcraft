@@ -111,14 +111,28 @@ You need [Claude Code](https://claude.com/claude-code) installed.
 git clone https://github.com/MikolajSapek/vaultcraft.git
 cd vaultcraft
 
-# 2. Copy the agent into your Claude Code agents folder
-mkdir -p ~/.claude/agents
-cp agents/vaultcraft.md ~/.claude/agents/
-
-# 3. (Optional) Copy templates if you want to author notes manually too
-mkdir -p ~/Documents/ObsidianVaults/_templates
-cp templates/*.md ~/Documents/ObsidianVaults/_templates/
+# 2. Run the installer
+./install.sh                 # install agent + skills + templates
+./install.sh --demo          # install + show how to run the bundled NLP demo
+./install.sh --uninstall     # remove vaultcraft from ~/.claude/
 ```
+
+The installer copies the agent to `~/.claude/agents/`, bundled skills to `~/.claude/skills/`, and templates to `~/Documents/ObsidianVaults/_templates/`. You can also do this manually if you prefer:
+
+```bash
+mkdir -p ~/.claude/agents && cp agents/vaultcraft.md ~/.claude/agents/
+mkdir -p ~/.claude/skills && cp -R skills/obsidian-* ~/.claude/skills/
+```
+
+### Try the demo (60 seconds)
+
+Want to see what vaultcraft produces before pointing it at your real coursework?
+
+```bash
+./install.sh --demo
+```
+
+This installs the agent and shows you exactly what to paste into Claude Code to build a small NLP vault from three bundled lecture stubs (`examples/demo-materials/`). The output lands at `~/Documents/ObsidianVaults/vaultcraft-demo/` — open it in Obsidian to see linked concept notes, hover-visible definitions, exam questions, and a populated graph view.
 
 The agent is now available to Claude Code. Invoke it like:
 
