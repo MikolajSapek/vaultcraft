@@ -23,7 +23,9 @@ A [Claude Code](https://claude.com/claude-code) agent that turns lecture slides,
 
 Most students take notes as they go. By exam season, those notes are scattered across PDFs, Notion pages, Google Docs, and handwritten pages. The information is *there* — it's just not retrievable under stress.
 
-This agent inverts the workflow: take the same source material everyone else has (slides, labs, textbooks) and produce a knowledge graph optimised for recall. Hover over any wikilink → see the definition. Cmd+O → jump to any concept. Open the graph view → see how concepts cluster. Open `Tables.md` → recite the elevator pitch for every classifier the night before the oral exam.
+This agent inverts the workflow: take the same source material everyone else has (slides, labs, readings, textbooks) and produce a knowledge graph optimised for recall. Hover over any wikilink → see the definition. Cmd+O → jump to any concept. Open the graph view → see how concepts cluster. Open `Tables.md` → recite the elevator pitch for every concept comparison the night before the oral exam.
+
+The agent is subject-agnostic — it works for computer science, law, biology, finance, history, medicine, philosophy, anything you study. Concept names, comparison tables, and ELI5 analogies are drawn from whatever material you feed it.
 
 ---
 
@@ -31,19 +33,22 @@ This agent inverts the workflow: take the same source material everyone else has
 
 Point vaultcraft at a folder of course materials. Around thirty minutes later, on a typical twelve-lecture course, you have a working Obsidian vault — linked, hover-previewable, exam-ready from the moment you open it.
 
+> [!note]
+> The concrete examples below (smoothing, attention, embeddings, backpropagation, Python labs) come from the author's NLP and machine-learning courses, used here purely to illustrate the structure. The agent itself is subject-agnostic — point it at law cases, anatomy, microeconomics, or medieval history and you get the same kind of vault, with concepts and tables drawn from your material.
+
 **~150 atomic concept notes**, one idea per file, 250–500 words each. Every note opens with a `> [!definition]` callout that Obsidian renders inside its hover preview, so skimming a lecture sheet and hovering any wikilink shows you the definition without leaving the page.
 
-The agent splits related techniques instead of bundling them. Where a textbook gives you one "Smoothing" section, the vault gives you six notes — `Laplace Smoothing`, `Add-k Smoothing`, `Good-Turing`, `Kneser-Ney`, `Linear Interpolation`, `Backoff` — each with its own formula, worked numbers, and trade-offs. Same pattern for attention (Scaled Dot-Product, Multi-Head, Self, Cross, Masked, Positional Encoding) and word embeddings (Word2Vec, CBOW, Skip-gram, Negative Sampling, GloVe, FastText, Contextual). At exam time you review one idea per note instead of hunting through paragraphs.
+The agent splits related techniques instead of bundling them. Where a textbook gives you one "Smoothing" section, the vault gives you six notes — `Laplace Smoothing`, `Add-k Smoothing`, `Good-Turing`, `Kneser-Ney`, `Linear Interpolation`, `Backoff` — each with its own formula, worked numbers, and trade-offs. Same pattern for attention (Scaled Dot-Product, Multi-Head, Self, Cross, Masked, Positional Encoding) and word embeddings (Word2Vec, CBOW, Skip-gram, Negative Sampling, GloVe, FastText, Contextual). The same logic applies in any field: a single "Contract law" lecture becomes one note per doctrine; one "Cardiac cycle" lecture becomes separate notes per phase. At exam time you review one idea per note instead of hunting through paragraphs.
 
-**12 lecture study sheets**, one per session. Each opens with a TL;DR callout (five bullets), follows the slide deck through 1,500–2,500 words of narrative, and closes with 8–12 potential exam questions across four categories: theory, comparison, application, critical thinking.
+**~12 lecture study sheets**, one per session. Each opens with a TL;DR callout (five bullets), follows the slide deck through 1,500–2,500 words of narrative, and closes with 8–12 potential exam questions across four categories: theory, comparison, application, critical thinking.
 
-**9 lab study sheets** if the course includes Python notebooks. Each one lists the library functions actually used (`CountVectorizer.fit_transform`, `nltk.word_tokenize`, …), three to six annotated code patterns, the gotchas that surfaced during the lab, expected output, and four to six exam-style questions.
+**Lab study sheets** if your course includes practical work — Python notebooks, R scripts, lab protocols, case-study workbooks. Each one lists the techniques or functions actually used (e.g. `CountVectorizer.fit_transform`, `nltk.word_tokenize` in a CS course; equivalent procedures in any other discipline), three to six annotated patterns, the gotchas that surfaced during the lab, expected output, and four to six exam-style questions.
 
-**`Tables.md` at the vault root** with five to eight side-by-side comparison tables — classifiers, embeddings, smoothing methods. Every row carries a **"Say this"** column: a one-sentence elevator pitch you can recite verbatim during an oral exam.
+**`Tables.md` at the vault root** with five to eight side-by-side comparison tables. Whatever your course is comparing (classifiers, smoothing methods, schools of philosophy, accounting frameworks, drug classes), each comparison gets a row-by-row table with a **"Say this"** column: a one-sentence elevator pitch you can recite verbatim during an oral exam.
 
 **Three to five thousand wikilinks** hold the whole thing together. Hover preview, `Cmd+O` jump-to-note, graph view, and backlinks panel all work the moment you open the vault. The bundled `.obsidian/` config handles the look — per-folder graph colours (lectures one shade, concepts another, labs a third), Page Preview enabled, navigation files filtered out of the graph, and CSS snippets that style the callouts.
 
-**ELI5 sections on the hard stuff.** The concepts that slip out of your head under exam pressure get three to five sentences of plain analogy. Backpropagation becomes a restaurant kitchen passing complaints back through the prep line. Attention is reading a book with a flashlight that also lights up nearby words. Cross-entropy is a weather forecaster who gets punished extra for confident wrong predictions. Under stress the analogy surfaces first; the formalism reconstructs from there.
+**ELI5 sections on the hard stuff.** The concepts that slip out of your head under exam pressure get three to five sentences of plain analogy, drawn from whatever your subject is. In an NLP course, backpropagation becomes a restaurant kitchen passing complaints back through the prep line; attention is reading a book with a flashlight that also lights up nearby words; cross-entropy is a weather forecaster who gets punished extra for confident wrong predictions. In a law course, *promissory estoppel* might become a friend who promised you a ride and then bailed after you cancelled the bus. In medicine, the renin-angiotensin loop becomes a thermostat that overshoots. Under stress the analogy surfaces first; the formalism reconstructs from there.
 
 The result is a vault you actually want to open at 2 AM the night before an exam.
 
@@ -51,7 +56,9 @@ The result is a vault you actually want to open at 2 AM the night before an exam
 
 ## Example output
 
-After running across four full courses (NLP, ML, Predictive Analytics, Digital Platforms), the resulting Obsidian graph view looks like this:
+The screenshots below show the author's own vault — built from four CS courses (NLP, machine learning, predictive analytics, digital platforms) — purely to illustrate what the agent produces. Your vault will look structurally similar but populated with whatever subject you feed it.
+
+The Obsidian graph view of the four-course vault:
 
 ![Graph view of a 4-course vault built by vaultcraft](examples/screenshots/graph-view-example.png)
 
