@@ -154,7 +154,17 @@ Transform scattered inputs — lecture slides (PDF/PPTX), lab scripts (.py, .ipy
    - **Strip code blocks before regex audits:** see Known Obsidian Quirks #1. Prevents chasing false-positive broken links.
    - **No repeated full-vault walks:** cache the file list and wikilink registry at start of each phase; reuse in sub-phases.
 
-19. **ELI5 section for complicated concepts (CRITICAL for memory under exam stress)** — for any concept note that is either (a) mathematically heavy (contains ≥1 non-trivial formula), (b) abstract/counterintuitive (attention, backprop, LDA, RLHF, VAE, chain rule, PPMI, Dirichlet, cross-entropy), or (c) has `difficulty: 4` or `5` in frontmatter — append a `## Simple explanation (ELI5)` section near the end of the note (after "When to use vs avoid", before Flashcards).
+19. **Explanation styles for complicated concepts (CRITICAL for memory)** — for any concept note that is either (a) mathematically heavy (contains ≥1 non-trivial formula), (b) abstract/counterintuitive (attention, backprop, LDA, RLHF, VAE, chain rule, PPMI, Dirichlet, cross-entropy), or (c) has `difficulty: 4` or `5` in frontmatter — append one or more `## Simple explanation (<style>)` sections near the end of the note (after "When to use vs avoid", before Flashcards). The user picks which styles to include in Phase 1, question 8. Defaults differ by vault type.
+
+   **Available styles** (each gets its own callout):
+   - **`eli5`** (`> [!tip] Explain like I'm five`) — analogy with everyday objects, zero jargon, 3-5 sentences. The flashlight-and-words analogy for attention. The restaurant-kitchen analogy for backprop. The sorting-magazines analogy for LDA. *Default for `studies`, `personal`, `teaching` vaults.*
+   - **`technical-analogy`** (`> [!abstract] Technical analogy`) — analogy for technical adults. Compare to a known data structure, algorithm, or system. *"Attention is essentially key-value lookup with softmax weighting."*
+   - **`historical`** (`> [!quote] Historical context`) — origin story. Who invented it, what problem they were solving, what the alternatives looked like. Adds memorability via narrative.
+   - **`counter-example`** (`> [!warning] When this breaks`) — where the concept fails. What it CAN'T do. Edge cases and limitations. *Default emphasis for `research` and `reference` vaults.*
+   - **`visual-metaphor`** (`> [!example] Picture it`) — describe the concept as a shape, chart, or diagram. Always pair with a Mermaid block where feasible.
+   - **`real-world-application`** (`> [!success] In the wild`) — concrete industry / daily-life example. Specific company / product if possible. *Default for `work` and `reference` vaults.*
+   - **`devils-advocate`** (`> [!warning] Devil's advocate`) — argument against the concept. When is it overhyped? When is the simpler alternative actually better? Forces critical thinking.
+   - **`worked-example`** (`> [!example] Worked example`) — numerical computation with real values. Always present for math (Principle 3 makes it mandatory).
 
    Format:
    ```markdown
@@ -230,32 +240,59 @@ Announce the detected mode before proceeding to Phase 1.5.
 
 **ALWAYS ASK FIRST (CRITICAL):** Before touching any files, ask the user explicitly. Present questions as a numbered list in the user's language (Polish if they wrote in Polish, English otherwise). Wait for answers before proceeding.
 
-1. **Which course are the notes from?** — course name, university, level (BSc/MSc/PhD), semester. Drives terminology register and depth.
-2. **What's the purpose of the vault?** — pick one or more:
-   - Written exam prep (definitions, formulas, short answers)
-   - Oral exam prep (explanations, defend-your-answer scenarios, comparison tables)
-   - Term paper / project (deeper research, citations, examples)
-   - Daily reference knowledge base (practical how-to, code recipes)
-   - Job interview prep (Q&A style)
-   - Making hard material approachable (simple explanations, analogies, worked examples)
-3. **Which topics are must-know vs. nice-to-have?** — directs extraction depth.
-4. **Exam format?** — test / essay / project / oral / coding. Drives exam-questions section style.
-5. **Exam date?** — affects pacing suggestions in the MOC.
-6. **Lecture format preference** (from Principle 16) — Study Sheet (scannable, 400–750w) or Detailed Lecture Notes (narrative, 1200–2500w)? Default: Detailed.
+1. **What kind of vault is this?** — pick one. This is the most load-bearing answer; everything below adapts to it:
+   - **`studies`** — academic course notes, exam prep. (Default if user mentions a course / exam / lecture.) Folder structure: `Lectures/`, `Concepts/`, `Labs/`, `Examples/`. Generates exam questions, `Tables.md`, oral-exam pitches.
+   - **`work`** — professional knowledge base for a job, project, or domain. Folder structure: `Topics/`, `Concepts/`, `Playbooks/`, `Decisions/`, `People/` (orgs and stakeholders), `Meetings/`. No exam questions; Tables.md becomes a "decision matrix" instead. Tone: professional but plain.
+   - **`personal`** — hobbies, life skills, curiosity-driven learning. Folder structure: `Topics/`, `Concepts/`, `Practice/` (skill drills), `Inspiration/`, `Journal/`. No exam questions; ELI5 default explanation style; flashcards optional.
+   - **`research`** — paper / literature notes for academic or industry research. Folder structure: `Papers/`, `Concepts/`, `Methods/`, `Hypotheses/`, `Data/`, `Bibliography/`. Heavy on citations, BibTeX-compatible frontmatter. No exam questions; instead "open questions" sections.
+   - **`reference`** — technical documentation reference, internal API docs, runbook collection. Folder structure: `Topics/`, `Concepts/`, `Procedures/`, `Troubleshooting/`. Heavy on copy-pasteable code, terse, no analogies needed.
+   - **`teaching`** — preparing course materials TO teach. Folder structure: `Lessons/`, `Concepts/`, `Activities/`, `Assessments/`, `Resources/`. Each concept includes a "How to introduce this" section and a "Common student misconceptions" section.
+
+   Default if user is ambiguous: `studies` (the original use case).
+
+2. **Course name / project name / topic** — what should the agent call this in titles, MOC, and frontmatter?
+3. **What's the goal?** — be specific about what the vault is FOR. Examples by vault type:
+   - `studies` — written exam in 3 weeks, oral exam in 2 months, term paper, daily class reference, interview prep
+   - `work` — onboarding a new hire, writing a system design doc, capturing tribal knowledge before someone leaves, runbook for an incident class
+   - `personal` — learn watchmaking, prepare for a half-marathon, navigate divorce paperwork
+   - `research` — literature review for a thesis chapter, replicate findings across N papers, prepare a survey paper
+   - `reference` — onboarding doc for an API, troubleshooting playbook
+   - `teaching` — prep a 12-lecture course, design a workshop curriculum, write a tutorial series
+4. **Priority topics** — must-know vs. nice-to-have (scoping; affects depth allocation per topic).
+5. **Output target / deadline** — exam date, project deadline, conference, presentation, or "no rush":
+   - `studies` → exam date drives pacing suggestions in MOC
+   - `work` → release / handoff date
+   - `research` → submission deadline
+6. **Format preference** — pick:
+   - **Concise** (300-700w per major note) — scannable, mini-boxes
+   - **Narrative** (1200-2500w) — story-style walkthrough — *default for `studies`, `teaching`*
+   - **Reference** (terse, code-heavy, no narrative) — *default for `reference`, `work` runbooks*
 7. **Depth setting** — `lean` / `standard` / `thorough`. Controls output length and token budget:
-   - `lean` — atomic notes 150–300w, study sheets 300–500w, detailed lectures 800–1500w. **~40% cheaper.** For quick exam prep, reference lookup.
-   - `standard` — atomic 250–500w, study sheets 400–750w, detailed 1200–2500w. **Default.** For thorough exam prep.
-   - `thorough` — atomic 400–700w, study sheets 600–900w, detailed 2000–3500w. For term papers, semester-long reference.
-8. **Vault path?** — suggest `~/Documents/ObsidianVaults/<course-name>/` if no preference.
-9. **Input sources?** — paths to PDFs, PPTX, .py, .ipynb, .md, or pasted text.
-10. **Language?** — English / Polish / mixed. **Default: English** for everything. Switch only on explicit request.
+   - `lean` — atomic notes 150–300w, study sheets 300–500w. **~40% cheaper.**
+   - `standard` — atomic 250–500w, study sheets 400–750w. **Default.**
+   - `thorough` — atomic 400–700w, study sheets 600–900w. For term papers, deep references.
+8. **Explanation style** — pick 1–3 (default: `eli5` + `worked-example` for math, just `worked-example` for `reference` vault):
+   - **`eli5`** — analogy with everyday objects (toys, cooking, sports). Best for hard / abstract concepts. *Default for `studies`, `personal`, `teaching`.*
+   - **`technical-analogy`** — analogy aimed at adults with technical background. No dumbing down. *"Attention is essentially key-value lookup, but where keys come from queries via softmax."*
+   - **`historical`** — how the concept evolved, who invented it, what problem motivated it. Adds memorability via story.
+   - **`counter-example`** — when does this concept FAIL? what's its limit? Useful for `reference` and `research` vaults where edge cases matter.
+   - **`visual-metaphor`** — describe what it would look like as a diagram, chart, or shape. Followed by an actual Mermaid block where possible.
+   - **`real-world-application`** — concrete industry / daily-life use case. *"PCA is what Spotify uses to compress 10K-feature listening histories into 2D visualizations."* — *Default for `work`, `reference`.*
+   - **`devils-advocate`** — argue against the concept; show where it's overhyped or insufficient. Builds critical thinking; great for `research` and `teaching`.
+   - **`worked-example`** — concrete numerical computation with real values. Always recommended for math / formulas; Principle 3 makes it mandatory for them anyway.
 
-Minimum answers required before proceeding: 1 (course), 2 (purpose), 3 (priorities), 6 (format), 7 (depth), 8 (path), 9 (sources).
+   The agent picks the chosen styles' callouts and adds them after "When to use vs avoid", before Flashcards.
 
-**Exception:** If the user provided all this in their initial prompt, skip asking and proceed. If ANY is ambiguous — ask rather than assume.
+9. **Vault path?** — suggest `~/Documents/ObsidianVaults/<topic-name>/` if no preference.
+10. **Input sources?** — paths to PDFs, PPTX, .py, .ipynb, .md, web URLs, or pasted text.
+11. **Language?** — English / Polish / mixed. **Default: English**.
 
-**After getting answers, restate the plan back:**
-> "Got it: [course] for [exam format] on [date]. Priority topics: [topics]. Purpose: [purpose]. Lecture format: [Study Sheet / Detailed Notes]. Building vault at [path] from [sources]. Language: [lang]. Starting now?"
+Minimum answers required before proceeding: 1 (vault type), 2 (name), 3 (goal), 4 (priorities), 8 (explanation styles), 9 (path), 10 (sources). For `studies` type, also require 5 (deadline).
+
+**Exception:** If the user provided answers in their initial prompt, skip asking those. Always ask vault type if it's not crystal clear.
+
+**After getting answers, restate the plan back, including the chosen vault type:**
+> "Got it: a `<type>` vault called *<name>*, goal: <goal>. Priority topics: <topics>. Format: <format> · depth: <depth> · explanation styles: <styles>. Building at <path> from <sources>. Language: <lang>. Starting now?"
 
 Wait for confirmation before Phase 2.
 

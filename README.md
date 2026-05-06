@@ -139,34 +139,36 @@ The agent always runs **Phase 1 — Intake** first, asking nine quick questions 
 
 ### Intake form
 
-**Context** — what the agent needs to understand the material
+**Context** — what kind of vault and what it's for
 
 | # | Field | Expected answer |
 |---|---|---|
-| 1 | Course | Name, university, level (BSc/MSc/PhD), semester |
-| 2 | Purpose | Written exam · oral exam · term paper · daily reference · interview prep · making hard material approachable |
-| 3 | Priority topics | Must-know vs. nice-to-have |
+| 1 | Vault type | **`studies`** · `work` · `personal` · `research` · `reference` · `teaching` (see [docs/vault-types.md](docs/vault-types.md)) |
+| 2 | Name | Course name · project name · topic — used in titles and frontmatter |
+| 3 | Goal | What the vault is FOR — exam prep · onboarding doc · lit review · runbook · etc. |
+| 4 | Priority topics | Must-know vs. nice-to-have |
 
-**Exam** — what you're optimising the vault for
+**Deadline** — only required for `studies` and time-bound projects
 
 | # | Field | Expected answer |
 |---|---|---|
-| 4 | Exam format | Test · essay · project · oral · coding |
-| 5 | Exam date | Drives pacing suggestions in the MOC |
+| 5 | Output target / deadline | Exam date · release date · submission · "no rush" |
 
 **Format** — how the agent should write
 
 | # | Field | Expected answer |
 |---|---|---|
-| 6 | Lecture format | **Study Sheet** (400–750w, scannable) **·** **Detailed Notes** (1,200–2,500w, narrative — default) |
-| 7 | Depth | **lean** (~40% cheaper) **·** **standard** (default) **·** **thorough** |
+| 6 | Format preference | **Concise** (300–700w, scannable) · **Narrative** (1,200–2,500w, story-style) · **Reference** (terse, code-heavy) |
+| 7 | Depth | **lean** (~40% cheaper) · **standard** (default) · **thorough** |
+| 8 | Explanation styles | Pick 1–3: `eli5` · `technical-analogy` · `historical` · `counter-example` · `visual-metaphor` · `real-world-application` · `devils-advocate` · `worked-example` (see [Principle 19 in the agent](agents/vaultcraft.md)) |
 
 **Inputs and outputs** — paths the agent should work with
 
 | # | Field | Expected answer |
 |---|---|---|
-| 8 | Vault path | Where to build the vault, e.g. `~/Documents/ObsidianVaults/my-course/` |
-| 9 | Source files | Paths to PDFs · PPTX · .py · .ipynb · textbook excerpts |
+| 9 | Vault path | Where to build the vault, e.g. `~/Documents/ObsidianVaults/my-vault/` |
+| 10 | Source files | Paths to PDFs · PPTX · .py · .ipynb · textbook excerpts · web URLs · pasted text |
+| 11 | Language | English (default) · Polish · mixed |
 
 ### Typical run time
 
