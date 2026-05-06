@@ -58,7 +58,7 @@ uninstall_files() {
   echo -e "${YELLOW}!${RESET} Removing vaultcraft files from ${CLAUDE_DIR}"
   rm -f "${AGENTS_DIR}/vaultcraft.md"
   for skill_dir in obsidian-markdown obsidian-bases obsidian-cli json-canvas; do
-    rm -rf "${SKILLS_DIR}/${skill_dir}"
+    rm -rf "${SKILLS_DIR:?}/${skill_dir}"
   done
   echo -e "${GREEN}✓${RESET} Uninstalled. Templates at ${TEMPLATES_DIR} were left untouched."
 }
