@@ -6,7 +6,23 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) 
 
 ## [Unreleased]
 
-Things in development that haven't shipped yet.
+### Added
+
+- **Six vault types** in Phase 1 question 1: `studies`, `work`, `personal`, `research`, `reference`, `teaching`. Each gets its own folder structure (e.g., `work` has `Decisions/` for ADRs, `research` has `Papers/` + `Bibliography/`, `teaching` adds *"How to introduce this"* + *"Common student misconceptions"* sections per concept). Tables.md, exam questions, and other defaults adapt accordingly.
+- **Eight explanation styles** (Principle 19, expanded from ELI5-only): `eli5`, `technical-analogy`, `historical`, `counter-example`, `visual-metaphor`, `real-world-application`, `devils-advocate`, `worked-example`. User picks 1–3 in Phase 1 question 8; defaults differ by vault type.
+- **`docs/vault-types.md`** — full reference for all six vault types with folder structure, special behaviour, frontmatter examples, and guidance on choosing.
+- **Status footer** — agent prints `─── vaultcraft · model: <model> · phase N/8 · <stat> ───` after every major output to keep brand visible and surface model tier in real time.
+- **3-tier model routing** (Principle 18 expanded): Tier 1 Haiku for mechanical writing, Tier 2 Sonnet for synthesis, Tier 3 Opus for novel ELI5 analogies / ambiguous extraction / hard reasoning. Replaces single-tier Haiku-only delegation.
+- **CODE_OF_CONDUCT.md** adapted from Contributor Covenant, simplified for a small student project.
+- **CHANGELOG.md** following Keep a Changelog format.
+- **Strengthened English-default language policy** as a top-level non-negotiable section in the agent prompt. Conversation can match user's language; artefacts written to disk stay English unless user explicitly requests another language.
+
+### Changed
+
+- Phase 1 grew from 9 to 11 questions, restructured around vault type → name → goal → priorities → deadline → format → depth → explanation styles → path → sources → language.
+- README intake table reorganized: Context (1–4) · Deadline (5) · Format (6–8) · Inputs/outputs (9–11).
+- Banner ASCII art now prints on every agent invocation (not just first session).
+- Subtitle below ASCII reverted to single-line `⛏ an obsidian study vault builder ⛏`.
 
 ---
 

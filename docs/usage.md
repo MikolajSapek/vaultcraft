@@ -14,25 +14,45 @@ You don't choose the mode — the agent detects it from the vault state.
 
 ## Phase 1 — Intake questions
 
-Before building anything, the agent asks 9 questions:
+Before building anything, the agent asks 11 questions. The first — **vault type** — is the most load-bearing; everything below adapts to the answer.
 
-1. **Course** — name, university, level (BSc/MSc/PhD), semester
-2. **Purpose** — pick one or more:
-   - Written exam prep
-   - Oral exam prep
-   - Term paper / project
-   - Daily reference knowledge base
-   - Job interview prep
-   - Making hard material approachable
-3. **Priority topics** — must-know vs nice-to-have
-4. **Exam format** — test / essay / project / oral / coding
-5. **Exam date**
-6. **Lecture format**:
-   - **Study Sheet** — 400–750 words, scannable, mini-boxes per concept
-   - **Detailed Lecture Notes** — 1200–2500 words, narrative paragraphs (default)
-7. **Depth setting** — `lean` (40% cheaper, exam prep) / `standard` (default) / `thorough` (term papers)
-8. **Vault path**
-9. **Input sources** — paths to PDFs, PPTX, .py, .ipynb
+1. **Vault type** — pick one:
+   - `studies` (default) — academic course notes, exam prep
+   - `work` — professional knowledge base, projects, runbooks
+   - `personal` — hobbies, life skills, curiosity-driven learning
+   - `research` — paper / literature notes
+   - `reference` — technical documentation, APIs, runbooks
+   - `teaching` — preparing course materials TO teach others
+
+   See [`vault-types.md`](vault-types.md) for the full breakdown of how each type changes folder structure and defaults.
+
+2. **Name** — course / project / topic. Used in titles, MOC, and frontmatter.
+3. **Goal** — what the vault is FOR. Examples by type:
+   - `studies` — written exam in 3 weeks · oral exam · term paper · daily reference
+   - `work` — onboarding · system design doc · runbook · capturing tribal knowledge
+   - `personal` — learn watchmaking · prepare for half-marathon
+   - `research` — literature review · replicate findings · prepare survey paper
+   - `reference` — onboarding doc for an API · troubleshooting playbook
+   - `teaching` — prep a 12-lecture course · design a workshop curriculum
+4. **Priority topics** — must-know vs nice-to-have (scoping; affects depth allocation per topic).
+5. **Output target / deadline** — exam date, project deadline, conference, "no rush". Required for `studies`.
+6. **Format preference**:
+   - **Concise** — 300–700 words per major note, scannable, mini-boxes
+   - **Narrative** — 1,200–2,500 words, story-style. *Default for `studies`, `teaching`.*
+   - **Reference** — terse, code-heavy, no narrative. *Default for `reference`, `work` runbooks.*
+7. **Depth setting** — `lean` (~40% cheaper) / `standard` (default) / `thorough` (term papers, deep references).
+8. **Explanation styles** — pick 1–3 (default depends on vault type):
+   - `eli5` — analogy with everyday objects. *Default for `studies`, `personal`, `teaching`.*
+   - `technical-analogy` — analogy aimed at technical adults
+   - `historical` — origin story, evolution
+   - `counter-example` — when the concept fails. *Default for `research`, `reference`.*
+   - `visual-metaphor` — describe as a shape/diagram (with Mermaid)
+   - `real-world-application` — concrete industry use case. *Default for `work`, `reference`.*
+   - `devils-advocate` — argument against the concept
+   - `worked-example` — numerical computation (always for math, mandatory)
+9. **Vault path** — where to build it.
+10. **Input sources** — paths to PDFs, PPTX, .py, .ipynb, .md, web URLs, or pasted text.
+11. **Language** — English (default) / Polish / mixed. Conversation can match the user's language; artefacts written to disk are always English unless explicitly told otherwise.
 
 Answer those, the agent restates the plan and waits for your confirmation. Then it runs.
 

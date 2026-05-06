@@ -135,7 +135,7 @@ See [`docs/installation.md`](docs/installation.md) for full setup including Obsi
 
 ## How to use
 
-The agent always runs **Phase 1 — Intake** first, asking nine quick questions before touching any files. Answer them, the agent restates the plan, you confirm, and it runs.
+The agent always runs **Phase 1 — Intake** first, asking eleven quick questions before touching any files. The first one — *what kind of vault is this?* — is the most load-bearing; the rest of the agent's behaviour adapts to the answer. Answer them all, the agent restates the plan, you confirm, and it runs.
 
 ### Intake form
 
