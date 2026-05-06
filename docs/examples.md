@@ -2,13 +2,13 @@
 
 What notes look like after the agent has built them.
 
-## Example concept note — `Kneser-Ney Smoothing`
+## Example concept note - `Kneser-Ney Smoothing`
 
 ```markdown
 ---
 tags: [concept, course/nlp]
 aliases: [Kneser-Ney, Modified Kneser-Ney]
-source: "[[L03 — N-gram Language Models]]"
+source: "[[L03 - N-gram Language Models]]"
 status: new
 difficulty: 3
 created: 2026-04-22
@@ -20,14 +20,14 @@ course: NLP
 
 > [!definition] Definition
 > **Kneser-Ney smoothing** estimates n-gram probabilities using continuation
-> probability — how many distinct contexts a word follows — rather than raw
+> probability - how many distinct contexts a word follows - rather than raw
 > frequency, giving the best results among classical smoothing methods.
 
 ## Intuition
 
 Suppose you're predicting what comes after the empty `"___"`. Regular
 methods would guess "Francisco" if Francisco is frequent in the corpus. But
-Francisco is ONLY frequent after "San" — it almost never starts new
+Francisco is ONLY frequent after "San" - it almost never starts new
 sentences. Kneser-Ney is smarter: it asks *"How many DIFFERENT contexts has
 this word appeared in?"* "of" appears after many different words; "Francisco"
 appears after only one. So "of" is a better guess for a blank slot. KN
@@ -36,8 +36,8 @@ predicts based on versatility, not frequency.
 ## Worked numerical example
 
 Suppose in our corpus:
-- "Francisco" appears 500 times — but 495 are after "San"; only 5 distinct contexts
-- "of" appears 500 times — appears after ~300 distinct contexts
+- "Francisco" appears 500 times - but 495 are after "San"; only 5 distinct contexts
+- "of" appears 500 times - appears after ~300 distinct contexts
 
 Continuation probability $P_{CONT}(w)$ is proportional to the number of
 unique contexts $w$ has appeared in:
@@ -58,14 +58,14 @@ probabilities sum to 1.
 
 - **Use when:** classical n-gram models needed (interpretability, low compute,
   speech recognition production systems)
-- **Avoid when:** modern neural LMs are available — they always beat KN
+- **Avoid when:** modern neural LMs are available - they always beat KN
 
 ## Relations
 
 - Classical alternative: [[Laplace Smoothing]] (over-smooths)
 - Stronger alternative: [[Add-k Smoothing]] (still flat)
 - Hierarchy: [[Linear Interpolation]] mixes orders; KN is a smoothed unigram
-- Used in: [[L03 — N-gram Language Models]]
+- Used in: [[L03 - N-gram Language Models]]
 
 ## Simple explanation (ELI5)
 
@@ -79,12 +79,12 @@ probabilities sum to 1.
 
 ## Flashcards
 
-Why is Kneser-Ney superior to add-k?::Uses continuation probability — words appearing in many distinct contexts get higher unigram weight, giving more realistic estimates for novel n-grams.
+Why is Kneser-Ney superior to add-k?::Uses continuation probability - words appearing in many distinct contexts get higher unigram weight, giving more realistic estimates for novel n-grams.
 What's the discount value d typically?::~0.75 (Modified Kneser-Ney) or 0.5 (basic).
 
 ## Sources
 
-- [[L03 — N-gram Language Models]]
+- [[L03 - N-gram Language Models]]
 - Jurafsky & Martin, Speech and Language Processing, Ch. 3
 ```
 
@@ -97,7 +97,7 @@ What this gives you in Obsidian:
 
 ---
 
-## Example lecture note — `L03 — N-gram Language Models` (excerpt)
+## Example lecture note - `L03 - N-gram Language Models` (excerpt)
 
 ```markdown
 ---
@@ -110,10 +110,10 @@ exam-likely: true
 course: NLP
 ---
 
-# L03 — N-gram Language Models
+# L03 - N-gram Language Models
 
 > [!tldr] TL;DR
-> - A language model assigns $P(W)$ to any word sequence — useful for
+> - A language model assigns $P(W)$ to any word sequence - useful for
 >   generation, correction, ranking.
 > - Chain rule + [[Markov Assumption]] → bigram/trigram MLE from corpus
 >   counts.
@@ -131,7 +131,7 @@ course: NLP
 **Intuition.** A language model answers one fundamental question: how
 likely is this sequence of words? That sounds simple, but it enables a huge
 range of applications. Speech recognition outputs multiple hypothetical
-transcriptions — *"recognise speech"* vs *"wreck a nice beach"* — and the
+transcriptions - *"recognise speech"* vs *"wreck a nice beach"* - and the
 LM ranks them by probability. Spelling correctors choose *"Their dog"* over
 *"There dog"* because *"Their dog"* has higher bigram probability. ...
 
@@ -140,29 +140,29 @@ LM ranks them by probability. Spelling correctors choose *"Their dog"* over
 ## Potential Exam Questions
 
 ### Theory / Definitions
-1. **Define the Markov assumption in the context of language modelling.** —
+1. **Define the Markov assumption in the context of language modelling.** -
    The probability of the next word depends only on the last $k$ preceding
    words. Makes computation tractable at the cost of ignoring long-range
    dependencies. See [[Markov Assumption]].
-2. **What is the maximum likelihood estimate for a bigram probability?** —
+2. **What is the maximum likelihood estimate for a bigram probability?** -
    $\hat{P}(w_i \mid w_{i-1}) = C(w_{i-1}, w_i) / C(w_{i-1})$.
 
 ### Understanding / Comparison
-3. **Compare Laplace, add-k, and Kneser-Ney smoothing.** — Laplace adds 1
+3. **Compare Laplace, add-k, and Kneser-Ney smoothing.** - Laplace adds 1
    to every count (over-smooths). Add-k generalizes with tuneable k. KN
-   uses continuation probability — far better. See [[N-gram Smoothing]].
+   uses continuation probability - far better. See [[N-gram Smoothing]].
 
 ### Application / Worked problem
-4. **Compute the bigram MLE for "the cat" given the corpus...** — pointer.
+4. **Compute the bigram MLE for "the cat" given the corpus...** - pointer.
 
 ### Critical thinking
-5. **Why is KN superior to add-k? What concept does it exploit?** — KN uses
-   continuation probability — a word's "context versatility" rather than
+5. **Why is KN superior to add-k? What concept does it exploit?** - KN uses
+   continuation probability - a word's "context versatility" rather than
    raw frequency. See [[Kneser-Ney Smoothing]].
 
 ## Sources
 - Slides: `session-03-26.pdf`
-- Lab: [[Lab03 — N-gram Models & MLE]]
+- Lab: [[Lab03 - N-gram Models & MLE]]
 ```
 
 ---
@@ -170,13 +170,13 @@ LM ranks them by probability. Spelling correctors choose *"Their dog"* over
 ## Example `Tables.md` excerpt
 
 ```markdown
-## 1. Classifiers — Naive Bayes vs Logistic Regression vs SVM vs Neural Networks
+## 1. Classifiers - Naive Bayes vs Logistic Regression vs SVM vs Neural Networks
 
 | Method | Type | Assumption | Training speed | Small data | Say this |
 |---|---|---|---|---|---|
 | [[Naive Bayes]] | Generative | Features independent given class | Very fast | Strong | "Fast baseline, works surprisingly well for text when you have little data." |
 | [[Logistic Regression]] | Discriminative | Linear decision boundary | Fast | Decent | "Discriminative linear model, standard baseline for text classification with TF-IDF." |
-| SVM | Discriminative | Margin maximization, kernel trick | Slow for large | Very strong | "Strong for high-dimensional text, slow to train — use when features are dense and data moderate." |
+| SVM | Discriminative | Margin maximization, kernel trick | Slow for large | Very strong | "Strong for high-dimensional text, slow to train - use when features are dense and data moderate." |
 | [[Neural Network]] | Discriminative | Universal approximator | Slow | Overfits | "Deep models dominate when you have data and compute; no feature engineering needed." |
 
 **Decision tree for "which classifier?":**
@@ -186,7 +186,7 @@ LM ranks them by probability. Spelling correctors choose *"Their dog"* over
 - Need interpretable feature weights? → [[Logistic Regression]]
 ```
 
-The "Say this" column is the exam-night gold — read it aloud, and you have a confident opening sentence for any oral exam question.
+The "Say this" column is the exam-night gold - read it aloud, and you have a confident opening sentence for any oral exam question.
 
 ---
 
@@ -194,22 +194,22 @@ The "Say this" column is the exam-night gold — read it aloud, and you have a c
 
 After the agent runs, your graph view will be colour-coded:
 
-- **Orange** — Lectures
-- **Blue** — Concepts
-- **Yellow** — Labs
-- **Purple** — Formulas (if used)
-- **Green** — Examples (if used)
+- **Orange** - Lectures
+- **Blue** - Concepts
+- **Yellow** - Labs
+- **Purple** - Formulas (if used)
+- **Green** - Examples (if used)
 
 Tags are hidden. Unresolved links are hidden. The graph shows actual semantic structure.
 
-For multi-course vaults, each course's folders get their own colour grouping — toggle between courses with the search filter (`path:NLP/`, `path:ML/`, etc.).
+For multi-course vaults, each course's folders get their own colour grouping - toggle between courses with the search filter (`path:NLP/`, `path:ML/`, etc.).
 
 ---
 
 ## What you don't get
 
 The agent **does not**:
-- Generate flashcard SRS schedules — that's the [Spaced Repetition plugin's](https://github.com/st3v3nmw/obsidian-spaced-repetition) job. The agent puts `::` flashcards in every note; the plugin schedules reviews.
-- Answer exam questions — it generates them so you can practice.
+- Generate flashcard SRS schedules - that's the [Spaced Repetition plugin's](https://github.com/st3v3nmw/obsidian-spaced-repetition) job. The agent puts `::` flashcards in every note; the plugin schedules reviews.
+- Answer exam questions - it generates them so you can practice.
 - Make the vault for you forever. New lectures = new agent invocation (incremental mode).
 - Replace doing the work. Reading and writing your own concepts still produces the deepest understanding. The vault is a scaffold, not a substitute.

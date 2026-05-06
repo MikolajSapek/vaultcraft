@@ -1,4 +1,4 @@
-# Lecture 3 — N-gram Language Models
+# Lecture 3 - N-gram Language Models
 
 ## What is a language model?
 A language model assigns a probability to a sequence of words: P(w₁, w₂, ..., wₙ). Equivalently, it predicts the next word given history: P(wₙ | w₁, ..., wₙ₋₁).
@@ -7,9 +7,9 @@ Language models are foundational: machine translation, speech recognition, autoc
 
 ## The Markov assumption
 Conditioning on the entire history is intractable. The Markov assumption truncates context to the last (n-1) words:
-- **Unigram (n=1):** P(wᵢ) — ignore context entirely
-- **Bigram (n=2):** P(wᵢ | wᵢ₋₁) — depend on previous word only
-- **Trigram (n=3):** P(wᵢ | wᵢ₋₁, wᵢ₋₂) — depend on previous two
+- **Unigram (n=1):** P(wᵢ) - ignore context entirely
+- **Bigram (n=2):** P(wᵢ | wᵢ₋₁) - depend on previous word only
+- **Trigram (n=3):** P(wᵢ | wᵢ₋₁, wᵢ₋₂) - depend on previous two
 
 Larger n captures more context but suffers from data sparsity (most n-grams never appear in training).
 
@@ -28,20 +28,20 @@ Redistribute probability mass from observed events to unseen events.
 
 **Add-1 (Laplace) smoothing:**
 P(wᵢ | wᵢ₋₁) = (count(wᵢ₋₁, wᵢ) + 1) / (count(wᵢ₋₁) + V)
-where V is vocabulary size. Simple, but over-smooths — gives unseen events too much mass.
+where V is vocabulary size. Simple, but over-smooths - gives unseen events too much mass.
 
 **Add-k smoothing:** generalises add-1 with smaller k (e.g., 0.01). Tunable but still naive.
 
 **Kneser-Ney smoothing:** state-of-the-art for n-gram LMs. Two ideas:
-1. **Discounting** — subtract a constant d from observed counts
-2. **Continuation probability** — back off to a lower-order model that uses *how many distinct contexts* a word appears in, not just its frequency. ("Francisco" appears often but only after "San"; it should not get high unigram probability.)
+1. **Discounting** - subtract a constant d from observed counts
+2. **Continuation probability** - back off to a lower-order model that uses *how many distinct contexts* a word appears in, not just its frequency. ("Francisco" appears often but only after "San"; it should not get high unigram probability.)
 
 ## Perplexity
 Standard metric for language model quality on a held-out test set.
 
 PPL(W) = P(w₁...wₙ)^(-1/n) = 2^(cross_entropy)
 
-Lower is better. Intuition: perplexity is the weighted average branching factor — a model with PPL=100 is as confused as if it had to choose uniformly between 100 options at each step. Modern neural LMs achieve PPL of ~10-20 on standard benchmarks; n-gram models typically score 100-300.
+Lower is better. Intuition: perplexity is the weighted average branching factor - a model with PPL=100 is as confused as if it had to choose uniformly between 100 options at each step. Modern neural LMs achieve PPL of ~10-20 on standard benchmarks; n-gram models typically score 100-300.
 
 ## Why n-grams have been replaced
 Neural language models (RNNs, transformers) learn distributed representations that:

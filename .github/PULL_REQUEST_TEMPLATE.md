@@ -6,7 +6,7 @@ A clear description of the change.
 
 ## Why
 
-The motivation — what use case or problem this addresses.
+The motivation - what use case or problem this addresses.
 
 ## Type of change
 

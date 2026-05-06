@@ -7,8 +7,8 @@ The agent enforces these conventions on every vault it builds. If you author not
 Per-course:
 ```
 COURSE/
-├── Lectures/      One note per lecture/session — narrative walkthrough
-├── Concepts/      Atomic notes — one concept, one file
+├── Lectures/      One note per lecture/session - narrative walkthrough
+├── Concepts/      Atomic notes - one concept, one file
 ├── Labs/          Lab session notes with code
 ├── Examples/      Worked examples, case studies, assignments
 ├── Formulas/      Formula sheets (optional)
@@ -18,10 +18,10 @@ COURSE/
 Cross-course material lives in `_Shared/Concepts/`.
 
 Vault root:
-- `Starting point.md` — root MOC
-- `VAULT SPEC.md` — this conventions doc (in real vaults, copy from `templates/`)
-- `Tables.md` — comparison tables for oral exams
-- `README_PLUGINS.md` — recommended plugin list
+- `Starting point.md` - root MOC
+- `VAULT SPEC.md` - this conventions doc (in real vaults, copy from `templates/`)
+- `Tables.md` - comparison tables for oral exams
+- `README_PLUGINS.md` - recommended plugin list
 
 ## Note types
 
@@ -29,18 +29,18 @@ Vault root:
 
 One named concept per file. The atomic unit of the vault.
 
-**Filename:** `Concept Name.md` — title case, spaces allowed, no underscores.
+**Filename:** `Concept Name.md` - title case, spaces allowed, no underscores.
 
 **Required structure:**
 1. YAML frontmatter
 2. `# Concept Name` heading
-3. `> [!definition] Definition` callout — **first content after H1**, so hover preview shows it
-4. `## Intuition` — plain language, analogy
+3. `> [!definition] Definition` callout - **first content after H1**, so hover preview shows it
+4. `## Intuition` - plain language, analogy
 5. Main content (formal definition, formula, mechanism)
-6. `## Example` or `## In Python` — runnable code where applicable, worked numbers for math
-7. `## Simple explanation (ELI5)` — for math-heavy or abstract concepts
-8. `## Relations` — wikilinks to related notes
-9. `## Flashcards` — `::` syntax for spaced repetition
+6. `## Example` or `## In Python` - runnable code where applicable, worked numbers for math
+7. `## Simple explanation (ELI5)` - for math-heavy or abstract concepts
+8. `## Relations` - wikilinks to related notes
+9. `## Flashcards` - `::` syntax for spaced repetition
 10. `**Sources:**` line at the bottom
 
 Length target: **250–500 words** for standard depth.
@@ -49,15 +49,15 @@ Length target: **250–500 words** for standard depth.
 
 One file per lecture/session. Narrative walkthrough.
 
-**Filename:** `L01 — Topic Name.md` (NLP/ML/PA), `S01 — Topic Name.md` (DPD-style strategy courses).
+**Filename:** `L01 - Topic Name.md` (NLP/ML/PA), `S01 - Topic Name.md` (DPD-style strategy courses).
 
 **Required structure:**
 1. YAML frontmatter
-2. `> [!tldr] TL;DR (30 seconds)` callout — 4–6 bullet points
+2. `> [!tldr] TL;DR (30 seconds)` callout - 4–6 bullet points
 3. Narrative sections matching lecture structure (one `##` per topic)
-4. `## Key takeaways` — 4 crisp insights
-5. `## Concepts introduced` — bulleted list of `[[wikilinks]]`
-6. `## Potential Exam Questions` — 8–12 questions across 4 categories (Theory/Definitions, Understanding/Comparison, Application, Critical thinking)
+4. `## Key takeaways` - 4 crisp insights
+5. `## Concepts introduced` - bulleted list of `[[wikilinks]]`
+6. `## Potential Exam Questions` - 8–12 questions across 4 categories (Theory/Definitions, Understanding/Comparison, Application, Critical thinking)
 7. `## Sources`
 
 Length target depends on format:
@@ -68,24 +68,24 @@ Length target depends on format:
 
 Mirrors a lab session. Includes code, expected outputs, takeaways.
 
-**Filename:** `Lab 01 — Topic.md` or `Lab01 — Topic.md`.
+**Filename:** `Lab 01 - Topic.md` or `Lab01 - Topic.md`.
 
 **Required sections:**
 1. Frontmatter
-2. `## What this lab teaches` — 3 bullets
-3. `## Libraries & functions introduced` — table mapping each function to the concept it implements (with wikilink)
-4. `## Core code patterns` — 3–6 patterns, each with snippet + "What's happening" + "Gotcha"
+2. `## What this lab teaches` - 3 bullets
+3. `## Libraries & functions introduced` - table mapping each function to the concept it implements (with wikilink)
+4. `## Core code patterns` - 3–6 patterns, each with snippet + "What's happening" + "Gotcha"
 5. `## Expected output`
 6. `## Connection to lecture`
 7. `## Gotchas / common mistakes`
-8. `## Potential exam questions` — 4–6
+8. `## Potential exam questions` - 4–6
 9. `## Sources`
 
 ### 4. Bridge note (`_Shared/Concepts/`)
 
 Connects the same concept across two or more courses.
 
-**Filename:** `Bridge — Topic Name.md`
+**Filename:** `Bridge - Topic Name.md`
 
 Shows how each course frames the concept differently, side by side.
 
@@ -97,7 +97,7 @@ Shows how each course frames the concept differently, side by side.
 ---
 tags: [concept, course/nlp]
 aliases: [synonym1, synonym2]
-source: "[[L01 — Lecture Title]]"
+source: "[[L01 - Lecture Title]]"
 status: new
 difficulty: 2
 created: 2026-05-05
@@ -127,7 +127,7 @@ course: NLP
 tags: [lab, course/nlp]
 lab: 1
 source-file: lab_01_answers.ipynb
-related-lecture: "[[L01 — Lecture Title]]"
+related-lecture: "[[L01 - Lecture Title]]"
 course: NLP
 ---
 ```
@@ -182,8 +182,8 @@ A vanilla [[RNN]] uses a single hidden state vector, while [[LSTM]] adds a [[Cel
 ```
 
 Filenames must match wikilink targets exactly. Common pitfalls:
-- Plural/singular: `[[N-gram Language Model]]` vs `[[N-gram Language Models]]` — be consistent
-- Hyphens vs spaces: `[[Stop-Words]]` vs `[[Stop Words]]` vs `[[Stopwords]]` — pick one, alias the others
+- Plural/singular: `[[N-gram Language Model]]` vs `[[N-gram Language Models]]` - be consistent
+- Hyphens vs spaces: `[[Stop-Words]]` vs `[[Stop Words]]` vs `[[Stopwords]]` - pick one, alias the others
 
 If a note's filename doesn't match how you want to link to it, add an alias in frontmatter:
 
@@ -199,7 +199,7 @@ Use `::` inline syntax (compatible with [obsidian-spaced-repetition](https://git
 ## Flashcards
 
 What is gradient descent?::Optimization that iteratively moves parameters in the direction of steepest descent of the loss function.
-What's the difference between SGD and mini-batch SGD?::SGD uses one example per update; mini-batch averages gradients over 32-256 examples — better GPU efficiency and lower variance.
+What's the difference between SGD and mini-batch SGD?::SGD uses one example per update; mini-batch averages gradients over 32-256 examples - better GPU efficiency and lower variance.
 ```
 
 Keep them concise. Front (question) and back (answer) on the same line, separated by `::`.
@@ -241,10 +241,10 @@ A formula without numbers is opaque at exam time. Students can recite the formul
 
 The agent writes `.obsidian/graph.json` with:
 
-- **Path-based colour groups** — one colour per top-level folder (Lectures, Concepts, Labs, Formulas, Examples, _Shared)
-- **Tags hidden** (`showTags: false`) — keeps graph clean
-- **Unresolved links hidden** — no orphan grey nodes
-- **Search filter** excludes navigation files (`Starting point`, `00 — X Start Here`, `Tables`, `README_PLUGINS`) so only semantic notes appear
+- **Path-based colour groups** - one colour per top-level folder (Lectures, Concepts, Labs, Formulas, Examples, _Shared)
+- **Tags hidden** (`showTags: false`) - keeps graph clean
+- **Unresolved links hidden** - no orphan grey nodes
+- **Search filter** excludes navigation files (`Starting point`, `00 - X Start Here`, `Tables`, `README_PLUGINS`) so only semantic notes appear
 
 If you add new top-level folders, update the colour groups manually in `.obsidian/graph.json`.
 
@@ -253,6 +253,6 @@ If you add new top-level folders, update the colour groups manually in `.obsidia
 For oral exams, the agent builds `Tables.md` at the vault root with:
 - 5–8 comparison tables covering the major dimensions of the course
 - Each table has a **"Say this"** column with a one-sentence elevator pitch the student can recite verbatim
-- An **"Elevator pitch bank"** at the end — one memorized sentence per major concept
+- An **"Elevator pitch bank"** at the end - one memorized sentence per major concept
 
 Open `Tables.md` the night before an oral exam, read the pitches aloud once, and you'll have a reliable starting sentence for every question.

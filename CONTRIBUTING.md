@@ -15,7 +15,7 @@ Thanks for considering a contribution! This project lives by students and learne
 
 ## Before opening a PR
 
-1. **Open an issue first** if it's a substantial change — saves rework if maintainers disagree on the approach.
+1. **Open an issue first** if it's a substantial change - saves rework if maintainers disagree on the approach.
 2. **Run the agent on your own course** to test that your change works end-to-end. We can't merge an agent change that wasn't tested on real materials.
 3. **Anonymise your examples** before committing. No real names, emails, course codes, professor names, file paths with usernames.
 
@@ -49,10 +49,10 @@ git push origin feature/short-description
 
 ### Agent file (`agents/vaultcraft.md`)
 
-- Numbered principles must remain in their existing slots — adding a principle = appending at the end and bumping the count, not inserting and shifting.
+- Numbered principles must remain in their existing slots - adding a principle = appending at the end and bumping the count, not inserting and shifting.
 - Cross-references like *"per Principle 18"* must be updated when you renumber.
-- Phase ordering is load-bearing — don't reorder phases; add new phases as `Phase X.5` between existing ones if needed.
-- Examples in the agent must use placeholder paths like `/Users/me/Downloads/` — never real usernames.
+- Phase ordering is load-bearing - don't reorder phases; add new phases as `Phase X.5` between existing ones if needed.
+- Examples in the agent must use placeholder paths like `/Users/me/Downloads/` - never real usernames.
 
 ### Documentation (`docs/`)
 
@@ -64,12 +64,12 @@ git push origin feature/short-description
 ### Templates (`templates/`)
 
 - Templates are skeletons, not examples. They have placeholder text in `<angle brackets>` or `UPPERCASE_PLACEHOLDERS`.
-- Match the conventions in `docs/conventions.md` exactly — templates ARE the spec.
+- Match the conventions in `docs/conventions.md` exactly - templates ARE the spec.
 
 ### Privacy in commits
 
 - Never commit a real vault's content as an example.
-- Never commit `.obsidian/workspace.json` or any plugin's session/settings data — see `.gitignore`.
+- Never commit `.obsidian/workspace.json` or any plugin's session/settings data - see `.gitignore`.
 - If you want to share an example note, write a synthetic one with no real course / institution / person references.
 
 ## Code of conduct

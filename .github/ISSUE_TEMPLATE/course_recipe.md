@@ -39,4 +39,4 @@ Issues you ran into and how you worked around them.
 
 ## Sample notes
 
-(Optional) A representative concept note or lecture sheet from your vault — with personal info redacted — that shows the recipe's typical output quality.
+(Optional) A representative concept note or lecture sheet from your vault - with personal info redacted - that shows the recipe's typical output quality.

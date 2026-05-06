@@ -8,15 +8,15 @@ Yes. The agent runs inside [Claude Code](https://claude.com/claude-code), which 
 
 ### Can I run this without internet?
 
-No. The agent calls Claude's API for every step. The vault it produces, however, is fully offline — Obsidian works without internet, and once the vault is built you can study without an active session.
+No. The agent calls Claude's API for every step. The vault it produces, however, is fully offline - Obsidian works without internet, and once the vault is built you can study without an active session.
 
 ### Will my course materials leave my machine?
 
-The agent runs locally (Claude Code is a CLI on your machine), but the contents of files it reads — your slides, notebooks, etc. — are sent to Claude's API as part of the prompt. If your university or employer prohibits sending materials to third-party LLMs, do not use this tool. Anthropic's data policies for Claude API: <https://www.anthropic.com/legal/aup>.
+The agent runs locally (Claude Code is a CLI on your machine), but the contents of files it reads - your slides, notebooks, etc. - are sent to Claude's API as part of the prompt. If your university or employer prohibits sending materials to third-party LLMs, do not use this tool. Anthropic's data policies for Claude API: <https://www.anthropic.com/legal/aup>.
 
 ### Does this work on Windows?
 
-Yes — Claude Code supports macOS, Linux, and Windows (via WSL or native). Obsidian works everywhere too. The bash snippets in `docs/installation.md` use Unix paths; on Windows native, use the equivalent `mkdir` / `copy` PowerShell or just use Git Bash / WSL.
+Yes - Claude Code supports macOS, Linux, and Windows (via WSL or native). Obsidian works everywhere too. The bash snippets in `docs/installation.md` use Unix paths; on Windows native, use the equivalent `mkdir` / `copy` PowerShell or just use Git Bash / WSL.
 
 ### How do I update to a newer agent version?
 
@@ -26,7 +26,7 @@ git pull
 cp agents/vaultcraft.md ~/.claude/agents/
 ```
 
-The agent file is a single document — overwrite to update.
+The agent file is a single document - overwrite to update.
 
 ---
 
@@ -38,11 +38,11 @@ Three common causes:
 
 1. **Source materials are bullet-only outlines.** If your slides don't have full sentences, the agent has limited material to extract from. Ask the agent to supplement from textbook chapters or web sources.
 2. **You picked `depth: lean`.** Lean produces concise notes; if you wanted thorough coverage, re-run with `depth: thorough`.
-3. **The agent hit the 40-turn budget.** Check if `.vault-progress.md` exists in your vault — if it does, the agent ran out of budget and stopped. Re-invoke; it'll resume from `next_action`.
+3. **The agent hit the 40-turn budget.** Check if `.vault-progress.md` exists in your vault - if it does, the agent ran out of budget and stopped. Re-invoke; it'll resume from `next_action`.
 
 ### Can I correct a mistake the agent made?
 
-Yes — every note is a regular `.md` file. Edit it manually in Obsidian and the agent will respect your edits on the next run (unless you ask it to overwrite).
+Yes - every note is a regular `.md` file. Edit it manually in Obsidian and the agent will respect your edits on the next run (unless you ask it to overwrite).
 
 ### How do I tell the agent to fix something specific?
 
@@ -61,7 +61,7 @@ Settings → Open graph view → Display:
 - Uncheck **Attachments**
 - Toggle **Existing files only**
 
-Or check `.obsidian/graph.json` — the agent writes a clean default config but Obsidian sometimes overrides it on first load.
+Or check `.obsidian/graph.json` - the agent writes a clean default config but Obsidian sometimes overrides it on first load.
 
 ### My concept notes don't show definitions on hover
 
@@ -108,9 +108,9 @@ Yes. Hit Ctrl+C / close terminal. The agent writes `.vault-progress.md` after ea
 
 ### Can I change the prompt / behaviour?
 
-Yes — the agent is just a markdown file at `~/.claude/agents/vaultcraft.md`. Edit it. The `description` and `tools` in YAML frontmatter are load-bearing; the body of the prompt is yours to modify.
+Yes - the agent is just a markdown file at `~/.claude/agents/vaultcraft.md`. Edit it. The `description` and `tools` in YAML frontmatter are load-bearing; the body of the prompt is yours to modify.
 
-If your changes work well, please open a PR — others would benefit.
+If your changes work well, please open a PR - others would benefit.
 
 ### Can I use this for non-academic content (work knowledge base, research notes)?
 
@@ -123,7 +123,7 @@ The conventions in `docs/conventions.md` are tuned for studying. Other use cases
 
 ### Can I use this with a different note app (Logseq, Roam, Notion)?
 
-Currently no — the agent emits Obsidian-Flavoured Markdown and configures `.obsidian/` directly. Porting requires rewriting the syntax assumptions and dropping Obsidian-specific features (callouts, hover preview, properties, base files). Open an issue if you want this and we can discuss the scope.
+Currently no - the agent emits Obsidian-Flavoured Markdown and configures `.obsidian/` directly. Porting requires rewriting the syntax assumptions and dropping Obsidian-specific features (callouts, hover preview, properties, base files). Open an issue if you want this and we can discuss the scope.
 
 ---
 
@@ -165,7 +165,7 @@ mkdir -p ~/.claude/skills
 cp -r skills/* ~/.claude/skills/
 ```
 
-If still missing, the agent should fall back to direct tools — but if it doesn't, add a frontmatter override at the top of the agent file:
+If still missing, the agent should fall back to direct tools - but if it doesn't, add a frontmatter override at the top of the agent file:
 
 ```yaml
 ---
@@ -182,7 +182,7 @@ Settings → Open graph view → Display tab → uncheck **Tags**. The agent's v
 
 ### Some concept notes are tiny stubs
 
-By design — the agent writes a stub when ≥3 wikilinks point to a concept that doesn't exist yet (Principle 12). To replace stubs with full notes, ask:
+By design - the agent writes a stub when ≥3 wikilinks point to a concept that doesn't exist yet (Principle 12). To replace stubs with full notes, ask:
 
 > *"Expand all stubs in `Concepts/` (notes with `status: new` and under 200 words). Use the source materials I provided."*
 
@@ -192,14 +192,14 @@ By design — the agent writes a stub when ≥3 wikilinks point to a concept tha
 
 ### Can I share the vault output with other students?
 
-Strongly recommended — see the project's spirit. But before sharing:
+Strongly recommended - see the project's spirit. But before sharing:
 - Remove your own assignment / project files
 - Redact any names, emails, or institution-specific identifiers from frontmatter `source:` fields
 - Check `.obsidian/workspace.json` is not in the zip (contains your recent file list)
 
 ### Can I contribute course recipes?
 
-Yes — open an issue using the "Course recipe" template. Share your intake answers and a rough description of how the output came out. Someone else taking a similar course will benefit.
+Yes - open an issue using the "Course recipe" template. Share your intake answers and a rough description of how the output came out. Someone else taking a similar course will benefit.
 
 ### Where do I report bugs?
 
@@ -207,4 +207,4 @@ Open an issue in this repo. Use the bug report template. Include the agent invoc
 
 ### Can I run multiple instances in parallel?
 
-Yes, on different vaults. Don't run two instances on the same vault — they'll race on the wikilink registry and produce duplicates.
+Yes, on different vaults. Don't run two instances on the same vault - they'll race on the wikilink registry and produce duplicates.

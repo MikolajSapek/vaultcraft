@@ -38,4 +38,4 @@ What you expected the agent to produce.
 
 ## Additional context
 
-Anything else relevant — agent invocation logs, `.vault-progress.md` snippet, or screenshots.
+Anything else relevant - agent invocation logs, `.vault-progress.md` snippet, or screenshots.

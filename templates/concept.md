@@ -1,7 +1,7 @@
 ---
 tags: [concept, course/COURSE_SHORT_NAME]
 aliases: []
-source: "[[L0X — Lecture Title]]"
+source: "[[L0X - Lecture Title]]"
 status: new
 difficulty: 2
 created: YYYY-MM-DD
@@ -54,12 +54,12 @@ For theoretical concepts: a real-world scenario.
 - Generalization of: [[Specific Variant]]
 - Specialization: [[Broader Concept]]
 - Contrast: [[Similar But Different]]
-- Used in: [[L0X — Lecture]]
+- Used in: [[L0X - Lecture]]
 
 ## Simple explanation (ELI5)
 
 > [!tip] Explain like I'm five
-> Replace this with a 3-5 sentence analogy using everyday objects/situations — toys, cooking, sports, school. The goal: a 10-year-old should be able to repeat the core idea back after reading. Zero jargon.
+> Replace this with a 3-5 sentence analogy using everyday objects/situations - toys, cooking, sports, school. The goal: a 10-year-old should be able to repeat the core idea back after reading. Zero jargon.
 
 ## Flashcards
 
@@ -69,5 +69,5 @@ When would you use Concept Name over Alternative?::Brief comparison.
 
 ## Sources
 
-- [[L0X — Lecture Title]]
+- [[L0X - Lecture Title]]
 - Original paper: Author et al. (Year)

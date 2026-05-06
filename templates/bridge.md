@@ -6,7 +6,7 @@ status: new
 created: YYYY-MM-DD
 ---
 
-# Bridge — Concept Name
+# Bridge - Concept Name
 
 > [!definition] Definition
 > **Concept Name** is a concept that appears in multiple courses with different framings. This note shows the cross-course view.
@@ -43,7 +43,7 @@ The interesting part. Why do the courses emphasize different aspects?
 
 ## When to use which framing
 
-For exam questions in COURSE_A, use COURSE_A's framing. But the underlying idea is the same — knowing the bridge helps you spot the same concept across exams.
+For exam questions in COURSE_A, use COURSE_A's framing. But the underlying idea is the same - knowing the bridge helps you spot the same concept across exams.
 
 ## Relations
 

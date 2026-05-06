@@ -2,16 +2,16 @@
 tags: [lab, course/COURSE_SHORT_NAME]
 lab: X
 source-file: lab_XX_filename.ipynb
-related-lecture: "[[L0X — Lecture Title]]"
+related-lecture: "[[L0X - Lecture Title]]"
 course: COURSE_NAME
 ---
 
-# Lab 0X — Lab Topic Title
+# Lab 0X - Lab Topic Title
 
 > [!tldr] What this lab teaches
-> - Skill 1 — one line
-> - Skill 2 — one line
-> - Skill 3 — one line
+> - Skill 1 - one line
+> - Skill 2 - one line
+> - Skill 3 - one line
 
 ## Libraries & functions introduced
 
@@ -25,7 +25,7 @@ course: COURSE_NAME
 
 ## Core code patterns
 
-### Pattern 1 — What this pattern does
+### Pattern 1 - What this pattern does
 
 ```python
 import ...
@@ -36,7 +36,7 @@ X = CountVectorizer().fit_transform(corpus)
 
 **Gotcha:** 1 line about a common mistake or subtle behaviour.
 
-### Pattern 2 — Next pattern
+### Pattern 2 - Next pattern
 
 ```python
 # code
@@ -54,10 +54,10 @@ What you see when you run the lab end-to-end. If notebook has outputs, reference
 
 ## Connection to lecture
 
-This lab exercises concepts from [[L0X — Lecture Title]]:
-- [[Concept A]] — how it shows up in this lab
-- [[Concept B]] — how
-- [[Concept C]] — how
+This lab exercises concepts from [[L0X - Lecture Title]]:
+- [[Concept A]] - how it shows up in this lab
+- [[Concept B]] - how
+- [[Concept C]] - how
 
 ## Gotchas / common mistakes
 
@@ -66,11 +66,11 @@ This lab exercises concepts from [[L0X — Lecture Title]]:
 
 ## Potential exam questions
 
-1. **Coding-style or conceptual question this lab prepares you for** — pointer with [[wikilink]].
+1. **Coding-style or conceptual question this lab prepares you for** - pointer with [[wikilink]].
 2. ...
 3. ...
 
 ## Sources
 
 - Notebook: `lab_XX_filename.ipynb`
-- Related lecture: [[L0X — Lecture Title]]
+- Related lecture: [[L0X - Lecture Title]]
