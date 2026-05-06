@@ -19,6 +19,14 @@ A [Claude Code](https://claude.com/claude-code) agent that turns lecture slides,
 
 ---
 
+## Why this exists
+
+Most students take notes as they go. By exam season, those notes are scattered across PDFs, Notion pages, Google Docs, and handwritten pages. The information is *there* — it's just not retrievable under stress.
+
+This agent inverts the workflow: take the same source material everyone else has (slides, labs, textbooks) and produce a knowledge graph optimised for recall. Hover over any wikilink → see the definition. Cmd+O → jump to any concept. Open the graph view → see how concepts cluster. Open `Tables.md` → recite the elevator pitch for every classifier the night before the oral exam.
+
+---
+
 ## What it does
 
 Point vaultcraft at a folder of course materials. Around thirty minutes later, on a typical twelve-lecture course, you have a working Obsidian vault — linked, hover-previewable, exam-ready from the moment you open it.
@@ -38,14 +46,6 @@ The agent splits related techniques instead of bundling them. Where a textbook g
 **ELI5 sections on the hard stuff.** The concepts that slip out of your head under exam pressure get three to five sentences of plain analogy. Backpropagation becomes a restaurant kitchen passing complaints back through the prep line. Attention is reading a book with a flashlight that also lights up nearby words. Cross-entropy is a weather forecaster who gets punished extra for confident wrong predictions. Under stress the analogy surfaces first; the formalism reconstructs from there.
 
 The result is a vault you actually want to open at 2 AM the night before an exam.
-
----
-
-## Why this exists
-
-Most students take notes as they go. By exam season, those notes are scattered across PDFs, Notion pages, Google Docs, and handwritten pages. The information is *there* — it's just not retrievable under stress.
-
-This agent inverts the workflow: take the same source material everyone else has (slides, labs, textbooks) and produce a knowledge graph optimized for recall. Hover over any wikilink → see the definition. Cmd+O → jump to any concept. Open the graph view → see how concepts cluster. Open `Tables.md` → recite the elevator pitch for every classifier the night before the oral exam.
 
 ---
 
