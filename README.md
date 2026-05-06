@@ -21,29 +21,23 @@ A [Claude Code](https://claude.com/claude-code) agent that turns lecture slides,
 
 ## What it does
 
-Point the agent at a folder of course materials. After a 30-minute run on a typical 12-lecture course, you get:
+Point vaultcraft at a folder of course materials. Around thirty minutes later, on a typical twelve-lecture course, you have a working Obsidian vault — linked, hover-previewable, exam-ready from the moment you open it.
 
-**~150 atomic concept notes**, each ~250–500 words long. One concept per file. Every note opens with a `> [!definition]` callout that Obsidian shows in hover previews — you skim a lecture sheet, hover any wikilink, see the definition without leaving the page.
+**~150 atomic concept notes**, one idea per file, 250–500 words each. Every note opens with a `> [!definition]` callout that Obsidian renders inside its hover preview, so skimming a lecture sheet and hovering any wikilink shows you the definition without leaving the page.
 
-The agent doesn't bundle related techniques into one note. It splits them:
+The agent splits related techniques instead of bundling them. Where a textbook gives you one "Smoothing" section, the vault gives you six notes — `Laplace Smoothing`, `Add-k Smoothing`, `Good-Turing`, `Kneser-Ney`, `Linear Interpolation`, `Backoff` — each with its own formula, worked numbers, and trade-offs. Same pattern for attention (Scaled Dot-Product, Multi-Head, Self, Cross, Masked, Positional Encoding) and word embeddings (Word2Vec, CBOW, Skip-gram, Negative Sampling, GloVe, FastText, Contextual). At exam time you review one idea per note instead of hunting through paragraphs.
 
-- *N-gram smoothing* → 6 notes — `Laplace Smoothing`, `Add-k Smoothing`, `Good-Turing`, `Kneser-Ney`, `Linear Interpolation`, `Backoff` — each with its own formula, worked numbers, and tradeoffs
-- *Attention* → 6 notes — `Scaled Dot-Product`, `Multi-Head`, `Self-Attention`, `Cross-Attention`, `Masked Attention`, `Sinusoidal Positional Encoding`
-- *Word embeddings* → 8+ notes — `Word2Vec`, `CBOW`, `Skip-gram`, `Negative Sampling`, `GloVe`, `FastText`, `Contextual Embeddings`, …
+**12 lecture study sheets**, one per session. Each opens with a TL;DR callout (five bullets), follows the slide deck through 1,500–2,500 words of narrative, and closes with 8–12 potential exam questions across four categories: theory, comparison, application, critical thinking.
 
-**12 lecture study sheets**, one per session. Each has a TL;DR callout (5 bullets), narrative sections matching the slide deck (~1,500–2,500 words for detailed format), and 8–12 potential exam questions split across four categories: theory, comparison, application, critical thinking.
+**9 lab study sheets** if the course includes Python notebooks. Each one lists the library functions actually used (`CountVectorizer.fit_transform`, `nltk.word_tokenize`, …), three to six annotated code patterns, the gotchas that surfaced during the lab, expected output, and four to six exam-style questions.
 
-**9 lab study sheets** if you have Python notebooks. Each lists the key library functions used (`CountVectorizer.fit_transform`, `nltk.word_tokenize`, ...), 3–6 core code patterns with annotations, common gotchas, expected output, and 4–6 exam-style questions.
+**`Tables.md` at the vault root** with five to eight side-by-side comparison tables — classifiers, embeddings, smoothing methods. Every row carries a **"Say this"** column: a one-sentence elevator pitch you can recite verbatim during an oral exam.
 
-**A `Tables.md` at vault root** with 5–8 comparison tables — classifiers side-by-side, embeddings side-by-side, smoothing methods side-by-side. Every row has a **"Say this"** column with a one-sentence elevator pitch you can recite verbatim during oral exams.
+**Three to five thousand wikilinks** hold the whole thing together. Hover preview, `Cmd+O` jump-to-note, graph view, and backlinks panel all work the moment you open the vault. The bundled `.obsidian/` config handles the look — per-folder graph colours (lectures one shade, concepts another, labs a third), Page Preview enabled, navigation files filtered out of the graph, and CSS snippets that style the callouts.
 
-**~3,000–5,000 wikilinks** holding it all together. Hover preview, `Cmd+O` jump, graph view, backlinks panel — all work out of the box.
+**ELI5 sections on the hard stuff.** The concepts that slip out of your head under exam pressure get three to five sentences of plain analogy. Backpropagation becomes a restaurant kitchen passing complaints back through the prep line. Attention is reading a book with a flashlight that also lights up nearby words. Cross-entropy is a weather forecaster who gets punished extra for confident wrong predictions. Under stress the analogy surfaces first; the formalism reconstructs from there.
 
-**A pre-configured `.obsidian/`** with graph view colours per folder (lectures one colour, concepts another, labs a third), Page Preview plugin enabled, navigation files filtered out of the graph, and CSS snippets for callout styling.
-
-**Hard concepts get an ELI5 section** with a 3–5 sentence analogy using everyday objects. Backpropagation gets explained as a restaurant kitchen passing complaints back through the prep line. Attention is reading a book with a flashlight that also lights up nearby words. Cross-entropy is a weather forecaster being punished extra for confident wrong predictions. Under exam stress, the analogy is what you remember; the formalism reconstructs from there.
-
-The output: a vault you actually want to open at 2 AM the night before an exam.
+The result is a vault you actually want to open at 2 AM the night before an exam.
 
 ---
 
