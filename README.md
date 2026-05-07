@@ -98,7 +98,18 @@ See [`docs/examples.md`](docs/examples.md) for sample notes.
 
 ## Installation
 
-You need [Claude Code](https://claude.com/claude-code) installed.
+### Prerequisites
+
+You need two things connected before vaultcraft will work:
+
+1. **[Claude Code](https://claude.com/claude-code)** installed and signed in (terminal version recommended - the agent prints status banners and progress lines that read better in a terminal than in the desktop chat UI).
+2. **An Obsidian MCP server** connected to Claude Code (terminal). The agent talks to your vault through this server: opens notes, runs Obsidian commands, validates wikilinks, refreshes the graph view. Without it, the agent can still write `.md` files to disk but cannot interact with the live vault.
+
+   Common options: [`mcp-obsidian`](https://github.com/MarkusPfundstein/mcp-obsidian), [`smithery/obsidian`](https://smithery.ai). Pick one, add it via `claude mcp add ...`, restart Claude Code, then verify with `claude mcp list` - the server should show as connected.
+
+   On the Obsidian side, install the **Local REST API** plugin and copy the API key into your MCP server config. See [`docs/installation.md`](docs/installation.md) for the full step-by-step.
+
+### Install the agent
 
 ```bash
 # 1. Clone this repo

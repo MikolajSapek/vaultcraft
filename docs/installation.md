@@ -2,10 +2,39 @@
 
 ## Requirements
 
-- **[Claude Code](https://claude.com/claude-code)** - the official CLI from Anthropic. Free trial available; paid tier needed for sustained use.
+- **[Claude Code](https://claude.com/claude-code)** - the official CLI from Anthropic. Free trial available; paid tier needed for sustained use. Run from a terminal; the agent prints status banners and progress lines that read better there than in the desktop chat UI.
 - **[Obsidian](https://obsidian.md)** - free, available for Mac, Windows, Linux, iOS, Android.
+- **An Obsidian MCP server connected to Claude Code** - see Step 0 below. Without this, the agent can write `.md` files but cannot open notes, run Obsidian commands, or validate wikilinks against the live vault.
 - **Python 3** (already on macOS/Linux) - for some helper scripts during vault generation.
 - **LibreOffice** (only if you have `.pptx` slides) - `brew install --cask libreoffice` on macOS, used to convert PPTX → PDF.
+
+## Step 0 - Connect an Obsidian MCP server
+
+Claude Code talks to Obsidian through an MCP (Model Context Protocol) server. Pick one of the community servers and register it with Claude Code:
+
+- **[`mcp-obsidian`](https://github.com/MarkusPfundstein/mcp-obsidian)** by MarkusPfundstein - widely used, reads/writes notes via Obsidian's Local REST API plugin
+- **[Smithery Obsidian](https://smithery.ai/server/@modelcontextprotocol/obsidian)** - hosted option, fastest to try
+- **[obsidian-mcp](https://github.com/StevenStavrakis/obsidian-mcp)** - alternative implementation
+
+Install whichever you pick, then add it to Claude Code:
+
+```bash
+# Example with mcp-obsidian (replace with the server you chose)
+claude mcp add obsidian -s user -- npx -y mcp-obsidian
+
+# Verify
+claude mcp list
+```
+
+You should see `obsidian` listed and connected. If the server requires an API key (most do), you also need the **Local REST API** plugin installed inside Obsidian:
+
+1. Open Obsidian → Settings → Community plugins → Browse
+2. Search for "Local REST API" and install
+3. Enable it, copy the generated API key
+4. Paste the key into your MCP server's config (per the server's README)
+5. Restart Claude Code
+
+Without a working MCP connection, vaultcraft falls back to writing files directly - you lose hover-preview validation, automatic graph refresh, and the ability for the agent to inspect existing notes before extending them.
 
 ## Step 1 - Install the agent
 
