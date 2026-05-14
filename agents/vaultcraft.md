@@ -50,10 +50,11 @@ After every substantial output (phase completion, sub-task return, audit summary
 ```
 
 Examples:
-- `─── vaultcraft · model: sonnet · phase 4/8 · 47 concept notes written ───`
-- `─── vaultcraft · model: haiku · phase 4/8 · delegating 32 atomic notes ───`
-- `─── vaultcraft · model: opus · phase 5/8 · drafting L01 detailed notes ───`
-- `─── vaultcraft · model: sonnet · phase 8/8 · 0 broken links · 0 orphans ───`
+- `─── vaultcraft · model: sonnet · phase 4/9 · 47 concept notes written ───`
+- `─── vaultcraft · model: haiku · phase 4/9 · delegating 32 atomic notes ───`
+- `─── vaultcraft · model: opus · phase 5/9 · drafting L01 detailed notes ───`
+- `─── vaultcraft · model: sonnet · phase 6/9 · converting 11 pptx, embedding slides ───`
+- `─── vaultcraft · model: sonnet · phase 9/9 · 0 broken links · 0 orphans ───`
 
 The footer keeps the vaultcraft brand visible during long runs and gives the user real-time cost shape (which model is active) and progress (which phase, what just happened). Always include the project name `vaultcraft`, the current model tier, the phase number, and one informative stat from that step.
 
@@ -236,8 +237,8 @@ ls -la "$VP/.obsidian/" 2>/dev/null; \
 | Mode | Trigger | Pipeline |
 |---|---|---|
 | **BOOTSTRAP** | `.obsidian/` missing, vault empty or doesn't exist | Phase 1 → 1.5 → 2 → 2.5 (bootstrap config) → 3 (propose structure) → 4 → 5 → 6 → 7 → 8 → 9 |
-| **INCREMENTAL** | `.obsidian/` exists AND notes exist in standard folders | Phase 1 (reduced - ask only what's new) → 1.5 → 2 (extract new inputs only) → skip 2.5 & 3 → 4/5/7 (add/update) → 8 |
-| **RESUME** | `.vault-progress.md` exists with `last_completed_phase` < 8 | Read progress file → announce "Resuming from <step>. Pending: <list>" → start from `next_action`, skip completed work |
+| **INCREMENTAL** | `.obsidian/` exists AND notes exist in standard folders | Phase 1 (reduced - ask only what's new) → 1.5 → 2 (extract new inputs only) → skip 2.5 & 3 → 4/5/8 (add/update) → 9 |
+| **RESUME** | `.vault-progress.md` exists with `last_completed_phase` < 9 | Read progress file → announce "Resuming from <step>. Pending: <list>" → start from `next_action`, skip completed work |
 
 **INCREMENTAL mode safety rules (non-negotiable):**
 - Do NOT touch `.obsidian/` contents (preserves user's theme, plugins, graph filter).

@@ -257,9 +257,9 @@ The agent calls Claude Code skills to handle Obsidian-specific syntax and supple
 | Skill | Purpose | When the agent invokes it |
 |---|---|---|
 | `obsidian-markdown` | Valid Obsidian Flavored Markdown - wikilinks, embeds, callouts, properties, frontmatter | Any time the agent writes a note (avoids syntax mistakes) |
-| `obsidian-bases` | Generate `.base` files (Obsidian Bases - filterable database views) | Phase 7, when building the optional Study Dashboard |
+| `obsidian-bases` | Generate `.base` files (Obsidian Bases - filterable database views) | Phase 8, when building the optional Study Dashboard |
 | `obsidian-cli` | Bulk vault operations (rename, move, link verification) | Optional, used when doing >20 file operations in one pass |
-| `json-canvas` | Generate `.canvas` JSON Canvas files (visual concept maps) | Phase 6, optional Course Map |
+| `json-canvas` | Generate `.canvas` JSON Canvas files (visual concept maps) | Phase 7, optional Course Map |
 
 ### Optional (not bundled - install separately if you want full functionality)
 
