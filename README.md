@@ -74,6 +74,19 @@ Every vault gets a `Tables.md` at root with comparison tables for the major dime
 
 Read the *"Say this"* column the night before an exam, and you have a confident opening sentence for any question about that comparison.
 
+### Source slides embedded inline (Phase 6, on request)
+
+Ask vaultcraft to *"add the slides"* or *"embed the PDFs"* and Phase 6 kicks in. The agent copies the original course materials into `<Course>/Slides/`, converts any `.pptx` or `.docx` to PDF via LibreOffice, and drops an auto-embedded callout right after the lecture-note frontmatter:
+
+![Lecture note with source slides embedded inline below the Properties block](examples/screenshots/source-slide-embedded.png)
+
+**What you're looking at:**
+- The **Properties block** (Obsidian frontmatter UI) shows the standard lecture metadata plus `source-file:` pointing back to the original `.pptx` for traceability
+- The collapsible `> [!example]+ 🎞️ Course slides (auto-embedded)` callout renders the converted PDF using Obsidian's native viewer — page 2 of 21 here, with the lecturer's "Conversation starter" prompt readable inline
+- The typed lecture summary (TL;DR, narrative sections, exam questions) continues below the embed, so you read your notes and the original deck in the same scroll
+
+Same workflow applies to problem-set solutions and paper readings — the agent embeds them in `Examples/` and `Readings/` notes via `> [!example]+ 📄 Solution PDF` and `> [!example]+ 📄 Full paper (PDF)` callouts.
+
 After running on a typical single course (12 lectures + 9 labs):
 
 ```
