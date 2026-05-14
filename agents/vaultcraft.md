@@ -845,6 +845,105 @@ This makes the note read as a coherent lecture, not disconnected Q&A.
 - Preserve exam questions section - it is mandatory, don't shrink.
 - **For labs specifically**: include key Python patterns in a `## Core code patterns` section, each with 3–8 line snippets and "What's happening" + "Gotcha" annotations. Full lab script can go in a collapsible `> [!example]- Full lab script` callout.
 
+### Phase 5.5 - Embed source materials (on request)
+
+**When to run:** the user asks to "add the slides", "embed the presentation", "show the lecture PDF in the note", "dorzuć slajdy", "wstaw pdf", or any variant. Do NOT do this by default — only on request. Phase 5 lectures are already complete without slide embeds.
+
+**Why this matters:** Obsidian renders `![[file.pdf]]` as an inline scrollable PDF viewer. Students can see the original presentation inside the note while reading their summary. Native support for `.pdf` and images only — `.pptx` and `.docx` show as file-link cards without inline preview.
+
+**Required conversion:** if source materials are `.pptx` or `.docx`, convert to PDF first using LibreOffice headless.
+
+```bash
+# Check / install LibreOffice (one-time, ~600 MB on macOS)
+which soffice || brew install --cask libreoffice
+# Path on macOS: /Applications/LibreOffice.app/Contents/MacOS/soffice
+
+# Convert pptx/docx → pdf (preserves layout, tables, images)
+soffice --headless --convert-to pdf --outdir <output_dir> <input.pptx>
+```
+
+For Chrome-headless fallback (no LibreOffice install): `textutil -convert html` then Chrome `--headless --print-to-pdf` — works for docx, fails for pptx.
+
+**Workflow:**
+
+1. Locate source files (ask user where they live: typical paths are `~/Desktop/<Course>/`, `~/Downloads/`, OneDrive folders).
+2. Identify lecture-to-file mapping by content peek (`pdftotext "$f" - | head -10` or `unzip -p file.pptx 'ppt/slides/slide1.xml' | sed 's/<[^>]*>/ /g'`). Course materials usually number L01–LXX or S01–SXX but original filenames vary wildly (`session1.pdf`, `2026-NLP-session-04.pdf`, `Lecture 6 - Intro ARIMA - F26.pdf`).
+3. Create `<vault>/<Course>/Slides/` directory if missing.
+4. Copy each file with a stable normalized name: `L01_slides.pdf`, `L02_slides.pdf`, ..., `S00_slides.pdf` (DPD uses S## for sessions). For Examples / problem sets: `<vault>/<Course>/Examples/Slides/PS01_solutions.pdf`.
+5. Convert any `.pptx` / `.docx` to `.pdf` via LibreOffice. Delete the source pptx/docx from the vault after a successful conversion (the PDF carries identical content; keeping both wastes 100–500 MB across a course).
+6. For each lecture note, insert this callout immediately after the frontmatter closing `---`:
+   ```markdown
+   > [!example]+ 🎞️ Course slides (auto-embedded)
+   > ![[L01_slides.pdf]]
+   ```
+   - The `+` after `[!example]` means expanded by default. Use `-` (collapsed) if the user prefers slides hidden until clicked.
+   - Add bonus material as a nested entry: `> \n> **Bonus**: ![[L04_bonus.pdf]]`.
+7. If the note already contains the marker `Course slides (auto-embedded)`, skip it (idempotent).
+8. Add `source-file: <original filename>` to the lecture note frontmatter so the original mapping is preserved.
+
+**Reference Python embedding script:**
+
+```python
+import re
+from pathlib import Path
+
+def insert_slide_callout(note_path: Path, slide_filename: str, bonus: list[str] = None):
+    txt = note_path.read_text(encoding='utf-8')
+    if "Course slides (auto-embedded)" in txt or f"![[{slide_filename}]]" in txt:
+        return False  # idempotent
+    if txt.startswith("---\n"):
+        end = txt.find("\n---\n", 4)
+        insert_at = end + 5 if end != -1 else 0
+    else:
+        insert_at = 0
+    callout = f"\n> [!example]+ 🎞️ Course slides (auto-embedded)\n> ![[{slide_filename}]]\n"
+    for b in (bonus or []):
+        callout += f"> \n> **Bonus**: ![[{b}]]\n"
+    callout += "\n"
+    note_path.write_text(txt[:insert_at] + callout + txt[insert_at:], encoding='utf-8')
+    return True
+
+# Walk lectures and embed matching slides
+for note in sorted((VAULT / "ML" / "Lectures").glob("*.md")):
+    m = re.match(r'L(\d+)', note.stem)
+    if not m: continue
+    n = int(m.group(1))
+    slide = VAULT / "ML" / "Slides" / f"L{n:02d}_slides.pdf"
+    if slide.exists():
+        insert_slide_callout(note, slide.name)
+```
+
+**Same pattern for Examples / Problem Sets** (PS01 ↔ L01, PS02 ↔ L02, etc.):
+
+```markdown
+> [!example]+ 📄 Solution PDF
+> ![[PS01_solutions.pdf]]
+```
+
+**Same pattern for Readings** — embed full paper PDF in the reading summary note:
+
+```markdown
+> [!example]+ 📄 Full paper (PDF)
+> ![[BrynjolfssonMcAfee_AI_For_Real.pdf]]
+```
+
+**File naming hygiene after the import:**
+- Drop generic names (`EBSCO-FullText-04_24_2026 (1).pdf`) — rename PDFs by content (`pdftotext "$f" - | head -10` reveals title/author).
+- Delete duplicate PDFs (compare with `md5 -q`).
+- After conversion, delete `.pptx` / `.docx` sources from `<vault>/<Course>/Slides/` — the PDF replaces them, embeds work, and you save 50–80% disk space.
+
+**Cleanup of source folders:**
+After confirming all files are copied into vault and embeds render correctly (open Obsidian, verify a sample lecture shows the PDF inline), the original course folders on Desktop / Downloads can be moved to Trash via Finder AppleScript:
+```bash
+osascript -e 'tell application "Finder" to delete (POSIX file "/path/to/source" as alias)'
+```
+Always copy first (`cp`), never move (`mv`) — vault must have an independent copy.
+
+**Audit after embedding:**
+Run the broken-embed check from Phase 8 — `![[L01_slides.pdf]]` should resolve in every lecture note. Slide files become "orphan" in some naive audits because the same filename (`L01_slides.pdf`) exists in multiple courses; a path-aware resolver (Phase 8) avoids that false positive.
+
+---
+
 ### Phase 6 - Visualize (Low Priority)
 
 **Canvas is nice-to-have, not core.** Do not burn generation budget on elaborate visual layouts. Priority: concept-note depth (Phase 4) → lecture notes (Phase 5) → MOC (Phase 7). Build Canvas only if budget allows.
