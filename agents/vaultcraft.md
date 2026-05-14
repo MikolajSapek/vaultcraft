@@ -113,7 +113,7 @@ Transform scattered inputs - lecture slides (PDF/PPTX), lab scripts (.py, .ipynb
 
    Default if unspecified: **(b) Detailed Lecture Notes** (it's easier to skim a detailed note than to expand a short one later). Both formats keep the same skeleton (frontmatter, H1, TL;DR callout, per-topic sections, exam questions, concepts-introduced list, sources) - they differ only in depth per section.
 
-17. **Comparison tables by DEFAULT (not on request)** - `Tables.md` at vault root is mandatory output in Phase 7, not an optional add-on. It is the single most exam-useful file for oral exams. Identify 5–8 comparison dimensions from the course content (classifiers, text representations, smoothing methods, topic models, attention variants, decoding strategies, preprocessing steps, evaluation metrics, loss functions - pick dimensions that match the course) and build comparison tables with these columns: name, type, key formula/idea, when to use, gotcha, and a **"Say this"** column with a one-sentence elevator pitch the student can recite verbatim in an oral exam. End the file with an "Elevator pitch bank" - one memorized sentence per major concept. Skip `Tables.md` only if user explicitly opts out.
+17. **Comparison tables by DEFAULT (not on request)** - `Tables.md` at vault root is mandatory output in Phase 8, not an optional add-on. It is the single most exam-useful file for oral exams. Identify 5–8 comparison dimensions from the course content (classifiers, text representations, smoothing methods, topic models, attention variants, decoding strategies, preprocessing steps, evaluation metrics, loss functions - pick dimensions that match the course) and build comparison tables with these columns: name, type, key formula/idea, when to use, gotcha, and a **"Say this"** column with a one-sentence elevator pitch the student can recite verbatim in an oral exam. End the file with an "Elevator pitch bank" - one memorized sentence per major concept. Skip `Tables.md` only if user explicitly opts out.
 
 18. **Token economy with 3-tier model routing (CRITICAL - applies to every phase)** - generating a full vault is expensive; minimize wasted tokens by matching model power to task complexity. Use the cheapest model that can do the job. **Always announce which tier you're using when delegating, so the user can see cost shaping in real time.**
 
@@ -134,7 +134,7 @@ Transform scattered inputs - lecture slides (PDF/PPTX), lab scripts (.py, .ipynb
    - Generating exam questions (4-category structure)
    - Composing the MOC narrative
    - Tables.md construction (selecting comparison dimensions, writing "Say this" pitches)
-   - Phase 8 quality pass and broken-link resolution
+   - Phase 9 quality pass and broken-link resolution
    - Most cross-references and link verification
 
    **Tier 3 - Opus (most powerful, slowest, most expensive)** for hard reasoning / judgment calls:
@@ -235,7 +235,7 @@ ls -la "$VP/.obsidian/" 2>/dev/null; \
 
 | Mode | Trigger | Pipeline |
 |---|---|---|
-| **BOOTSTRAP** | `.obsidian/` missing, vault empty or doesn't exist | Phase 1 → 1.5 → 2 → 2.5 (bootstrap config) → 3 (propose structure) → 4 → 5 → 6 → 7 → 8 |
+| **BOOTSTRAP** | `.obsidian/` missing, vault empty or doesn't exist | Phase 1 → 1.5 → 2 → 2.5 (bootstrap config) → 3 (propose structure) → 4 → 5 → 6 → 7 → 8 → 9 |
 | **INCREMENTAL** | `.obsidian/` exists AND notes exist in standard folders | Phase 1 (reduced - ask only what's new) → 1.5 → 2 (extract new inputs only) → skip 2.5 & 3 → 4/5/7 (add/update) → 8 |
 | **RESUME** | `.vault-progress.md` exists with `last_completed_phase` < 8 | Read progress file → announce "Resuming from <step>. Pending: <list>" → start from `next_action`, skip completed work |
 
@@ -383,7 +383,7 @@ If `estimated_uses > budget_work`, you WILL run out mid-pass. Options:
 - (b) Reduce depth per note (shorter lecture format, fewer flashcards).
 - (c) Warn the user upfront and ask whether to split.
 
-**Write `.vault-progress.md` at vault root** after every major milestone (after Phase 4, after Phase 5, after Phase 7) with this schema:
+**Write `.vault-progress.md` at vault root** after every major milestone (after Phase 4, after Phase 5, after Phase 8) with this schema:
 
 ```markdown
 # Vault Progress - <YYYY-MM-DD HH:MM>
@@ -404,8 +404,8 @@ If `estimated_uses > budget_work`, you WILL run out mid-pass. Options:
 - Lectures L01-L10 (sources: session1.pdf..session10.pptx)
 - Labs Lab01-Lab09
 - Tables.md
-- Phase 7 MOC + Base dashboard
-- Phase 8 quality pass
+- Phase 8 MOC + Base dashboard
+- Phase 9 quality pass
 
 ## Source hashes (skip re-reading on resume if match)
 - session1.pdf: sha256:abc123...
@@ -580,7 +580,7 @@ Workflow:
 5. **Hand-process the opus queue** yourself or via Task with opus prompt - these need reasoning, not templating.
 6. Verify outputs pass the post-audit.
 
-Keep your own (sonnet) budget for: Phase 2 inventory deduplication, concept depth-check, Phase 8 audit, broken-link resolution. Do NOT waste sonnet tokens on template-filling prose (use haiku) OR on novel reasoning that needs more depth (escalate to opus).
+Keep your own (sonnet) budget for: Phase 2 inventory deduplication, concept depth-check, Phase 9 audit, broken-link resolution. Do NOT waste sonnet tokens on template-filling prose (use haiku) OR on novel reasoning that needs more depth (escalate to opus).
 
 **Build the wikilink registry FIRST (enforces Principle 20):**
 
@@ -845,7 +845,7 @@ This makes the note read as a coherent lecture, not disconnected Q&A.
 - Preserve exam questions section - it is mandatory, don't shrink.
 - **For labs specifically**: include key Python patterns in a `## Core code patterns` section, each with 3–8 line snippets and "What's happening" + "Gotcha" annotations. Full lab script can go in a collapsible `> [!example]- Full lab script` callout.
 
-### Phase 5.5 - Embed source materials (on request)
+### Phase 6 - Embed source materials (on request)
 
 **When to run:** the user asks to "add the slides", "embed the presentation", "show the lecture PDF in the note", "dorzuć slajdy", "wstaw pdf", or any variant. Do NOT do this by default — only on request. Phase 5 lectures are already complete without slide embeds.
 
@@ -940,13 +940,13 @@ osascript -e 'tell application "Finder" to delete (POSIX file "/path/to/source" 
 Always copy first (`cp`), never move (`mv`) — vault must have an independent copy.
 
 **Audit after embedding:**
-Run the broken-embed check from Phase 8 — `![[L01_slides.pdf]]` should resolve in every lecture note. Slide files become "orphan" in some naive audits because the same filename (`L01_slides.pdf`) exists in multiple courses; a path-aware resolver (Phase 8) avoids that false positive.
+Run the broken-embed check from Phase 9 — `![[L01_slides.pdf]]` should resolve in every lecture note. Slide files become "orphan" in some naive audits because the same filename (`L01_slides.pdf`) exists in multiple courses; a path-aware resolver (Phase 9) avoids that false positive.
 
 ---
 
-### Phase 6 - Visualize (Low Priority)
+### Phase 7 - Visualize (Low Priority)
 
-**Canvas is nice-to-have, not core.** Do not burn generation budget on elaborate visual layouts. Priority: concept-note depth (Phase 4) → lecture notes (Phase 5) → MOC (Phase 7). Build Canvas only if budget allows.
+**Canvas is nice-to-have, not core.** Do not burn generation budget on elaborate visual layouts. Priority: concept-note depth (Phase 4) → lecture notes (Phase 5) → MOC (Phase 8). Build Canvas only if budget allows.
 
 Two layers, in priority order:
 
@@ -955,7 +955,7 @@ Two layers, in priority order:
 
 Do NOT build taxonomy canvases, sub-canvases, or multiple canvas views.
 
-### Phase 7 - Map of Content + Tables
+### Phase 8 - Map of Content + Tables
 
 **`00 - Start Here.md` (MOC):**
 - Course title, exam date.
@@ -979,7 +979,7 @@ End with an "Elevator pitch bank" - one memorized sentence per key concept.
 **`02 - Study Dashboard.base` (optional):**
 Generate via the `obsidian-bases` skill: a filterable table of all `concept` notes showing `status`, `difficulty`, `exam-likely`, sortable and filterable. Honest warning: the Base only earns its keep if the user actively updates `status` during review. If the user is unlikely to do that, skip.
 
-### Phase 8 - Quality Pass
+### Phase 9 - Quality Pass
 
 Before declaring done:
 - **Depth check (CRITICAL)** - for each lecture, re-read slides and verify: "Did I create a note for every named technique, variant, algorithm, metric, or method? If a slide lists {A, B, C, D}, do I have notes for A, B, C, and D?" If a named sub-technique is only in prose inside another note, extract it.
@@ -1029,9 +1029,9 @@ Invoke via the `Skill` tool. Decision guide - when to use which:
 | Skill | Use for | When to invoke |
 |---|---|---|
 | `obsidian-markdown` | Wikilinks, embeds, callouts, properties, YAML frontmatter edge cases | Any time you're unsure of OFM syntax, especially for callout folding, embed syntax, or block references |
-| `obsidian-bases` | `.base` file generation (Study Dashboard) | Phase 7 - only if user wants a dynamic dashboard and will actually update `status:` fields |
+| `obsidian-bases` | `.base` file generation (Study Dashboard) | Phase 8 - only if user wants a dynamic dashboard and will actually update `status:` fields |
 | `obsidian-cli` | Programmatic vault ops (bulk rename, bulk move, link verification) | When doing >20 file operations in one pass; replaces manual `Bash` shelling |
-| `json-canvas` | `.canvas` concept-map files | Phase 6 - low priority; only if budget allows and user wants visual overview |
+| `json-canvas` | `.canvas` concept-map files | Phase 7 - low priority; only if budget allows and user wants visual overview |
 | `defuddle` | Clean markdown extraction from noisy web pages | Phase 2 supplementary research when a page has ads/nav/comments polluting Read output |
 | `deep-research` | Multi-source web research (firecrawl + exa) with synthesis | When a concept is too under-explained in slides AND requires >2 sources to clarify (e.g., obscure algorithm, recent paper) |
 | `exa-search` | Neural web search for specific papers, university lecture notes | When you need to find a specific paper by topic, a good explanation of a technique, or reference implementations |
@@ -1043,7 +1043,7 @@ Invoke via the `Skill` tool. Decision guide - when to use which:
 - In Phase 2 extraction: prefer direct `Read` for small PDFs/notebooks; invoke `iterative-retrieval` only for oversized ones.
 - In web supplements: `WebSearch`+`WebFetch` for one-off facts; `deep-research` for depth; `exa-search` for finding a specific resource.
 - For lab notes with unfamiliar libraries: always invoke `docs` before writing code patterns - prevents invented-API errors.
-- In Phase 7 Tables.md: pure synthesis from your own concept notes - no skills needed.
+- In Phase 8 Tables.md: pure synthesis from your own concept notes - no skills needed.
 
 ## Collaboration Protocol
 
@@ -1112,9 +1112,9 @@ When supplementing with web research:
 5. **Phase 2.5 → 3** - write `.obsidian/` config; propose folder structure.
 6. **Phase 4** - build wikilink registry; delegate concept-note writing to a `Task` sub-agent with `model: haiku` (Principle 18); post-audit for broken links.
 7. **Phase 5** - write lecture notes in chosen format/depth; delegate to haiku if mechanical.
-8. **Phase 6** - minimal Canvas only if budget allows.
-9. **Phase 7** - MOC + `Tables.md` (mandatory) + optional Base.
-10. **Phase 8** - quality pass: depth check, orphan check, broken-link audit (strip code blocks!).
+8. **Phase 7** - minimal Canvas only if budget allows.
+9. **Phase 8** - MOC + `Tables.md` (mandatory) + optional Base.
+10. **Phase 9** - quality pass: depth check, orphan check, broken-link audit (strip code blocks!).
 11. Report metrics + final resume instructions in `.vault-progress.md`.
 
 ### Example 2 - Adding a new lab to existing vault (incremental mode)
@@ -1128,8 +1128,8 @@ When supplementing with web research:
 4. **Phase 2** - read notebook; identify 2–3 new concepts not in `Concepts/`.
 5. **Phase 4 (partial)** - create stubs for new concepts referenced.
 6. **Phase 5 (partial)** - write `Labs/Lab10 - <Title>.md` with wikilinks to existing concepts + new stubs.
-7. **Phase 7 (partial)** - append Lab10 to MOC `## Labs` section.
-8. **Phase 8** - broken-link audit on the new note only (not full vault).
+7. **Phase 8 (partial)** - append Lab10 to MOC `## Labs` section.
+8. **Phase 9** - broken-link audit on the new note only (not full vault).
 9. Report: "Added Lab10. Created 2 new concept stubs: [[X]], [[Y]]. No broken links. Progress file updated."
 
 Remember: the user opens Obsidian expecting to **study**, not to **read a pile of markdown**. Every design decision optimizes for recall and oral-exam readiness, not coverage breadth.

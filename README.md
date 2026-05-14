@@ -31,14 +31,15 @@ The agent is subject-agnostic - it works for computer science, law, biology, fin
 
 ## What it does
 
-Point vaultcraft at a folder of course materials. It runs a six-phase pipeline:
+Point vaultcraft at a folder of course materials. It runs a seven-phase pipeline (plus one on-request phase):
 
 1. **Intake.** Chip-style questions for subject, format, depth, language, deadline, sources, and output path. Nothing touches disk yet.
 2. **Read.** Opens every PDF, PPTX, notebook, and markdown file in the source folder. Extracts concept names, formulas, code patterns, and section headings.
 3. **Plan.** Proposes the folder layout and the full list of atomic notes to write. Waits for confirmation.
 4. **Write atomic notes.** One concept per file, each opened by a `> [!definition]` callout so Obsidian shows the answer in hover preview without a click.
 5. **Write lecture and lab sheets.** Per session: TL;DR callout, narrative following the slide order, eight to twelve potential exam questions across theory, comparison, application, critical-thinking categories.
-6. **Cross-link and audit.** Generates wikilinks, builds `Tables.md` side-by-side comparisons with a "Say this" elevator-pitch column, configures `.obsidian/` (per-folder graph colours, Page Preview, callout styling), fixes orphan notes.
+6. **Embed source slides and PDFs** *(on request — say "add the slides" or "embed the PDFs"):* Copies original course materials into `<Course>/Slides/`, converts `.pptx` and `.docx` to PDF via LibreOffice, and inserts a `> [!example]+ 🎞️ Course slides (auto-embedded)` callout right after the frontmatter of each lecture note. Obsidian then renders the original slide deck inline above the typed summary — same workflow for problem-set solutions and paper readings.
+7. **Cross-link and audit.** Generates wikilinks, builds `Tables.md` side-by-side comparisons with a "Say this" elevator-pitch column, configures `.obsidian/` (per-folder graph colours, Page Preview, callout styling), fixes orphan notes.
 
 Typical run on a twelve-lecture course: about thirty minutes, ~150 atomic notes, ~3,000 wikilinks. Output is a working Obsidian vault you open and study from the same day.
 
@@ -264,7 +265,7 @@ The agent calls Claude Code skills to handle Obsidian-specific syntax and supple
 
 ## The crafting pipeline
 
-vaultcraft thinks of vault generation as a Minecraft-style crafting workflow. Internally the agent runs nine numbered phases - here's the themed map of what each one does:
+vaultcraft thinks of vault generation as a Minecraft-style crafting workflow. Internally the agent runs ten numbered phases - here's the themed map of what each one does:
 
 | Phase | Themed name | What it does |
 |---|---|---|
@@ -276,9 +277,10 @@ vaultcraft thinks of vault generation as a Minecraft-style crafting workflow. In
 | 3 | 🧱 **Layout** | Plan and propose the folder structure |
 | 4 | 💎 **Forging concepts** | Generate atomic concept notes - one crystal per concept, all linked |
 | 5 | 📚 **Crafting study sheets** | Build per-lecture and per-lab notes that link back to concept crystals |
-| 6 | 🗺 **Cartography** *(low priority)* | Optional JSON Canvas course map |
-| 7 | 🧭 **Hub & beacon** | Build the entry MOC + `Tables.md` for oral exams |
-| 8 | 🔎 **Inspection** | Quality pass: broken links, depth check, orphans, hover-preview verification |
+| 6 | 🪟 **Window into source** *(on request)* | Embed original slides, PDFs, and paper sources inline in lecture and reading notes - converts `.pptx` / `.docx` to PDF via LibreOffice so Obsidian renders them natively |
+| 7 | 🗺 **Cartography** *(low priority)* | Optional JSON Canvas course map |
+| 8 | 🧭 **Hub & beacon** | Build the entry MOC + `Tables.md` for oral exams |
+| 9 | 🔎 **Inspection** | Quality pass: broken links, depth check, orphans, hover-preview verification |
 
 You don't need to know the phase names to use vaultcraft - but the agent announces each one as it runs so you always know what's happening.
 
