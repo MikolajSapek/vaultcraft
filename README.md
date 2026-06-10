@@ -4,16 +4,16 @@
 
 # vaultcraft
 
-**vaultcraft.**
+**study · work · research**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-violet.svg)](LICENSE)
 [![Claude Code](https://img.shields.io/badge/Claude%20Code-agent-7C5CB8)](https://claude.com/claude-code)
 [![Obsidian](https://img.shields.io/badge/Obsidian-compatible-7C5CB8)](https://obsidian.md)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
-A [Claude Code](https://claude.com/claude-code) agent that turns lecture slides, lab notebooks, and textbook PDFs into a navigable, exam-ready [Obsidian](https://obsidian.md) knowledge vault - with hover-visible definitions, ELI5 analogies, comparison tables, and spaced-repetition flashcards.
+A [Claude Code](https://claude.com/claude-code) agent that turns any scattered materials — lecture slides, meeting notes, project docs, research papers — into a navigable, richly visual [Obsidian](https://obsidian.md) knowledge vault. Hover-visible definitions, embedded PDFs, extracted figures, ELI5 analogies, comparison tables, Kanban boards, stakeholder profiles, and spaced-repetition flashcards.
 
-[Quick start](#installation) · [How to use](#how-to-use) · [Examples](docs/examples.md) · [Conventions](docs/conventions.md) · [Contributing](CONTRIBUTING.md)
+[Quick start](#installation) · [How to use](#how-to-use) · [Vault types](#vault-types) · [Examples](docs/examples.md) · [Conventions](docs/conventions.md) · [Contributing](CONTRIBUTING.md)
 
 </div>
 
@@ -21,92 +21,186 @@ A [Claude Code](https://claude.com/claude-code) agent that turns lecture slides,
 
 ## Why this exists
 
-Most students take notes as they go. By exam season, those notes are scattered across PDFs, Notion pages, Google Docs, and handwritten pages. The information is *there* - it's just not retrievable under stress.
+Most people take notes as they go. By the time you need them — before an exam, in a client meeting, writing a report — those notes are scattered across PDFs, Notion pages, Google Docs, and handwritten pages. The information is *there*; it just isn't retrievable under pressure.
 
-This agent inverts the workflow: take the same source material everyone else has (slides, labs, readings, textbooks) and produce a knowledge graph optimised for recall. Hover over any wikilink → see the definition. Cmd+O → jump to any concept. Open the graph view → see how concepts cluster. Open `Tables.md` → recite the elevator pitch for every concept comparison the night before the oral exam.
+This agent inverts the workflow: take the same source material you already have and produce a linked knowledge graph optimised for how you actually use it.
 
-The agent is subject-agnostic - it works for computer science, law, biology, finance, history, medicine, philosophy, anything you study. Concept names, comparison tables, and ELI5 analogies are drawn from whatever material you feed it.
+- **Students:** hover over any wikilink → see the definition. Open `Tables.md` → recite the elevator pitch for every concept comparison the night before an oral exam.
+- **Professionals:** open the Kanban board → see active projects and open actions. Click a stakeholder → see their profile, meeting history, and stored documents in one note.
+- **Researchers:** browse `Papers/` → every paper linked to the concepts it introduces, every concept linked back to the papers that define it.
+
+The agent is subject-agnostic. Point it at law cases, anatomy, NLP slides, client briefings, or company research — the structure adapts to your vault type.
 
 ---
 
 ## What it does
 
-Point vaultcraft at a folder of course materials. It runs a seven-phase pipeline (plus one on-request phase):
+Point vaultcraft at a folder of materials. It asks a few intake questions, then runs a ten-phase pipeline:
 
-1. **Intake.** Chip-style questions for subject, format, depth, language, deadline, sources, and output path. Nothing touches disk yet.
-2. **Read.** Opens every PDF, PPTX, notebook, and markdown file in the source folder. Extracts concept names, formulas, code patterns, and section headings.
-3. **Plan.** Proposes the folder layout and the full list of atomic notes to write. Waits for confirmation.
-4. **Write atomic notes.** One concept per file, each opened by a `> [!definition]` callout so Obsidian shows the answer in hover preview without a click.
-5. **Write lecture and lab sheets.** Per session: TL;DR callout, narrative following the slide order, eight to twelve potential exam questions across theory, comparison, application, critical-thinking categories.
-6. **Embed source slides and PDFs** *(on request — say "add the slides" or "embed the PDFs"):* Copies original course materials into `<Course>/Slides/`, converts `.pptx` and `.docx` to PDF via LibreOffice, and inserts a `> [!example]+ 🎞️ Course slides (auto-embedded)` callout right after the frontmatter of each lecture note. Obsidian then renders the original slide deck inline above the typed summary — same workflow for problem-set solutions and paper readings.
-7. **Cross-link and audit.** Generates wikilinks, builds `Tables.md` side-by-side comparisons with a "Say this" elevator-pitch column, configures `.obsidian/` (per-folder graph colours, Page Preview, callout styling), fixes orphan notes.
+1. **Intake.** Chip-style questions for vault type, format, depth, language, deadline, sources, and output path. Nothing touches disk yet.
+2. **Read and extract figures.** Opens every PDF, PPTX, notebook, and markdown file. Extracts concept names, formulas, code patterns, and section headings. For PDFs containing diagrams or charts, runs `pdfimages` to extract embedded figures, names them descriptively, and copies them to `Assets/` for inline use in notes.
+3. **Plan.** Proposes the folder layout and the full list of notes to write. Waits for confirmation.
+4. **Write atomic notes.** One concept per file, each opened by a `> [!definition]` callout so Obsidian shows the answer in hover preview without a click. Work vaults get Meeting, Company, Person, Decision, and Project templates instead.
+5. **Write lecture / topic sheets.** Per session or topic: TL;DR callout, narrative, eight to twelve potential exam questions (studies) or action items and decisions (work).
+6. **Embed source PDFs.** Automatically copies source materials into the vault, converts `.pptx` / `.docx` to PDF via LibreOffice, and inserts an inline callout in each note. Obsidian renders the original deck or document inline above your typed summary. Extracted figures embed at the relevant section of each note.
+7. **Cartography** *(low priority).* Optional JSON Canvas concept map.
+8. **Hub and dashboard.** Studies vaults: entry MOC + `Tables.md` for oral exams. Work vaults: Kanban board (`00 - Dashboard.md`) with active projects, open actions, and recent meetings via Dataview.
+9. **Quality pass.** Broken links, bidirectional link audit (concept ↔ lecture), depth check, orphans, quality report (notes missing definition / example / flashcards).
 
-Typical run on a twelve-lecture course: about thirty minutes, ~150 atomic notes, ~3,000 wikilinks. Output is a working Obsidian vault you open and study from the same day.
+Typical run on a twelve-lecture course: about thirty minutes, ~150 atomic notes, ~3,000 wikilinks. A work vault with 10 stakeholders and 20 meetings: ~45 minutes. Output is a working Obsidian vault you open the same day.
 
-> [!note]
-> The illustrative names below (smoothing, attention, embeddings, backpropagation, Python labs) come from the author's NLP and machine-learning courses, used to show the structure. The agent is subject-agnostic. Point it at law cases, anatomy, microeconomics, or medieval history and you get the same kind of vault, populated from your material.
+---
+
+## Vault types
+
+The first intake question — *what kind of vault is this?* — determines folder structure, note templates, plugins, graph colours, and dashboard style.
+
+| Type | Built for | Key outputs |
+|---|---|---|
+| **`studies`** | Exam prep, course notes | Concept notes, lecture sheets, `Tables.md`, spaced-repetition flashcards, exam questions |
+| **`work`** | Professional knowledge base | Kanban board, meeting notes, stakeholder profiles, decision log, project hubs, `Documents/` per person |
+| **`research`** | Literature review, paper notes | Paper notes, concept notes, hypotheses, bibliography-compatible frontmatter |
+| **`personal`** | Hobbies, life skills, curiosity | Topic notes, practice logs, ELI5 analogies, optional flashcards |
+| **`reference`** | Technical docs, runbooks, API docs | Terse procedure notes, code-heavy, no analogies |
+| **`teaching`** | Course prep | Lesson plans, concept notes with "How to introduce this" and "Common misconceptions" sections |
+
+---
+
+## Work vault
+
+When you select `work`, the agent builds a professional knowledge base around people, projects, and decisions — not courses and lectures.
+
+### Folder structure
+
+```
+<VaultRoot>/
+├── 00 - Dashboard.md          ← Kanban board + Dataview queries
+├── Projects/                  ← one hub note per initiative
+├── Meetings/                  ← YYYY-MM-DD meeting notes
+├── Stakeholders/
+│   ├── People/                ← contact profiles with interaction history
+│   └── Companies/             ← organisation profiles
+├── Decisions/                 ← decision log with options, rationale, review dates
+├── Concepts/                  ← domain knowledge notes
+├── Documents/
+│   └── <person-or-project>/   ← PDFs embedded in the relevant profile
+└── Assets/                    ← extracted figures, logos, diagrams
+```
+
+### Kanban dashboard
+
+`00 - Dashboard.md` uses the obsidian-kanban plugin:
+
+```
+🔴 Blocked  |  🟡 In progress  |  🟢 Done
+```
+
+Below the board, Dataview queries surface:
+- Open action items across all meetings
+- Active projects with their last update date
+- Meetings from the past 14 days
+
+### Stakeholder profiles
+
+During intake, the agent asks for your key stakeholders by name and creates profile stubs for each one — so meetings and decisions can link to real people from day one.
+
+Each person note:
+
+```markdown
+---
+tags: [person]
+company: [[Acme Corp]]
+role: Head of Sustainability
+status: active
+---
+# Jane Smith
+
+> [!stakeholder] Role
+> Jane is Head of Sustainability at [[Acme Corp]] — primary contact for the
+> Q3 ESG reporting engagement.
+
+## Documents
+> [!example]+ 📄 Stored documents
+> ![[Documents/jane-smith/contract-2026.pdf]]
+
+## Interaction history
+- [[Meeting — ESG scope kickoff (2026-05-14)]]
+- [[Meeting — Data gap review (2026-06-03)]]
+```
+
+Source PDFs (contracts, reports, briefings) drop into `Documents/<person>/` and embed inline in the profile note.
+
+### Work vault callout colours
+
+| Callout | Colour | Use |
+|---|---|---|
+| `decision` | Blue | Recorded decisions with rationale |
+| `action` | Orange | Open action items |
+| `risk` | Red | Flagged risks or blockers |
+| `meeting` | Teal | Meeting TL;DR in topic notes |
+| `stakeholder` | Purple | Stakeholder role summary |
+
+---
+
+## Studies vault
+
+The original vaultcraft context. Point it at lecture slides, lab notebooks, textbook chapters, or recorded transcripts and get an exam-ready knowledge graph.
+
+### Folder structure
+
+```
+<VaultRoot>/
+├── Tables.md                  ← oral-exam comparison cheatsheet
+├── MOC — <Course>.md          ← entry map of content
+├── Lectures/                  ← one note per lecture/session
+├── Labs/                      ← one note per lab
+├── Concepts/                  ← atomic concept notes
+├── Papers/                    ← paper notes (if research-heavy course)
+├── _Shared/                   ← bridge notes across courses
+└── Assets/                    ← extracted figures, diagrams
+```
+
+### Tables.md — the oral-exam cheatsheet
+
+Every studies vault gets a `Tables.md` at root with comparison tables. Each row has a **"Say this"** column — a one-sentence elevator pitch you can recite verbatim.
+
+### Studies callout colours
+
+| Callout | Colour | Use |
+|---|---|---|
+| `definition` | Purple | Concept definition (shows in hover preview) |
+| `example` | Blue | Worked example |
+| `question` | Orange | Exam question |
+| `important` | Red | Key caveat or gotcha |
+| `exam` | Green | Examiner-facing summary |
 
 ---
 
 ## Example output
 
-The screenshots below show the author's own vault - built from four CS courses (NLP, machine learning, predictive analytics, digital platforms) - purely to illustrate what the agent produces. Your vault will look structurally similar but populated with whatever subject you feed it.
+The screenshots below show the author's own vault — built from four CS courses (NLP, machine learning, predictive analytics, digital platforms) — purely to illustrate what the agent produces. Your vault will look structurally similar but populated with whatever subject you feed it.
 
 The Obsidian graph view of the four-course vault:
 
 ![Graph view of a 4-course vault built by vaultcraft](examples/screenshots/graph-view-example.png)
 
 **What you're looking at:**
-- Each colour cluster is one course (path-based colouring - no tag pollution)
+- Each colour cluster is one course (path-based colouring — no tag pollution)
 - ~640 atomic notes across 4 courses, ~4,700 wikilinks holding them together
-- Red dots: cross-course bridge notes in `_Shared/` connecting concepts across courses (e.g., *AIC/BIC* shared between PA and ML)
-- White dots: lecture / lab study sheets - they sit at the centre of each course's concept cluster because every concept they introduce links back to them
-- Smaller dots on the periphery: leaf concepts (definitions, formulas) referenced once or twice
-- Larger dots in the middle of clusters: hub concepts (e.g., *Transformer*, *ARIMA*, *Logistic Regression*) referenced from many other notes
+- Red dots: cross-course bridge notes in `_Shared/` connecting concepts across courses
+- White dots: lecture / lab study sheets at the centre of each cluster
+- Larger dots: hub concepts referenced from many other notes
 
-This is what semantic structure *looks like* - clusters emerge naturally from how concepts are wikilinked, not from any manual layout.
+### Source slides and figures embedded inline
 
-### Tables.md - the oral-exam cheatsheet
+Phase 6 runs automatically. The agent copies source materials into the vault, converts `.pptx` / `.docx` to PDF, drops an inline callout in each lecture note, and embeds extracted figures at the relevant section:
 
-Every vault gets a `Tables.md` at root with comparison tables for the major dimensions of the course. Each row has a **"Say this"** column - a one-sentence elevator pitch you can recite verbatim during an oral exam.
-
-![Tables.md comparison example: classifiers - Naive Bayes vs Logistic Regression vs SVM](examples/screenshots/tables-comparison.png)
-
-Read the *"Say this"* column the night before an exam, and you have a confident opening sentence for any question about that comparison.
-
-### Source slides embedded inline (Phase 6, on request)
-
-Ask vaultcraft to *"add the slides"* or *"embed the PDFs"* and Phase 6 kicks in. The agent copies the original course materials into `<Course>/Slides/`, converts any `.pptx` or `.docx` to PDF via LibreOffice, and drops an auto-embedded callout right after the lecture-note frontmatter:
-
-![Lecture note with source slides embedded inline below the Properties block](examples/screenshots/source-slide-embedded.png)
+![Lecture note with source slides and extracted figure embedded inline](examples/screenshots/source-slide-embedded.png)
 
 **What you're looking at:**
-- The **Properties block** (Obsidian frontmatter UI) shows the standard lecture metadata plus `source-file:` pointing back to the original `.pptx` for traceability
-- The collapsible `> [!example]+ 🎞️ Course slides (auto-embedded)` callout renders the converted PDF using Obsidian's native viewer — page 2 of 21 here, with the lecturer's "Conversation starter" prompt readable inline
-- The typed lecture summary (TL;DR, narrative sections, exam questions) continues below the embed, so you read your notes and the original deck in the same scroll
-
-Same workflow applies to problem-set solutions and paper readings — the agent embeds them in `Examples/` and `Readings/` notes via `> [!example]+ 📄 Solution PDF` and `> [!example]+ 📄 Full paper (PDF)` callouts.
-
-After running on a typical single course (12 lectures + 9 labs):
-
-```
-my-course/
-├── 00 - Start Here.md               ← entry MOC
-├── Tables.md                         ← oral-exam comparison tables
-├── Lectures/   12 study sheets        ← TL;DR + narrative + exam Qs
-├── Concepts/  ~150 atomic notes       ← hover-friendly definitions
-└── Labs/        9 Python walkthroughs
-```
-
-Each concept note has:
-- 1-sentence definition (hover preview shows it without clicking)
-- Intuition (plain English)
-- Worked numerical example
-- "Simple explanation (ELI5)" - analogy with everyday objects
-- Wikilinks to related concepts
-- Flashcards for spaced repetition
-
-See [`docs/examples.md`](docs/examples.md) for sample notes.
+- The `> [!example]+ 🎞️ Course slides` callout renders the converted PDF using Obsidian's native viewer
+- An extracted figure (`![[Assets/ML-L08-fig12-relu-vs-sigmoid.png|600]]`) embedded inline at the activation-functions section
+- The typed lecture summary continues below — notes and original deck in the same scroll
 
 ---
 
@@ -114,14 +208,14 @@ See [`docs/examples.md`](docs/examples.md) for sample notes.
 
 ### Prerequisites
 
-You need two things connected before vaultcraft will work:
-
-1. **[Claude Code](https://claude.com/claude-code)** installed and signed in (terminal version recommended - the agent prints status banners and progress lines that read better in a terminal than in the desktop chat UI).
-2. **An Obsidian MCP server** connected to Claude Code (terminal). The agent talks to your vault through this server: opens notes, runs Obsidian commands, validates wikilinks, refreshes the graph view. Without it, the agent can still write `.md` files to disk but cannot interact with the live vault.
-
-   Common options: [`mcp-obsidian`](https://github.com/MarkusPfundstein/mcp-obsidian), [`smithery/obsidian`](https://smithery.ai). Pick one, add it via `claude mcp add ...`, restart Claude Code, then verify with `claude mcp list` - the server should show as connected.
+1. **[Claude Code](https://claude.com/claude-code)** installed and signed in.
+2. **An Obsidian MCP server** connected to Claude Code. The agent talks to your vault through this server. Common options: [`mcp-obsidian`](https://github.com/MarkusPfundstein/mcp-obsidian), [`smithery/obsidian`](https://smithery.ai). Add via `claude mcp add ...`, restart Claude Code, verify with `claude mcp list`.
 
    On the Obsidian side, install the **Local REST API** plugin and copy the API key into your MCP server config. See [`docs/installation.md`](docs/installation.md) for the full step-by-step.
+
+3. **poppler** (for figure extraction from PDFs): `brew install poppler`. Optional but recommended — without it, figures stay inside PDFs and don't embed inline.
+
+4. **LibreOffice** (for PPTX/DOCX → PDF conversion): `brew install --cask libreoffice`. Optional — without it, `.pptx` files can't be embedded inline.
 
 ### Install the agent
 
@@ -136,84 +230,82 @@ cd vaultcraft
 ./install.sh --uninstall     # remove vaultcraft from ~/.claude/
 ```
 
-The installer copies the agent to `~/.claude/agents/`, bundled skills to `~/.claude/skills/`, and templates to `~/Documents/ObsidianVaults/_templates/`. You can also do this manually if you prefer:
-
-```bash
-mkdir -p ~/.claude/agents && cp agents/vaultcraft.md ~/.claude/agents/
-mkdir -p ~/.claude/skills && cp -R skills/obsidian-* ~/.claude/skills/
-```
+The installer copies the agent to `~/.claude/agents/`, bundled skills to `~/.claude/skills/`, and templates to `~/Documents/ObsidianVaults/_templates/`.
 
 ### Try the demo (60 seconds)
-
-Want to see what vaultcraft produces before pointing it at your real coursework?
 
 ```bash
 ./install.sh --demo
 ```
 
-This installs the agent and shows you exactly what to paste into Claude Code to build a small NLP vault from three bundled lecture stubs (`examples/demo-materials/`). The output lands at `~/Documents/ObsidianVaults/vaultcraft-demo/` - open it in Obsidian to see linked concept notes, hover-visible definitions, exam questions, and a populated graph view.
-
-The agent is now available to Claude Code. Invoke it like:
-
-```
-> I have lecture slides for my NLP course in ~/Downloads/.
-> Build me an exam-ready Obsidian vault at ~/Documents/ObsidianVaults/NLP/.
-```
-
-Claude Code will recognise the task and spawn the `vaultcraft` sub-agent. You'll know it's alive when it prints its banner.
-
-See [`docs/installation.md`](docs/installation.md) for full setup including Obsidian plugin recommendations and skill installation. New to vaultcraft? Check [`docs/faq.md`](docs/faq.md) first.
+This installs the agent and shows you exactly what to paste into Claude Code to build a small NLP vault from three bundled lecture stubs. Output lands at `~/Documents/ObsidianVaults/vaultcraft-demo/`.
 
 ---
 
 ## How to use
 
-The agent always runs **Phase 1 - Intake** first, asking eleven quick questions before touching any files. The first one - *what kind of vault is this?* - is the most load-bearing; the rest of the agent's behaviour adapts to the answer. Answer them all, the agent restates the plan, you confirm, and it runs.
+The agent always runs **Phase 1 - Intake** first, asking questions before touching any files. The first one — *what kind of vault is this?* — is the most load-bearing; everything else adapts to the answer.
 
 ### Intake form
 
-**Context** - what kind of vault and what it's for
+**Batch A — vault shape**
 
 | # | Field | Expected answer |
 |---|---|---|
-| 1 | Vault type | **`studies`** · `work` · `personal` · `research` · `reference` · `teaching` (see [docs/vault-types.md](docs/vault-types.md)) |
-| 2 | Name | Course name · project name · topic - used in titles and frontmatter |
-| 3 | Goal | What the vault is FOR - exam prep · onboarding doc · lit review · runbook · etc. |
-| 4 | Priority topics | Must-know vs. nice-to-have |
+| 1 | Vault type | `studies` · `work` · `research` · `personal` · `reference` · `teaching` |
+| 2 | Format | Detailed narrative (default) · Study sheet · Reference |
+| 3 | Depth | lean · **standard** · thorough |
+| 4 | Language | **English** · Polish · German · Spanish |
 
-**Deadline** - only required for `studies` and time-bound projects
-
-| # | Field | Expected answer |
-|---|---|---|
-| 5 | Output target / deadline | Exam date · release date · submission · "no rush" |
-
-**Format** - how the agent should write
+**Batch B — style preferences**
 
 | # | Field | Expected answer |
 |---|---|---|
-| 6 | Format preference | **Concise** (300–700w, scannable) · **Narrative** (1,200–2,500w, story-style) · **Reference** (terse, code-heavy) |
-| 7 | Depth | **lean** (~40% cheaper) · **standard** (default) · **thorough** |
-| 8 | Explanation styles | Pick 1–3: `eli5` · `technical-analogy` · `historical` · `counter-example` · `visual-metaphor` · `real-world-application` · `devils-advocate` · `worked-example` (see [Principle 19 in the agent](agents/vaultcraft.md)) |
+| 5 | Explanation styles | `eli5` · `technical-analogy` · `historical` · `counter-example` · `real-world-application` · `devils-advocate` · `worked-example` |
+| 6 | Flashcards | Every concept (default) · Key only · None |
+| 7 | Urgency | Studies: exam date. Work: weekly / monthly / quarterly cadence. |
 
-**Inputs and outputs** - paths the agent should work with
+**Batch C — free text**
 
-| # | Field | Expected answer |
-|---|---|---|
-| 9 | Vault path | Where to build the vault, e.g. `~/Documents/ObsidianVaults/my-vault/` |
-| 10 | Source files | Paths to PDFs · PPTX · .py · .ipynb · textbook excerpts · web URLs · pasted text |
-| 11 | Language | English (default) · Polish · mixed |
+```
+1. Course / project / team name?
+2. Specific goal? (e.g. "exam 28 June", "client onboarding by Q3")
+3. Priority topics?
+4. Deadline / target date?
+5. Vault path?
+6. Input sources? (file paths, URLs, pasted text)
+```
+
+For work vaults, Batch C also asks: *"List your key stakeholders (names / companies) — I'll create their profiles now."*
 
 ### Typical run time
 
-| Course size | Time on Sonnet | Time on Haiku |
+| Vault | Time on Sonnet |
+|---|---|
+| Studies — 12 lectures + labs | 30–60 min |
+| Work — 10 stakeholders, 20 meetings | ~45 min |
+| Research — 20 papers | ~40 min |
+
+The agent uses **3-tier model routing** — Haiku for mechanical writing, Sonnet for synthesis, Opus only for hard reasoning. Full decision flow in [Principle 18 of the agent](agents/vaultcraft.md).
+
+---
+
+## The crafting pipeline
+
+| Phase | Themed name | What it does |
 |---|---|---|
-| Light (5–7 lectures, no labs) | ~15 min | ~8 min |
-| Standard (10–12 lectures + labs) | 30–60 min | 15–30 min |
-| Heavy (16+ lectures + many labs) | 60–120 min | 30–60 min |
-
-The agent uses **3-tier model routing** - Haiku for mechanical writing, Sonnet for synthesis, Opus only for hard reasoning (novel ELI5 analogies, ambiguous concept extraction). Full decision flow lives in Principle 18 of [`agents/vaultcraft.md`](agents/vaultcraft.md).
-
-See [`docs/usage.md`](docs/usage.md) for example prompts and full workflow.
+| 0 | 🗺 **Site survey** | Detect: new vault / incremental update / resume unfinished build |
+| 1 | 📜 **Recipe selection** | Intake questions: vault type, format, depth, stakeholders, sources |
+| 1.5 | ⚖️ **Budget and blueprint** | Estimate tool budget, write `.vault-progress.md` for resumable runs |
+| 2 | ⛏ **Mining** | Read every PDF/PPTX/notebook. Extract concepts. Run `pdfimages` to pull figures from PDFs, name them descriptively, copy to `Assets/` |
+| 2.5 | 🏗 **Foundation** | Bootstrap `.obsidian/` config — vault-type-specific graph colours, CSS callouts, plugin list |
+| 3 | 🧱 **Layout** | Plan and propose the folder structure |
+| 4 | 💎 **Forging notes** | Studies: atomic concept notes. Work: Meeting / Company / Person / Decision / Project templates |
+| 5 | 📚 **Crafting sheets** | Studies: per-lecture notes with exam questions. Work: topic and meeting summaries |
+| 6 | 🪟 **Window into source** | Automatically embeds PDFs and extracted figures inline in every note |
+| 7 | 🗺 **Cartography** *(low priority)* | Optional JSON Canvas concept map |
+| 8 | 🧭 **Hub and beacon** | Studies: MOC + `Tables.md`. Work: Kanban board + Dataview dashboard |
+| 9 | 🔎 **Inspection** | Broken links · bidirectional link audit · orphan check · quality report |
 
 ---
 
@@ -222,7 +314,7 @@ See [`docs/usage.md`](docs/usage.md) for example prompts and full workflow.
 ```
 vaultcraft/
 ├── agents/
-│   └── vaultcraft.md   ← The agent definition
+│   └── vaultcraft.md            ← The agent definition
 ├── skills/                      ← Obsidian skills the agent uses
 │   ├── obsidian-markdown/
 │   ├── obsidian-bases/
@@ -230,87 +322,42 @@ vaultcraft/
 │   ├── json-canvas/
 │   └── README.md
 ├── docs/
-│   ├── installation.md          ← Detailed setup
-│   ├── usage.md                  ← Example invocations
-│   ├── conventions.md            ← Vault structure spec
-│   └── examples.md               ← Sample concept / lecture notes
+│   ├── installation.md
+│   ├── usage.md
+│   ├── vault-types.md
+│   ├── conventions.md
+│   └── examples.md
 ├── templates/
-│   ├── concept.md                ← Atomic concept template
-│   ├── lecture.md                ← Lecture study sheet template
-│   ├── lab.md                    ← Lab study sheet template
-│   └── bridge.md                 ← Cross-course bridge template
-├── examples/screenshots/         ← Graph view example image
-├── .github/                      ← Banner, issue templates, CI workflow
-├── README.md                     ← This file
+│   ├── concept.md               ← Atomic concept template (studies)
+│   ├── lecture.md               ← Lecture study sheet template
+│   ├── lab.md                   ← Lab study sheet template
+│   ├── meeting.md               ← Meeting note template (work)
+│   ├── person.md                ← Stakeholder profile template (work)
+│   ├── company.md               ← Company profile template (work)
+│   ├── decision.md              ← Decision log template (work)
+│   └── bridge.md                ← Cross-course bridge template
+├── examples/screenshots/
+├── .github/
+├── README.md
 ├── CONTRIBUTING.md
-└── LICENSE                       ← MIT
+└── LICENSE
 ```
-
----
-
-## Skills the agent uses
-
-The agent calls Claude Code skills to handle Obsidian-specific syntax and supplementary research. Four are bundled in `skills/`; six others are optional and the agent gracefully falls back if they're missing.
-
-### Bundled (recommended install - copy to `~/.claude/skills/`)
-
-| Skill | Purpose | When the agent invokes it |
-|---|---|---|
-| `obsidian-markdown` | Valid Obsidian Flavored Markdown - wikilinks, embeds, callouts, properties, frontmatter | Any time the agent writes a note (avoids syntax mistakes) |
-| `obsidian-bases` | Generate `.base` files (Obsidian Bases - filterable database views) | Phase 8, when building the optional Study Dashboard |
-| `obsidian-cli` | Bulk vault operations (rename, move, link verification) | Optional, used when doing >20 file operations in one pass |
-| `json-canvas` | Generate `.canvas` JSON Canvas files (visual concept maps) | Phase 7, optional Course Map |
-
-### Optional (not bundled - install separately if you want full functionality)
-
-| Skill | Purpose | When the agent invokes it |
-|---|---|---|
-| `defuddle` | Clean markdown extraction from web pages | Phase 2, when supplementary web research has noisy HTML (ads, nav, comments) |
-| `deep-research` | Multi-source research with synthesis (firecrawl + exa MCPs) | Phase 2, when a concept is under-explained in slides and needs >2 sources |
-| `exa-search` | Neural search via Exa MCP | Phase 2, when finding a specific paper or reference implementation |
-| `docs` | Context7 documentation lookup for libraries | Phase 5, when generating lab notes that use unfamiliar libraries (verifies API signatures) |
-| `iterative-retrieval` | Progressive context retrieval for very long PDFs | Phase 2, only for >100-page PDFs |
-| `context-engineering` | Meta-skill for agent context optimisation | Rare - only if the agent thrashes on setup |
-
-**The agent works without any of these skills.** Skills speed things up and reduce mistakes; they are not strict dependencies. See [`skills/README.md`](skills/README.md) for full install instructions and fallback behaviour.
-
----
-
-## The crafting pipeline
-
-vaultcraft thinks of vault generation as a Minecraft-style crafting workflow. Internally the agent runs ten numbered phases - here's the themed map of what each one does:
-
-| Phase | Themed name | What it does |
-|---|---|---|
-| 0 | 🗺 **Site survey** | Detect whether you're starting a new vault, adding to one, or resuming an unfinished build |
-| 1 | 📜 **Recipe selection** | Ask 9 intake questions: course, exam format, depth, sources, language |
-| 1.5 | ⚖️ **Budget & blueprint** | Estimate tool budget and write `.vault-progress.md` so runs are resumable |
-| 2 | ⛏ **Mining** | Read every PDF/PPTX/notebook and extract the full inventory of named concepts |
-| 2.5 | 🏗 **Foundation** | Bootstrap `.obsidian/` config - graph colours, hotkeys, CSS, plugin recommendations |
-| 3 | 🧱 **Layout** | Plan and propose the folder structure |
-| 4 | 💎 **Forging concepts** | Generate atomic concept notes - one crystal per concept, all linked |
-| 5 | 📚 **Crafting study sheets** | Build per-lecture and per-lab notes that link back to concept crystals |
-| 6 | 🪟 **Window into source** *(on request)* | Embed original slides, PDFs, and paper sources inline in lecture and reading notes - converts `.pptx` / `.docx` to PDF via LibreOffice so Obsidian renders them natively |
-| 7 | 🗺 **Cartography** *(low priority)* | Optional JSON Canvas course map |
-| 8 | 🧭 **Hub & beacon** | Build the entry MOC + `Tables.md` for oral exams |
-| 9 | 🔎 **Inspection** | Quality pass: broken links, depth check, orphans, hover-preview verification |
-
-You don't need to know the phase names to use vaultcraft - but the agent announces each one as it runs so you always know what's happening.
 
 ---
 
 ## Conventions baked into the agent
 
-The agent enforces these conventions across every vault it builds:
-
-- **Atomic notes** - one concept per file, never two.
-- **Hover-visible definitions** - definition callout is the FIRST content after the H1, so Obsidian's hover preview shows it without clicking.
-- **Worked examples mandatory** - every formula gets actual numbers; every theoretical concept gets a concrete scenario.
-- **ELI5 for hard concepts** - math-heavy and abstract concepts get a *"Simple explanation (ELI5)"* section with an everyday-object analogy.
-- **Wikilinks not hashtags** - topical clustering happens via `[[wikilinks]]`. Tags are folder-level classifiers only (`concept`, `lecture`, `lab`, `moc`).
-- **Path-based graph colours** - graph view is coloured by folder, not by tag, so it stays clean.
-- **Comparison tables for oral exams** - `Tables.md` with "Say this" elevator-pitch column.
-- **Token economy** - agent delegates mechanical writing (Phase 4 atomic notes, Phase 5 study sheets) to a sub-agent with `model: haiku` to save ~60% of tokens.
+- **Atomic notes** — one concept (or one meeting, or one person) per file.
+- **Hover-visible definitions** — definition callout is the FIRST content after H1; Obsidian's hover preview shows it without clicking.
+- **Worked examples mandatory** — every formula gets actual numbers; every theoretical concept gets a concrete scenario.
+- **ELI5 for hard concepts** — math-heavy and abstract concepts get a *"Simple explanation (ELI5)"* section.
+- **Wikilinks not hashtags** — topical clustering via `[[wikilinks]]`; tags are folder-level classifiers only.
+- **Path-based graph colours** — different palettes for studies / work / research vaults; no tag pollution.
+- **Figure extraction** — `pdfimages` pulls figures from source PDFs, names them descriptively, embeds them inline.
+- **PDF embedding** — source slides and documents embed inline in every lecture or topic note automatically.
+- **Bidirectional link audit** — Phase 9 verifies that concept → source lecture and lecture → concept list are mutually consistent.
+- **Quality report** — after every run: count of notes missing definition / example / flashcards, status breakdown, difficulty distribution.
+- **Token economy** — mechanical writing delegated to Haiku (~60% token savings); synthesis on Sonnet; hard reasoning on Opus.
 
 See [`docs/conventions.md`](docs/conventions.md) for the full spec.
 
@@ -318,21 +365,22 @@ See [`docs/conventions.md`](docs/conventions.md) for the full spec.
 
 ## Limitations
 
-- **Source quality matters.** If your slides are pure bullet-point outlines, the agent has less to extract. Detailed lecture decks produce better vaults.
-- **PPTX requires LibreOffice** for conversion (`soffice --headless --convert-to pdf`) - install it for any vault that includes `.pptx` slides.
-- **Claude Code only.** The agent is built for Claude Code's agent system. Porting to other agent frameworks would need rewriting the orchestration layer.
-- **Math notation in PDF.** OCR on scanned slides loses LaTeX. Agent works best on natively-digital PDFs/PPTX.
+- **Source quality matters.** Pure bullet-point slides produce thinner vaults than detailed lecture decks.
+- **PPTX requires LibreOffice** for conversion — `brew install --cask libreoffice`.
+- **Figure extraction requires poppler** — `brew install poppler`. Without it, figures stay inside PDFs.
+- **Claude Code only.** The agent is built for Claude Code's agent system.
+- **Math notation in scanned PDFs.** OCR on scanned slides loses LaTeX. Works best on natively-digital PDFs/PPTX.
 
 ---
 
 ## License
 
-MIT - see [LICENSE](LICENSE).
+MIT — see [LICENSE](LICENSE).
 
 ---
 
 ## Contributing
 
-Pull requests welcome - especially if you've used the agent on your own course and have improvements to suggest. Open an issue first to discuss large changes.
+Pull requests welcome — especially if you've used the agent on your own course or project and have improvements to suggest. Open an issue first to discuss large changes.
 
-Built by students, for students. If this helps you nail an exam, that's the only thanks needed.
+Built for students, professionals, and researchers who want their knowledge to be retrievable when it matters.
