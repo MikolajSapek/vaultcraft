@@ -1,6 +1,6 @@
 ---
 name: vaultcraft
-description: "Builds a comprehensive exam-ready Obsidian knowledge base from university materials (lecture notes, presentations, Python lab code, textbooks, web research). Creates atomic concept notes with HOVER-VISIBLE definitions (so the user sees what a concept means just by hovering over the wikilink in Obsidian - no click needed), detailed explanations, worked examples, Python code snippets, Mermaid diagrams, MOCs, and spaced-repetition flashcards. Use when the user wants to turn course materials into a navigable, visualized study vault in Obsidian."
+description: "Builds a richly visual, linked Obsidian knowledge vault from any input materials — university lectures, work project docs, meeting notes, research papers, or personal materials. Creates atomic notes with HOVER-VISIBLE definitions, embedded PDFs, extracted figures, Mermaid diagrams, worked examples, and spaced-repetition flashcards. Supports six vault types: studies (exam prep), work (professional KB), research (literature notes), personal (hobbies/skills), reference (technical docs), teaching (course prep). Use when the user wants to turn any scattered materials into a navigable, visual knowledge base in Obsidian."
 tools: Read, Write, Edit, Glob, Grep, Bash, WebSearch, WebFetch, Task, Skill, AskUserQuestion
 model: sonnet
 maxTurns: 40
@@ -31,7 +31,7 @@ This rule applies even when the user types instructions in Polish but is silent 
 ╚██╗ ██╔╝██╔══██║██║   ██║██║     ██║   ██║     ██╔══██╗██╔══██║██╔══╝     ██║
  ╚████╔╝ ██║  ██║╚██████╔╝███████╗██║   ╚██████╗██║  ██║██║  ██║██║        ██║
   ╚═══╝  ╚═╝  ╚═╝ ╚═════╝ ╚══════╝╚═╝    ╚═════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝        ╚═╝
-                  ⛏  an obsidian study vault builder  ⛏
+           ⛏  an obsidian vault builder — study · work · research  ⛏
 ```
 
 After the banner, on the next line, write a single short status line indicating which mode you're entering, for example:
@@ -426,11 +426,40 @@ On completion or on hitting budget limit, UPDATE this file before your final mes
 ### Phase 2 - Extract & Index
 
 For each input:
-- **PDFs** - use `Read` (handles PDFs directly; for large PDFs use the `pages` parameter).
+- **PDFs** - use `Read` (handles PDFs directly; for large PDFs use the `pages` parameter). Then run figure extraction (see below).
 - **PPTX** - convert via `soffice --headless --convert-to pdf <file.pptx> --outdir /tmp/`, then Read the resulting PDF.
 - **Python files** - read in full; extract imports (library inventory), function signatures, class definitions, key logic blocks.
 - **Jupyter notebooks** - `Read` handles `.ipynb` natively; treat markdown cells as lecture notes, code cells as examples, outputs as verification.
 - **Web supplements** - when a concept is under-explained in the source, use `WebSearch` + `WebFetch` (preferentially Wikipedia, official docs, university lecture notes). Always cite in the note.
+
+**Figure extraction from PDFs (CRITICAL for visual notes):**
+
+Run for every PDF that contains diagrams, charts, screenshots, or figures. Skip for text-only PDFs (e.g., pure equation sheets).
+
+```bash
+# 1. Check if poppler is installed (provides pdfimages)
+which pdfimages || brew install poppler
+
+# 2. Extract all embedded images from the PDF
+# -png: output as PNG, -p: prefix filenames with page number
+pdfimages -png -p "<source.pdf>" /tmp/fig-extract
+
+# 3. Inspect what was extracted (reject very small images - likely icons/bullets)
+ls -lh /tmp/fig-extract-*.png | awk '$5 > 20k'
+```
+
+After extraction:
+1. **Read each image** with the `Read` tool (visual inspection) to identify what it depicts.
+2. **Assign descriptive names** following vault convention: `{COURSE}-L{N}-fig{PAGE}-{description}.png`
+   - e.g., `ML-L08-fig12-relu-vs-sigmoid.png`, `NS-meeting-2026-06-10-fig3-stakeholder-map.png`
+3. **Copy named figures to `<vault>/Assets/`** (or `<vault>/<Course>/Assets/` for multi-course vaults).
+4. **Embed inline** at the relevant section of the note: `![[ML-L08-fig12-relu-vs-sigmoid.png|600]]`
+5. Skip images smaller than ~20KB (decorative bullets, icons, borders).
+
+Naming convention for non-study vaults:
+- Work/meeting PDFs: `{PROJECT}-{YYYYMMDD}-fig{N}-{description}.png`
+- Research papers: `{FirstAuthor}{Year}-fig{N}-{description}.png`
+- Reports: `{REPORT-SLUG}-fig{N}-{description}.png`
 
 Build an in-memory **concept inventory**: every distinct concept mentioned, with its source(s) and first-mention context. Deduplicate synonyms.
 
@@ -487,7 +516,9 @@ Before generating notes, configure `.obsidian/` so the vault looks polished from
 {"internalLinkOverride": true, "pageLinkOverride": true, "imageIndicator": true}
 ```
 
-**`.obsidian/graph.json`** - path-based color groups, hide tag nodes and unresolved links:
+**`.obsidian/graph.json`** - path-based color groups, hide tag nodes and unresolved links. Colors differ by vault type:
+
+For **`studies`** vaults:
 ```json
 {
   "collapse-filter": false,
@@ -507,6 +538,45 @@ Before generating notes, configure `.obsidian/` so the vault looks polished from
   "nodeSizeMultiplier": 1.5,
   "lineSizeMultiplier": 1.2
 }
+```
+
+For **`work`** vaults:
+```json
+{
+  "collapse-filter": false,
+  "search": "-file:\"00 - Start Here\" -file:\"README_PLUGINS\"",
+  "showTags": false,
+  "showAttachments": false,
+  "hideUnresolved": true,
+  "showOrphans": true,
+  "colorGroups": [
+    {"query": "path:Meetings/",  "color": {"a": 1, "rgb": 5793266}},
+    {"query": "path:Projects/",  "color": {"a": 1, "rgb": 15778400}},
+    {"query": "path:Companies/", "color": {"a": 1, "rgb": 14914867}},
+    {"query": "path:People/",    "color": {"a": 1, "rgb": 4170580}},
+    {"query": "path:Decisions/", "color": {"a": 1, "rgb": 15913728}},
+    {"query": "path:Concepts/",  "color": {"a": 1, "rgb": 8978687}}
+  ],
+  "showArrow": true,
+  "nodeSizeMultiplier": 1.5,
+  "lineSizeMultiplier": 1.2
+}
+```
+
+For **`research`** vaults:
+```json
+{
+  "colorGroups": [
+    {"query": "path:Papers/",      "color": {"a": 1, "rgb": 15778400}},
+    {"query": "path:Concepts/",    "color": {"a": 1, "rgb": 5793266}},
+    {"query": "path:Methods/",     "color": {"a": 1, "rgb": 14914867}},
+    {"query": "path:Hypotheses/",  "color": {"a": 1, "rgb": 15913728}},
+    {"query": "path:Data/",        "color": {"a": 1, "rgb": 4170580}}
+  ],
+  "showTags": false, "showAttachments": false, "hideUnresolved": true, "showOrphans": true,
+  "showArrow": true, "nodeSizeMultiplier": 1.5, "lineSizeMultiplier": 1.2
+}
+```
 ```
 
 The default `search` filter excludes navigation/index files from graph view so only semantic nodes appear.
@@ -716,6 +786,223 @@ When to AVOID <Name>?::<condition>
 - Frontmatter fields: `tags` (single classifier), `aliases`, `source`, `status` (`new` | `review` | `mastered`), `difficulty` (1–5), `created`, `exam-likely` (bool).
 - Target length: **250–500 words per atomic concept note**. Lean and hover-friendly.
 
+---
+
+**Work vault note templates (use when `vault-type: work`):**
+
+These replace the study concept-note template. Same hover-definition rule applies: first line after H1 must be a one-sentence summary inside `> [!tldr]`.
+
+**Meeting note:**
+```markdown
+---
+tags: [meeting]
+date: <YYYY-MM-DD>
+attendees: [<Name>, <Name>]
+project: [[<Project>]]
+status: open
+created: <YYYY-MM-DD>
+---
+
+# Meeting — <Topic> (<YYYY-MM-DD>)
+
+> [!tldr] Summary
+> <One sentence: what was decided or discussed.>
+
+> [!example]+ 📄 Meeting materials
+> ![[<meeting-notes.pdf>]]
+
+## Context
+
+<Why this meeting happened. Link to project or previous meeting.>
+
+## Discussion
+
+### <Topic 1>
+
+<Notes. Inline wikilinks to any concept, person, or company referenced: [[Person Name]], [[Company]], [[Project]].>
+
+![[<relevant-figure-extracted.png>|600]]
+
+### <Topic 2>
+
+<Same pattern.>
+
+## Decisions
+
+> [!important] Decisions made
+> 1. <Decision> — owner: [[<Name>]]
+> 2. <Decision> — owner: [[<Name>]]
+
+## Action items
+
+- [ ] <Action> — [[<Name>]] — due: <YYYY-MM-DD>
+- [ ] <Action> — [[<Name>]] — due: <YYYY-MM-DD>
+
+## Open questions
+
+- <Question> (unresolved, carry to next meeting)
+
+## See also
+
+- Previous: [[Meeting — <Topic> (<prev-date>)]]
+- Project: [[<Project>]]
+```
+
+**Company / organisation note:**
+```markdown
+---
+tags: [company]
+aliases: [<short name>, <acronym>]
+sector: <e.g. proptech, sustainability>
+status: active
+created: <YYYY-MM-DD>
+---
+
+# <Company Name>
+
+> [!tldr] In one line
+> <What the company does, in one sentence.>
+
+## Profile
+
+| Field | Value |
+|-------|-------|
+| Website | [company.com](https://company.com) |
+| HQ | <City, Country> |
+| Size | <employees / ARR estimate> |
+| Founded | <Year> |
+| Key contacts | [[<Name>]] |
+
+![[<company-logo-or-chart.png>|300]]
+
+## Why relevant
+
+<Why this company matters to your work. Decision criteria, opportunity, risk.>
+
+## Interactions
+
+- [[Meeting — <Topic> (<date>)]]
+- [[Email — <subject> (<date>)]]
+
+## Notes
+
+<Ongoing observations, red flags, key facts.>
+
+## Relations
+
+- Competitor of: [[<Other Company>]]
+- Partner with: [[<Partner>]]
+- Covered in: [[Lead Radar — scan #<N>]]
+```
+
+**Decision log note:**
+```markdown
+---
+tags: [decision]
+date: <YYYY-MM-DD>
+project: [[<Project>]]
+status: decided
+created: <YYYY-MM-DD>
+---
+
+# Decision — <Short title> (<YYYY-MM-DD>)
+
+> [!tldr] Decision
+> <What was decided, in one sentence.>
+
+## Context
+
+<What problem or question forced this decision.>
+
+## Options considered
+
+| Option | Pros | Cons |
+|--------|------|------|
+| **Option A** (chosen) | … | … |
+| Option B | … | … |
+
+## Rationale
+
+<Why option A won. What evidence or constraints drove the call.>
+
+> [!warning] Risks
+> <What could go wrong. What would invalidate this decision.>
+
+## Consequences
+
+- <What changes as a result>
+- <Dependencies affected>
+
+## Review date
+
+<YYYY-MM-DD> — revisit if <condition>.
+
+## See also
+
+- [[Meeting — <where this was discussed>]]
+- [[<Project>]]
+```
+
+**Project / topic note (work hub):**
+```markdown
+---
+tags: [project]
+aliases: [<short name>]
+status: active
+owner: [[<Name>]]
+deadline: <YYYY-MM-DD>
+created: <YYYY-MM-DD>
+---
+
+# <Project Name>
+
+> [!tldr] Goal
+> <What this project is trying to achieve, in one sentence.>
+
+## Overview
+
+<Context: why this project exists, who cares, what success looks like.>
+
+```mermaid
+flowchart LR
+    A[Trigger] --> B[Phase 1]
+    B --> C[Phase 2]
+    C --> D[Outcome]
+```
+
+## Key documents
+
+> [!example]+ 📄 Project brief
+> ![[<brief.pdf>]]
+
+![[<architecture-diagram.png>|600]]
+
+## Status
+
+| Phase | Status | Owner | Due |
+|-------|--------|-------|-----|
+| Research | ✅ done | [[<Name>]] | <date> |
+| Design | 🔄 in progress | [[<Name>]] | <date> |
+| Build | ⬜ pending | — | <date> |
+
+## Decisions
+
+- [[Decision — <title> (<date>)]]
+
+## Meetings
+
+- [[Meeting — <topic> (<date>)]]
+
+## People
+
+- [[<Stakeholder>]] — <role>
+- [[<Client>]] — <role>
+
+## Open questions
+
+- <Question>
+```
+
 ### Phase 5 - Per-Lecture Notes
 
 **Choose format from Principle 16 based on user's answer in Phase 1. Respect depth setting (lean/standard/thorough) from Phase 1.**
@@ -846,9 +1133,9 @@ This makes the note read as a coherent lecture, not disconnected Q&A.
 - Preserve exam questions section - it is mandatory, don't shrink.
 - **For labs specifically**: include key Python patterns in a `## Core code patterns` section, each with 3–8 line snippets and "What's happening" + "Gotcha" annotations. Full lab script can go in a collapsible `> [!example]- Full lab script` callout.
 
-### Phase 6 - Embed source materials (on request)
+### Phase 6 - Embed source materials (DEFAULT - run automatically)
 
-**When to run:** the user asks to "add the slides", "embed the presentation", "show the lecture PDF in the note", "dorzuć slajdy", "wstaw pdf", or any variant. Do NOT do this by default — only on request. Phase 5 lectures are already complete without slide embeds.
+**When to run:** automatically at the end of Phase 5, for ALL vault types, whenever source files (PDFs, PPTX) are available. Do not wait for the user to ask. If no source files were provided, skip silently.
 
 **Why this matters:** Obsidian renders `![[file.pdf]]` as an inline scrollable PDF viewer. Students can see the original presentation inside the note while reading their summary. Native support for `.pdf` and images only — `.pptx` and `.docx` show as file-link cards without inline preview.
 
