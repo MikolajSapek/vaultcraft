@@ -108,11 +108,18 @@ Transform scattered inputs - lecture slides (PDF/PPTX), lab scripts (.py, .ipynb
 
 15. **Canvas is low-priority** - JSON Canvas mind maps are nice-to-have, not core. Do NOT spend generation budget on elaborate Canvas layouts. Priority order for generation budget: concept notes (deep extraction) > lecture notes > lab notes > MOC > comparison tables > Base dashboard > flashcards > Canvas. The user's study workflow is lecture note → hover concept wikilinks → read concept note → flashcards. Canvas is a visual bonus, not load-bearing. Skip it if budget is tight.
 
-16. **Lecture format - ASK which depth** (CRITICAL new addition) - there are two supported lecture formats, and the user's preference must be confirmed in Phase 1:
+16. **Lecture format - ASK which depth** (CRITICAL new addition) - there are three supported lecture formats, and the user's preference must be confirmed in Phase 1:
    - **(a) Study Sheet** - 400–750 words body. Scannable, mini-boxes per concept, tables, Mermaid. For users who read the slide deck first, then open Obsidian for reinforcement.
    - **(b) Detailed Lecture Notes** - 1200–2500 words body. Narrative paragraphs, worked numerical examples, "why it matters" context, professor-style asides, historical background. For users who want notes that read like what a diligent student wrote while sitting in a lecture.
+   - **(c) Golden Template (CBS standard)** - fixed-section template based on the CBS Spring 2026 exemplar (L01 - ML Lifecycle). Strict section order: TL;DR → main concept with `[!abstract]` callout → collapsed slide gallery (embedded PDF + 6-8 extracted images) → 5-9 Key Content subsections → Key terms glossary → Key takeaways → Exam cue → Potential Exam Questions (4 difficulty levels) → Relations → inline `::` Flashcards → Sources. See the full skeleton in Phase 5 Format (c) and `templates/lecture-golden.md`.
 
-   Default if unspecified: **(b) Detailed Lecture Notes** (it's easier to skim a detailed note than to expand a short one later). Both formats keep the same skeleton (frontmatter, H1, TL;DR callout, per-topic sections, exam questions, concepts-introduced list, sources) - they differ only in depth per section.
+   Default if unspecified: **(b) Detailed Lecture Notes** (it's easier to skim a detailed note than to expand a short one later). All formats keep the same core skeleton (frontmatter, H1, TL;DR callout, per-topic sections, exam questions, concepts-introduced list, sources) - they differ in depth and section set.
+
+16b. **Templates - ASK whether to use them** - in Phase 1, explicitly ask the user whether notes should follow the repo's golden templates verbatim:
+   - **Lecture notes** → `templates/lecture-golden.md` (Golden Template) or `templates/lecture.md` (classic skeleton)
+   - **Concept notes** → `templates/concept.md`
+
+   If the user says yes, every generated lecture/concept note must match the chosen template's section order and frontmatter fields exactly (fill placeholders, never drop sections). If no, fall back to the format chosen in Principle 16. Ask via `AskUserQuestion` as part of Batch A.
 
 17. **Comparison tables by DEFAULT (not on request)** - `Tables.md` at vault root is mandatory output in Phase 8, not an optional add-on. It is the single most exam-useful file for oral exams. Identify 5–8 comparison dimensions from the course content (classifiers, text representations, smoothing methods, topic models, attention variants, decoding strategies, preprocessing steps, evaluation metrics, loss functions - pick dimensions that match the course) and build comparison tables with these columns: name, type, key formula/idea, when to use, gotcha, and a **"Say this"** column with a one-sentence elevator pitch the student can recite verbatim in an oral exam. End the file with an "Elevator pitch bank" - one memorized sentence per major concept. Skip `Tables.md` only if user explicitly opts out.
 
@@ -268,7 +275,8 @@ Single question, header `Mode`, options: `Resume from last step (Recommended)` /
 
 **Batch A - Vault shape (always first, 4 questions, all single-select):**
 1. `Vault type` - studies (Recommended) · work · research · personal *(reference and teaching go to "Other")*
-2. `Format` - Detailed narrative (Recommended) · Study sheet · Reference *(use `preview` field to show a 6-line sample of how each format renders - Detailed shows a paragraph-style intro, Study sheet shows a mini-box with bullets, Reference shows a code block)*
+2. `Format` - Detailed narrative (Recommended) · Study sheet · Golden template · Reference *(use `preview` field to show a 6-line sample of how each format renders - Detailed shows a paragraph-style intro, Study sheet shows a mini-box with bullets, Golden template shows the fixed section order with slide gallery + Key terms + Relations, Reference shows a code block)*
+2b. `Templates` - asked only for `studies`/`teaching` vaults: "Use the golden templates for concept and lecture notes?" - options: `Yes - both (Recommended)` (lecture → `templates/lecture-golden.md`, concept → `templates/concept.md`, filled verbatim) · `Lecture only` · `Concept only` · `No - free format` (per Principle 16b)
 3. `Depth` - standard (Recommended) · lean · thorough
 4. `Language` - English (Recommended) · Polish · German · Spanish
 
@@ -585,7 +593,9 @@ The default `search` filter excludes navigation/index files from graph view so o
 
 **CSS snippets** (`.obsidian/snippets/`):
 
-`callouts.css` - colored, icon-prefixed callouts:
+`callouts.css` - colored, icon-prefixed callouts. Write the appropriate block for the vault type:
+
+For **`studies`** vaults:
 ```css
 .callout[data-callout="definition"] {
     --callout-color: 56, 139, 253;
@@ -598,39 +608,133 @@ The default `search` filter excludes navigation/index files from graph view so o
 .callout[data-callout="example"]  { --callout-color: 46, 160, 67;  --callout-icon: "lightbulb"; }
 .callout[data-callout="question"] { --callout-color: 163, 113, 247; --callout-icon: "help-circle"; }
 .callout[data-callout="important"]{ --callout-color: 248, 81, 73;  --callout-icon: "alert-triangle"; }
+.callout[data-callout="exam"]     { --callout-color: 210, 153, 34;  --callout-icon: "graduation-cap"; }
+```
+
+For **`work`** vaults:
+```css
+.callout[data-callout="decision"] { --callout-color: 31, 111, 235;  --callout-icon: "check-square"; }
+.callout[data-callout="action"]   { --callout-color: 234, 139, 0;   --callout-icon: "zap"; }
+.callout[data-callout="risk"]     { --callout-color: 248, 81, 73;   --callout-icon: "alert-triangle"; }
+.callout[data-callout="meeting"]  { --callout-color: 20, 184, 166;  --callout-icon: "users"; }
+.callout[data-callout="stakeholder"] { --callout-color: 139, 92, 246; --callout-icon: "user"; }
+.callout[data-callout="tldr"]     { --callout-color: 100, 116, 139; --callout-icon: "align-left"; }
 ```
 
 `concept-cards.css` - concept notes look like study cards (H1 accent border, H2 left-border, rounded code blocks).
 
-**Community plugins** - create `README_PLUGINS.md` at vault root with install instructions (do NOT auto-install):
+**Community plugins** - create `README_PLUGINS.md` at vault root with install instructions (do NOT auto-install). List differs by vault type:
+
+For **`studies`** vaults:
 1. **Spaced Repetition** (`st3v3nmw/obsidian-spaced-repetition`) - `::` flashcards. Critical.
 2. **Dataview** - dynamic study dashboards.
 3. **Excalidraw** - hand-drawn sketches (optional).
 4. **Advanced Tables** - table UX (optional).
 5. **Templater** - dynamic templates (optional).
 
+For **`work`** vaults:
+1. **Kanban** (`mgmeyers/obsidian-kanban`) - task board. Critical for work vaults.
+2. **Calendar** (`liamcain/obsidian-calendar-plugin`) - daily/weekly note navigation, meeting log by date.
+3. **Dataview** - dynamic dashboards (active projects, open actions).
+4. **Advanced Tables** - table UX (optional).
+5. **Templater** - auto-fill meeting/decision templates with current date.
+
+**Work vault: Kanban board (`00 - Dashboard.md`):**
+
+Generate this file on bootstrap for all `work` vaults. It uses the obsidian-kanban plugin syntax:
+
+```markdown
+---
+kanban-plugin: board
+---
+
+## 🔴 Blocked
+
+- [ ] <drag cards here>
+
+## 🟡 In progress
+
+- [ ] [[<Project or task>]]
+
+## 🟢 Done
+
+- [ ] [[<Completed item>]]
+
+%% kanban:settings
+```
+{"kanban-plugin":"board","list-collapse":[false,false,false]}
+```
+%%
+```
+
+Below the Kanban board, add a static section with Dataview queries (requires Dataview plugin):
+
+```markdown
+---
+
+## Active projects
+
+```dataview
+TABLE status, deadline, owner FROM "Projects" WHERE status = "active" SORT deadline ASC
+```
+
+## Meetings this week
+
+```dataview
+LIST FROM "Meetings" WHERE date >= date(today) - dur(7d) SORT date DESC LIMIT 10
+```
+
+## Open actions
+
+```dataview
+TASK FROM "Meetings" WHERE !completed SORT file.mtime DESC
+```
+```
+
+After generating the dashboard, tell the user: *"Dashboard created. Open Obsidian and enable the Kanban plugin (Settings → Community plugins) to activate the board view."*
+
 After writing config files, tell the user (English):
 > "Vault configured. To activate everything: open Obsidian, enable Community Plugins (Settings → Community plugins → Turn on), and install the plugins listed in `README_PLUGINS.md` (~2 min)."
 
 ### Phase 3 - Plan the Vault Structure
 
-Default structure (English filenames, adapt only if course demands it):
+Default structure by vault type:
 
+**`studies` vault:**
 ```
 <VaultRoot>/
 ├── 00 - Start Here.md            ← entry MOC
 ├── 01 - Course Map.canvas        ← optional visual map (low priority)
 ├── 02 - Study Dashboard.base     ← optional Base dashboard
-├── Tables.md                      ← comparison tables for oral exam (if requested)
+├── Tables.md                      ← comparison tables for oral exam
 ├── README_PLUGINS.md              ← plugin install guide
 ├── Concepts/                      ← atomic notes (one per concept)
 ├── Lectures/                      ← per-lecture summary notes
 ├── Labs/                          ← lab writeups with embedded Python
 ├── Examples/                      ← longer worked examples (optional)
 ├── Formulas/                      ← formula cheat sheets (optional)
-├── Assets/                        ← images, diagrams
+├── Assets/                        ← images, diagrams, embedded PDFs
 └── _Templates/                    ← note templates
 ```
+
+**`work` vault:**
+```
+<VaultRoot>/
+├── 00 - Dashboard.md              ← Kanban board + active project links
+├── README_PLUGINS.md
+├── Projects/                      ← one note per project/initiative
+├── Meetings/                      ← meeting notes (YYYY-MM-DD format)
+├── Stakeholders/                  ← person and company profiles
+│   ├── People/                    ← individual contacts
+│   └── Companies/                 ← organisation profiles
+├── Decisions/                     ← decision log
+├── Concepts/                      ← domain knowledge notes
+├── Documents/                     ← embedded PDFs, reports, contracts
+│   └── <person-or-project>/       ← subfolder per stakeholder or project
+└── Assets/                        ← extracted figures, logos, diagrams
+```
+
+Generate `Stakeholders/People/` and `Stakeholders/Companies/` folders on bootstrap. Ask the user in Phase 1 Batch C: *"List your key stakeholders (names / companies) — I'll create their profiles now so you can link to them from meetings and decisions."* Create a stub profile for each one provided.
 
 Present the proposed structure only if it deviates substantially (e.g., math-heavy courses get a `Proofs/` folder).
 
@@ -943,6 +1047,56 @@ created: <YYYY-MM-DD>
 - [[<Project>]]
 ```
 
+**Person / stakeholder note (`Stakeholders/People/`):**
+```markdown
+---
+tags: [person]
+aliases: [<first name>, <nickname>]
+company: [[<Company>]]
+role: <job title>
+email: <email>
+phone: <phone>
+status: active
+created: <YYYY-MM-DD>
+---
+
+# <Full Name>
+
+> [!stakeholder] Role
+> <Name> is <role> at [[<Company>]] — <one sentence on why they matter to your work>.
+
+## Contact
+
+| Channel | Details |
+|---------|---------|
+| Email | <email> |
+| Phone | <phone> |
+| LinkedIn | [Profile](<url>) |
+
+## Documents
+
+> [!example]+ 📄 Stored documents
+> ![[Documents/<name>/<contract.pdf>]]
+> ![[Documents/<name>/<brief.pdf>]]
+
+*(Drop any PDFs related to this person into `Documents/<name>/` — they'll embed here.)*
+
+## Interaction history
+
+- [[Meeting — <topic> (<date>)]]
+- [[Meeting — <topic> (<date>)]]
+
+## Notes
+
+<Ongoing observations, preferences, red flags, context.>
+
+## Relations
+
+- Works at: [[<Company>]]
+- Involved in: [[<Project>]]
+- Knows: [[<Other Person>]]
+```
+
 **Project / topic note (work hub):**
 ```markdown
 ---
@@ -1007,9 +1161,9 @@ flowchart LR
 
 **Choose format from Principle 16 based on user's answer in Phase 1. Respect depth setting (lean/standard/thorough) from Phase 1.**
 
-**Token economy:** lecture notes are also templatable. If depth=lean or depth=standard with Study Sheet format, delegate via Task tool with haiku (per Principle 18). For depth=thorough with Detailed Lecture Notes format, the narrative judgement calls may warrant sonnet - use your discretion. When in doubt, draft the first lecture yourself (sonnet), then delegate the remaining 9 to haiku with your L01 as the quality exemplar.
+**Token economy:** lecture notes are also templatable. If depth=lean or depth=standard with Study Sheet format, delegate via Task tool with haiku (per Principle 18). For depth=thorough with Detailed Lecture Notes format, the narrative judgement calls may warrant sonnet - use your discretion. When in doubt, draft the first lecture yourself (sonnet), then delegate the remaining 9 to haiku with your L01 as the quality exemplar. Format (c) Golden Template is fully templated - haiku-eligible once you've drafted L01 as the exemplar.
 
-Both formats share this skeleton:
+Formats (a) and (b) share this skeleton (Format (c) has its own fixed skeleton further below):
 
 ```markdown
 ---
@@ -1125,7 +1279,94 @@ This makes the note read as a coherent lecture, not disconnected Q&A.
 
 ---
 
-**Shared rules (both formats):**
+**Format (c) - Golden Template (CBS standard, fixed sections):**
+
+Use ONLY when the user opted into templates in Phase 1 (Principle 16b). Fill `templates/lecture-golden.md` verbatim - keep section order, never drop a section. Differences vs. formats (a)/(b):
+
+```markdown
+---
+tags:
+  - lecture
+  - course/<COURSE_CODE>
+aliases:
+  - L<NUMBER>
+  - Lecture <NUMBER> <COURSE_SHORT>
+source: Lecture-<NUMBER>.pdf
+status: new
+created: <MM/DD/YYYY>
+exam-likely: true
+course: <COURSE_CODE>
+topic-area: <TOPIC>
+---
+
+# L<NUMBER> — <TITLE>
+
+**TL;DR**
+- <3-5 bullets, max 1 line each - exam cram essentials>
+
+## <Main concept>
+
+> [!abstract] <One-line definition, ≤160 chars>
+
+<200-400 words flowing narrative: intuition, historical context or key insight, visual references ("See slide ..."), wikilinks to related concepts.>
+
+> [!info]- 📊 Presentation
+> ![[Lecture-<NUMBER>.pdf]]
+> ![[img_pNN_M.jpeg|320]]  <!-- 6-8 most relevant extracted images, max 320px -->
+
+## Key content
+
+### <Concept 1 of 5-9>
+<2-5 sentences defining + explaining, ≤200 words.>
+- specific detail
+- use case or application
+- related concept: [[Related Concept]]
+
+**Example**: <if applicable>
+**When to use**: <domain guidance>
+
+## Key terms
+| Term | Definition | Context |
+|---|---|---|
+
+## Key takeaways
+- <4-6 points, bold for emphasis>
+
+## Exam cue
+**<Likely question>?** — <1-2 sentence model answer with [[wikilink]]>  (3-5 of these)
+
+## Potential Exam Questions
+### Theory / Definitions
+**What is X?** — Model answer (1-2 sentences). See [[Related Note]].
+### Understanding / Comparison
+### Application / Worked problem
+### Critical thinking
+
+## Relations
+- **Course**: [[<Course Name>]]
+- **Prerequisite concepts**: [[Concept 1]], [[Concept 2]]
+- **Builds toward**: [[Concept 3]], [[Concept 4]]
+- **Related lectures**: [[L02 — ...]], [[L03 — ...]]
+
+## Flashcards
+What is X?::Brief definition (≤15 words).
+When would you use Y?::Context + rationale (1-2 sentences).
+
+## Sources
+- Lecture-<NUMBER>.pdf
+- <textbook chapter / supplementary reading if any>
+```
+
+Quality checklist for Format (c) - verify before marking a note done:
+- [ ] PDF embedded with clear source reference; 6-8 key visuals extracted into the gallery
+- [ ] TL;DR is 3-5 lines max; each Key Content subsection ≤200 words
+- [ ] All concepts linked to concept notes via wikilinks; Key terms table exam-ready
+- [ ] Exam questions cover ≥3 difficulty levels; flashcard answers ≤15 words
+- [ ] Relations section connects course hub + prerequisites; sources cited explicitly
+
+---
+
+**Shared rules (all formats):**
 - Every first mention of a concept gets a `[[wikilink]]`. No exceptions.
 - Comparison tables for any 2+ alternatives compared in slides.
 - Mermaid diagrams for pipelines, state machines, hierarchies.
@@ -1295,6 +1536,56 @@ Before declaring done:
               if m.strip() not in existing: broken.append((f, m.strip()))
   ```
   Fix every hit (wrong target → correct; missing but ≥3 refs → stub; missing and <3 refs → plain italic text).
+
+**Bidirectional link audit (studies vaults):**
+Every concept note has `source: [[LXX - ...]]` in frontmatter. Every lecture note has `## Concepts introduced` with wikilinks. These must match. Run this check:
+```python
+import os, re, yaml
+vault = '<path>'
+# Build: concept → declared source lecture
+concept_sources = {}
+for root, _, fs in os.walk(vault):
+    for f in fs:
+        if not f.endswith('.md') or '.obsidian' in root: continue
+        txt = open(os.path.join(root, f)).read()
+        fm = re.match(r'^---\n(.*?)\n---', txt, re.DOTALL)
+        if fm:
+            try:
+                meta = yaml.safe_load(fm.group(1))
+                if meta.get('tags') and 'concept' in str(meta.get('tags', '')):
+                    src = str(meta.get('source', ''))
+                    lec = re.search(r'\[\[(.+?)\]\]', src)
+                    if lec: concept_sources[f[:-3]] = lec.group(1)
+            except: pass
+# Check each lecture's "Concepts introduced" section contains its declared concepts
+for concept, lecture in concept_sources.items():
+    lec_path = os.path.join(vault, 'Lectures', lecture + '.md')  # adjust path as needed
+    if not os.path.exists(lec_path): continue
+    lec_txt = open(lec_path).read()
+    if f'[[{concept}]]' not in lec_txt:
+        print(f'MISSING BACKLINK: {lecture} should list [[{concept}]]')
+```
+For every gap found: add `[[ConceptName]]` to the lecture's `## Concepts introduced` section.
+
+**Quality report (all vault types):**
+After the broken-link check, run a note quality sweep and print a structured report:
+```
+Quality report — <vault name>
+─────────────────────────────────────────
+Total notes:          N
+Missing definition:   N  (list first 5 filenames)
+Missing example:      N
+Missing flashcards:   N  (studies vaults only)
+Missing wikilinks:    N  (notes with 0 outbound links)
+Status breakdown:     new: N · review: N · mastered: N
+Difficulty dist:      1: N · 2: N · 3: N · 4: N · 5: N
+─────────────────────────────────────────
+Action items:
+  • N notes need a definition callout
+  • N notes need at least one example
+  • N notes have no outbound wikilinks (orphan risk)
+```
+Print this after the broken-link count in the final report. Do not skip even if all numbers are zero — the user needs confirmation the vault is clean.
 
 Final report (English):
 ```
