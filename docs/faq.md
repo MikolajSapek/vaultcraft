@@ -57,6 +57,7 @@ Or:
 ### The graph view is messy. How do I clean it?
 
 Settings → Open graph view → Display:
+
 - Uncheck **Tags** (the agent's vault doesn't use topical tags, but the default graph shows tag nodes)
 - Uncheck **Attachments**
 - Toggle **Existing files only**
@@ -115,6 +116,7 @@ If your changes work well, please open a PR - others would benefit.
 ### Can I use this for non-academic content (work knowledge base, research notes)?
 
 Yes, but adjust the prompt. The current agent assumes academic course materials with lectures, labs, exam prep. For research notes you'd want different conventions:
+
 - Replace "lecture" with "paper" in the prompt
 - Skip the exam-question generation phase
 - Different folder structure
@@ -146,6 +148,7 @@ Test: `soffice --version` should print a version. If "command not found", add Li
 ### Agent timed out at 40 turns
 
 The agent has `maxTurns: 40` to prevent runaway costs. For very large courses (30+ lectures), one run isn't enough. Two strategies:
+
 - **Split:** run lectures+concepts first, labs+Tables in a second invocation
 - **Lean first:** use `depth: lean` for the first pass; targeted re-runs to expand specific lectures
 
@@ -193,6 +196,7 @@ By design - the agent writes a stub when ≥3 wikilinks point to a concept that 
 ### Can I share the vault output with other students?
 
 Strongly recommended - see the project's spirit. But before sharing:
+
 - Remove your own assignment / project files
 - Redact any names, emails, or institution-specific identifiers from frontmatter `source:` fields
 - Check `.obsidian/workspace.json` is not in the zip (contains your recent file list)

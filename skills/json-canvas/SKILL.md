@@ -199,7 +199,7 @@ Preset color values are intentionally undefined -- applications use their own br
 
 Generate 16-character lowercase hexadecimal strings (64-bit random value):
 
-```
+```text
 "6f0ad84f44ce9c17"
 "a3b2c1d0e9f8a7b6"
 ```

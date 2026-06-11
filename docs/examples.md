@@ -209,6 +209,7 @@ For multi-course vaults, each course's folders get their own colour grouping - t
 ## What you don't get
 
 The agent **does not**:
+
 - Generate flashcard SRS schedules - that's the [Spaced Repetition plugin's](https://github.com/st3v3nmw/obsidian-spaced-repetition) job. The agent puts `::` flashcards in every note; the plugin schedules reviews.
 - Answer exam questions - it generates them so you can practice.
 - Make the vault for you forever. New lectures = new agent invocation (incremental mode).

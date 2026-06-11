@@ -67,6 +67,7 @@ This is the original design target of vaultcraft. Most defaults assume this type
 - **`Bibliography/`** - full BibTeX entries; can export to LaTeX
 
 **Frontmatter on Paper notes:**
+
 ```yaml
 ---
 type: paper

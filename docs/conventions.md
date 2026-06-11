@@ -5,7 +5,8 @@ The agent enforces these conventions on every vault it builds. If you author not
 ## Folder structure
 
 Per-course:
-```
+
+```text
 COURSE/
 ├── Lectures/      One note per lecture/session - narrative walkthrough
 ├── Concepts/      Atomic notes - one concept, one file
@@ -18,6 +19,7 @@ COURSE/
 Cross-course material lives in `_Shared/Concepts/`.
 
 Vault root:
+
 - `Starting point.md` - root MOC
 - `VAULT SPEC.md` - this conventions doc (in real vaults, copy from `templates/`)
 - `Tables.md` - comparison tables for oral exams
@@ -32,6 +34,7 @@ One named concept per file. The atomic unit of the vault.
 **Filename:** `Concept Name.md` - title case, spaces allowed, no underscores.
 
 **Required structure:**
+
 1. YAML frontmatter
 2. `# Concept Name` heading
 3. `> [!definition] Definition` callout - **first content after H1**, so hover preview shows it
@@ -52,6 +55,7 @@ One file per lecture/session. Narrative walkthrough.
 **Filename:** `L01 - Topic Name.md` (NLP/ML/PA), `S01 - Topic Name.md` (DPD-style strategy courses).
 
 **Required structure:**
+
 1. YAML frontmatter
 2. `> [!tldr] TL;DR (30 seconds)` callout - 4–6 bullet points
 3. Narrative sections matching lecture structure (one `##` per topic)
@@ -61,6 +65,7 @@ One file per lecture/session. Narrative walkthrough.
 7. `## Sources`
 
 Length target depends on format:
+
 - **Study Sheet:** 400–750 words body
 - **Detailed Lecture Notes:** 1200–2500 words body
 
@@ -71,6 +76,7 @@ Mirrors a lab session. Includes code, expected outputs, takeaways.
 **Filename:** `Lab 01 - Topic.md` or `Lab01 - Topic.md`.
 
 **Required sections:**
+
 1. Frontmatter
 2. `## What this lab teaches` - 3 bullets
 3. `## Libraries & functions introduced` - table mapping each function to the concept it implements (with wikilink)
@@ -147,6 +153,7 @@ created: 2026-05-05
 ## Tags
 
 **Use tags ONLY as folder-level classifiers.** One classifier tag per note:
+
 - `concept` for `Concepts/`
 - `lecture` for `Lectures/`
 - `lab` for `Labs/`
@@ -182,6 +189,7 @@ A vanilla [[RNN]] uses a single hidden state vector, while [[LSTM]] adds a [[Cel
 ```
 
 Filenames must match wikilink targets exactly. Common pitfalls:
+
 - Plural/singular: `[[N-gram Language Model]]` vs `[[N-gram Language Models]]` - be consistent
 - Hyphens vs spaces: `[[Stop-Words]]` vs `[[Stop Words]]` vs `[[Stopwords]]` - pick one, alias the others
 
@@ -216,6 +224,7 @@ For mathematically heavy or abstract concepts, add an ELI5 section before the Fl
 ```
 
 Rules:
+
 - 3–5 sentences max
 - Pure analogy with everyday objects (toys, kitchens, sports, schools)
 - Zero jargon
@@ -251,6 +260,7 @@ If you add new top-level folders, update the colour groups manually in `.obsidia
 ## Comparison tables (`Tables.md`)
 
 For oral exams, the agent builds `Tables.md` at the vault root with:
+
 - 5–8 comparison tables covering the major dimensions of the course
 - Each table has a **"Say this"** column with a one-sentence elevator pitch the student can recite verbatim
 - An **"Elevator pitch bank"** at the end - one memorized sentence per major concept

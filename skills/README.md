@@ -25,6 +25,7 @@ After this, Claude Code will auto-discover them on the next session.
 **No.** The agent gracefully falls back to direct `Read`/`Write`/`Edit` tools if a skill is missing. The skills speed things up and avoid syntax mistakes, but the agent works without them.
 
 If you skip the install, the agent will:
+
 - Still produce valid Obsidian-flavored markdown (using its own knowledge)
 - Skip `.base` generation (Phase 7's Study Dashboard becomes optional)
 - Skip `.canvas` generation (Phase 6 was already low-priority)

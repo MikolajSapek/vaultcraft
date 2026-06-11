@@ -96,7 +96,7 @@ claude
 
 Then in the Claude Code session:
 
-```
+```text
 > I have lecture slides in ~/Downloads/lectures/ and lab notebooks
 > in ~/Downloads/labs/. Build me an Obsidian vault for my Machine Learning
 > course at ~/Documents/ObsidianVaults/my-course-2026/. The exam is in
@@ -105,6 +105,7 @@ Then in the Claude Code session:
 ```
 
 Claude Code will:
+
 1. Detect the request matches the `vaultcraft` agent description
 2. Spawn the agent
 3. Run Phase 1 - Intake (asking confirming questions)
@@ -116,13 +117,14 @@ Total time: 30–90 minutes depending on source material volume and depth settin
 
 Open a Claude Code session and type:
 
-```
+```text
 > Show me the vaultcraft agent's description
 ```
 
 If Claude Code responds with the agent's purpose summary, you're set.
 
 If not, check:
+
 - The file is at `~/.claude/agents/vaultcraft.md`
 - File starts with `---` YAML frontmatter
 - Restart your Claude Code session

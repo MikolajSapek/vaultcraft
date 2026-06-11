@@ -12,7 +12,9 @@
     // MD026: trailing punctuation in headings - "## What's in this repo" is fine
     "MD026": false,
     // MD036: emphasis as heading - "**vaultcraft.**" is intentional tagline
-    "MD036": false
+    "MD036": false,
+    // MD060: table pipe spacing - compact table style is intentional throughout
+    "MD060": false
   },
   "globs": [
     "**/*.md"

@@ -60,7 +60,7 @@ Answer those, the agent restates the plan and waits for your confirmation. Then 
 
 ### Fresh vault - single course
 
-```
+```text
 > Build me an Obsidian vault for my NLP course. Slides are at
 > ~/Downloads/nlp-slides/ (12 PDFs, sessions 1-12), labs at
 > ~/Downloads/nlp-labs/ (9 Jupyter notebooks). Vault path:
@@ -72,7 +72,7 @@ The agent will skip Phase 1 questions where you've already given answers.
 
 ### Adding a single new lecture (incremental mode)
 
-```
+```text
 > I just had Lecture 11 today. Slides: ~/Downloads/lecture-11.pdf.
 > Add it to my existing vault at ~/Documents/ObsidianVaults/NLP-2026/.
 ```
@@ -81,7 +81,7 @@ Agent detects the existing `.obsidian/` and existing notes → runs incremental 
 
 ### Multi-course vault
 
-```
+```text
 > I want a single vault for all 4 of my courses (NLP, ML, Stats, Strategy).
 > Build it at ~/Documents/ObsidianVaults/Spring-2026/ with each course
 > as a subfolder. Sources are in ~/Downloads/<course-name>/.
@@ -91,7 +91,7 @@ The agent will create folder-per-course structure with cross-course bridge notes
 
 ### Lean mode - quick reference vault
 
-```
+```text
 > Build a lean reference vault for my ML course. I just need short concept
 > notes I can scan during open-book exams. Source: ~/Downloads/ml/.
 > Vault: ~/Documents/ObsidianVaults/ML-quick/.
@@ -101,7 +101,7 @@ Atomic notes 150–300 words, study sheets 300–500 words. ~40% fewer tokens.
 
 ### Adding sources later
 
-```
+```text
 > Add this paper to my vault as a Reading: ~/Downloads/Vaswani2017.pdf.
 > Vault: ~/Documents/ObsidianVaults/NLP-2026/. Note its key concepts
 > and link them to existing concept notes where possible.
@@ -111,7 +111,7 @@ Atomic notes 150–300 words, study sheets 300–500 words. ~40% fewer tokens.
 
 After a typical run on 12 lectures + 9 labs you get:
 
-```
+```text
 my-course-2026/
 ├── .obsidian/                          ← graph colours, hotkeys, snippets
 ├── 00 - Start Here.md                  ← entry MOC

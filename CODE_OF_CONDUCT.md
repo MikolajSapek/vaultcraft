@@ -9,6 +9,7 @@ Be kind. Help each other study better. That's the whole project.
 This project is built by students and learners for students and learners. Everyone here is figuring something out. Treat people that way.
 
 **Expected behaviour:**
+
 - Be welcoming to newcomers, especially those sharing their first PR or issue
 - Assume good faith - when something looks wrong, ask before accusing
 - Give credit to authors of materials, ideas, and prior work
@@ -16,6 +17,7 @@ This project is built by students and learners for students and learners. Everyo
 - Disagree about the technical work, not about each other
 
 **Not okay:**
+
 - Personal attacks, harassment, or discrimination of any kind (gender, race, nationality, sexuality, disability, religion, age, body)
 - Sharing someone else's private course materials, exam answers, or personal data without permission
 - Trolling, deliberate derailing, or sustained negativity

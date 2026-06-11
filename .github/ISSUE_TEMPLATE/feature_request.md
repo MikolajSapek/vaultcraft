@@ -13,6 +13,7 @@ Describe the use case the agent doesn't currently support. What course material,
 ## Proposed solution
 
 What would the agent do differently? Be specific:
+
 - New phase / new principle / change to existing phase?
 - New template / new note type?
 - Behaviour change in one of the existing phases?
@@ -21,7 +22,7 @@ What would the agent do differently? Be specific:
 
 Concrete example of input → desired output.
 
-```
+```text
 Input: [course materials description]
 Current output: [what the agent does now]
 Desired output: [what you want]

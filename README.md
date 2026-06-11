@@ -72,7 +72,7 @@ When you select `work`, the agent builds a professional knowledge base around pe
 
 ### Folder structure
 
-```
+```text
 <VaultRoot>/
 ├── 00 - Dashboard.md          ← Kanban board + Dataview queries
 ├── Projects/                  ← one hub note per initiative
@@ -91,11 +91,12 @@ When you select `work`, the agent builds a professional knowledge base around pe
 
 `00 - Dashboard.md` uses the obsidian-kanban plugin:
 
-```
+```text
 🔴 Blocked  |  🟡 In progress  |  🟢 Done
 ```
 
 Below the board, Dataview queries surface:
+
 - Open action items across all meetings
 - Active projects with their last update date
 - Meetings from the past 14 days
@@ -148,7 +149,7 @@ The original vaultcraft context. Point it at lecture slides, lab notebooks, text
 
 ### Folder structure
 
-```
+```text
 <VaultRoot>/
 ├── Tables.md                  ← oral-exam comparison cheatsheet
 ├── MOC — <Course>.md          ← entry map of content
@@ -185,6 +186,7 @@ The Obsidian graph view of the four-course vault:
 ![Graph view of a 4-course vault built by vaultcraft](examples/screenshots/graph-view-example.png)
 
 **What you're looking at:**
+
 - Each colour cluster is one course (path-based colouring — no tag pollution)
 - ~640 atomic notes across 4 courses, ~4,700 wikilinks holding them together
 - Red dots: cross-course bridge notes in `_Shared/` connecting concepts across courses
@@ -198,6 +200,7 @@ Phase 6 runs automatically. The agent copies source materials into the vault, co
 ![Lecture note with source slides and extracted figure embedded inline](examples/screenshots/source-slide-embedded.png)
 
 **What you're looking at:**
+
 - The `> [!example]+ 🎞️ Course slides` callout renders the converted PDF using Obsidian's native viewer
 - An extracted figure (`![[Assets/ML-L08-fig12-relu-vs-sigmoid.png|600]]`) embedded inline at the activation-functions section
 - The typed lecture summary continues below — notes and original deck in the same scroll
@@ -267,7 +270,7 @@ The agent always runs **Phase 1 - Intake** first, asking questions before touchi
 
 **Batch C — free text**
 
-```
+```text
 1. Course / project / team name?
 2. Specific goal? (e.g. "exam 28 June", "client onboarding by Q3")
 3. Priority topics?
@@ -311,7 +314,7 @@ The agent uses **3-tier model routing** — Haiku for mechanical writing, Sonnet
 
 ## What's in this repo
 
-```
+```text
 vaultcraft/
 ├── agents/
 │   └── vaultcraft.md            ← The agent definition
@@ -330,11 +333,8 @@ vaultcraft/
 ├── templates/
 │   ├── concept.md               ← Atomic concept template (studies)
 │   ├── lecture.md               ← Lecture study sheet template
+│   ├── lecture-golden.md        ← Golden Template lecture note (CBS standard)
 │   ├── lab.md                   ← Lab study sheet template
-│   ├── meeting.md               ← Meeting note template (work)
-│   ├── person.md                ← Stakeholder profile template (work)
-│   ├── company.md               ← Company profile template (work)
-│   ├── decision.md              ← Decision log template (work)
 │   └── bridge.md                ← Cross-course bridge template
 ├── examples/screenshots/
 ├── .github/
