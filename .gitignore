@@ -1,0 +1,19 @@
+.DS_Store
+**/.DS_Store
+
+# Local vault output and resume state
+.vault-progress.md
+vaultcraft-demo/
+demo-output/
+
+# Local editor and environment files
+.env
+.env.*
+!.env.example
+.idea/
+.vscode/
+
+# Logs and temporary files
+*.log
+tmp/
+temp/

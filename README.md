@@ -13,7 +13,7 @@
 
 A [Claude Code](https://claude.com/claude-code) agent that turns any scattered materials — lecture slides, meeting notes, project docs, research papers — into a navigable, richly visual [Obsidian](https://obsidian.md) knowledge vault. Hover-visible definitions, embedded PDFs, extracted figures, ELI5 analogies, comparison tables, Kanban boards, stakeholder profiles, and spaced-repetition flashcards.
 
-[Quick start](#installation) · [How to use](#how-to-use) · [Vault types](#vault-types) · [Examples](docs/examples.md) · [Conventions](docs/conventions.md) · [Contributing](CONTRIBUTING.md)
+[Quick start](#installation) · [How to use](#how-to-use) · [Vault types](#vault-types) · [Examples](docs/examples.md) · [Conventions](docs/conventions.md) · [Roadmap](ROADMAP.md) · [Contributing](CONTRIBUTING.md)
 
 </div>
 
@@ -329,7 +329,8 @@ vaultcraft/
 │   ├── usage.md
 │   ├── vault-types.md
 │   ├── conventions.md
-│   └── examples.md
+│   ├── examples.md
+│   └── codex-maintenance.md
 ├── templates/
 │   ├── concept.md               ← Atomic concept template (studies)
 │   ├── lecture.md               ← Lecture study sheet template
@@ -339,6 +340,8 @@ vaultcraft/
 ├── examples/screenshots/
 ├── .github/
 ├── README.md
+├── ROADMAP.md
+├── SECURITY.md
 ├── CONTRIBUTING.md
 └── LICENSE
 ```
@@ -360,6 +363,18 @@ vaultcraft/
 - **Token economy** — mechanical writing delegated to Haiku (~60% token savings); synthesis on Sonnet; hard reasoning on Opus.
 
 See [`docs/conventions.md`](docs/conventions.md) for the full spec.
+
+---
+
+## Maintainer workflow
+
+vaultcraft is maintained with a Codex-assisted workflow for reviewing agent prompt changes, checking installer safety, improving documentation, generating synthetic test fixtures, and validating generated Obsidian vault quality.
+
+Codex is used as a review and maintenance tool, not an automatic committer. Every AI-assisted change is manually reviewed before merge, and private vault contents, source materials, API keys, and local usernames must never be committed.
+
+- Roadmap: [`ROADMAP.md`](ROADMAP.md)
+- Security policy: [`SECURITY.md`](SECURITY.md)
+- Codex-assisted maintenance notes: [`docs/codex-maintenance.md`](docs/codex-maintenance.md)
 
 ---
 

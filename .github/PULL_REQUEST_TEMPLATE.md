@@ -25,6 +25,13 @@ The motivation - what use case or problem this addresses.
 - [ ] Ran broken-link audit on a sample vault
 - [ ] N/A (docs / templates only)
 
+## AI-assisted review
+
+- [ ] I used Codex or another coding assistant for review / testing
+- [ ] I manually reviewed all generated or suggested changes
+- [ ] No private course material, API keys, local usernames, or vault data are included
+- [ ] For installer or filesystem changes, I checked path handling and destructive operations
+
 ## Checklist
 
 - [ ] My change follows the conventions in `docs/conventions.md`
