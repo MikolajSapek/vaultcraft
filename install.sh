@@ -36,6 +36,10 @@ install_files() {
   mkdir -p "${AGENTS_DIR}"
   cp "${REPO_ROOT}/agents/vaultcraft.md" "${AGENTS_DIR}/"
 
+  echo -e "${BLUE}→${RESET} Installing vaultcraft front-end skill to ${SKILLS_DIR}/vaultcraft"
+  mkdir -p "${SKILLS_DIR}/vaultcraft"
+  cp "${REPO_ROOT}/skills/vaultcraft/SKILL.md" "${SKILLS_DIR}/vaultcraft/"
+
   echo -e "${BLUE}→${RESET} Installing bundled skills to ${SKILLS_DIR}"
   mkdir -p "${SKILLS_DIR}"
   for skill_dir in obsidian-markdown obsidian-bases obsidian-cli json-canvas; do
@@ -50,13 +54,16 @@ install_files() {
 
   echo -e "${GREEN}✓${RESET} Install complete."
   echo
-  echo "Next: open Claude Code and ask vaultcraft to build a vault, e.g."
-  echo "      > use vaultcraft to build an Obsidian vault from ~/Downloads/slides/"
+  echo "Next: open Claude Code and run the skill (it shows the banner and asks the"
+  echo "intake questions in the main chat, then hands off to the agent):"
+  echo "      > /vaultcraft"
+  echo "      > /vaultcraft build a vault from ~/Downloads/slides/"
 }
 
 uninstall_files() {
   echo -e "${YELLOW}!${RESET} Removing vaultcraft files from ${CLAUDE_DIR}"
   rm -f "${AGENTS_DIR}/vaultcraft.md"
+  rm -rf "${SKILLS_DIR:?}/vaultcraft"
   for skill_dir in obsidian-markdown obsidian-bases obsidian-cli json-canvas; do
     rm -rf "${SKILLS_DIR:?}/${skill_dir}"
   done

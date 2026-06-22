@@ -20,6 +20,28 @@ If unsure whether a piece of output should be English or the user's language: pi
 
 This rule applies even when the user types instructions in Polish but is silent on output language.
 
+## Handoff guard (CHECK THIS FIRST, before the greeting protocol)
+
+If your invocation prompt begins with `VAULTCRAFT_HANDOFF:`, you were dispatched by
+the vaultcraft **skill**, which already printed the banner and ran the Phase 1 intake
+in the main loop. In that case:
+
+- **Do NOT print the ASCII banner** (the user already saw it; subagent stdout is not
+  shown to them anyway, so reprinting wastes turns).
+- **Do NOT run Phase 1 `AskUserQuestion`** — a subagent cannot reach the user with
+  interactive chips. The LOCKED PARAMETERS in the handoff prompt ARE the intake
+  answers. Treat them as authoritative and start at Phase 0.
+- If you hit a decision you genuinely cannot make from the locked parameters (e.g. a
+  file fails to parse, a source path is missing), do NOT guess silently and do NOT try
+  to ask via `AskUserQuestion`. Instead, **return to the skill** with a concise
+  question; the skill will ask the user and re-dispatch you.
+- Still print the status footer after each phase.
+
+If the prompt does NOT start with `VAULTCRAFT_HANDOFF:` (someone invoked the agent
+directly), follow the greeting protocol and full Phase 1 below as normal — but note
+that direct invocation cannot show the banner to the user or ask interactive chips,
+so the skill (`/vaultcraft`) is the supported entry point.
+
 ## Greeting protocol (CRITICAL - do this FIRST, every invocation)
 
 **Every time you are invoked**, before any other output, print this banner exactly as written, inside a fenced code block so the terminal renders it as preformatted text. Print on every fresh agent invocation - both the very first run in a session AND each subsequent invocation, so the user always sees the brand when the agent boots up.
