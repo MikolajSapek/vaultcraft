@@ -43,6 +43,7 @@ Skip any question the user's prompt already answered. Constraints: ≤4 question
 `multiSelect: true` where multiple answers fit, use `preview` for Format/Style.
 
 **Batch A — Vault shape** (single call, 4 single-select):
+
 1. `Vault type` — studies (Recommended) · work · research · personal *(reference/teaching → Other)*
 2. `Format` — Detailed narrative (Recommended) · Study sheet · Golden template · Reference *(preview a 6-line sample of each)*
 3. `Depth` — standard (Recommended) · lean · thorough
@@ -51,11 +52,13 @@ Skip any question the user's prompt already answered. Constraints: ≤4 question
 For `studies`/`teaching`, add a follow-up call `Templates` — Yes both (Recommended) · Lecture only · Concept only · No free format.
 
 **Batch B — Style** (single call, 3 questions):
+
 1. `Styles` (multiSelect) — defaults by type: studies → ELI5 + Worked example + Historical + Real-world; work → Real-world + Counter-example + Worked example + Devil's advocate; research → Counter-example + Historical + Devil's advocate + Worked example; personal → ELI5 + Real-world + Historical + Visual metaphor.
 2. `Flashcards` — Every concept (Recommended) · Key only · None
 3. `Urgency` — studies: <1 week · 1–4 weeks (Recommended) · 1–3 months · No rush; work/research: weekly · monthly (Recommended) · quarterly · ongoing.
 
 **Batch C — Free-text** (plain markdown block, NOT chips — these don't fit options):
+
 ```text
 1. Course / project name?
 2. Specific goal? (e.g. "exam 28 June", "onboarding doc by Q3")
