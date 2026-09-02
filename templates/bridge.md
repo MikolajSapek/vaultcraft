@@ -53,6 +53,8 @@ For exam questions in COURSE_A, use COURSE_A's framing. But the underlying idea 
 
 ## Flashcards
 
+OPTIONAL section. Omit it entirely unless spaced repetition was requested during intake.
+
 Q::A
 Q::A
 

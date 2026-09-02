@@ -63,6 +63,8 @@ For theoretical concepts: a real-world scenario.
 
 ## Flashcards
 
+OPTIONAL section. Omit it entirely unless spaced repetition was requested during intake.
+
 What is Concept Name?::One-sentence definition.
 What's the key formula/idea?::One-line answer.
 When would you use Concept Name over Alternative?::Brief comparison.

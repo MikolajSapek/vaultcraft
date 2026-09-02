@@ -54,7 +54,7 @@ For `studies`/`teaching`, add a follow-up call `Templates` — Yes both (Recomme
 **Batch B — Style** (single call, 3 questions):
 
 1. `Styles` (multiSelect) — defaults by type: studies → ELI5 + Worked example + Historical + Real-world; work → Real-world + Counter-example + Worked example + Devil's advocate; research → Counter-example + Historical + Devil's advocate + Worked example; personal → ELI5 + Real-world + Historical + Visual metaphor.
-2. `Flashcards` — Every concept (Recommended) · Key only · None
+2. `Flashcards` — None (Recommended) · Key concepts only · Every concept
 3. `Urgency` — studies: <1 week · 1–4 weeks (Recommended) · 1–3 months · No rush; work/research: weekly · monthly (Recommended) · quarterly · ongoing.
 
 **Batch C — Free-text** (plain markdown block, NOT chips — these don't fit options):

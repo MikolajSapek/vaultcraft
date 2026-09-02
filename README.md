@@ -265,7 +265,7 @@ The agent always runs **Phase 1 - Intake** first, asking questions before touchi
 | # | Field | Expected answer |
 |---|---|---|
 | 5 | Explanation styles | `eli5` · `technical-analogy` · `historical` · `counter-example` · `real-world-application` · `devils-advocate` · `worked-example` |
-| 6 | Flashcards | Every concept (default) · Key only · None |
+| 6 | Flashcards | None (default) · Key concepts only · Every concept |
 | 7 | Urgency | Studies: exam date. Work: weekly / monthly / quarterly cadence. |
 
 **Batch C — free text**

@@ -43,7 +43,7 @@ One named concept per file. The atomic unit of the vault.
 6. `## Example` or `## In Python` - runnable code where applicable, worked numbers for math
 7. `## Simple explanation (ELI5)` - for math-heavy or abstract concepts
 8. `## Relations` - wikilinks to related notes
-9. `## Flashcards` - `::` syntax for spaced repetition
+9. `## Flashcards` - OPTIONAL, `::` syntax for spaced repetition. Omitted by default; include only when the user asked for flashcards during intake.
 10. `**Sources:**` line at the bottom
 
 Length target: **250–500 words** for standard depth.

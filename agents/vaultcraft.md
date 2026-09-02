@@ -104,7 +104,7 @@ Transform scattered inputs - lecture slides (PDF/PPTX), lab scripts (.py, .ipynb
 
 5. **Visualize what is structural** - hierarchies, processes, state machines, taxonomies go into Mermaid (inside notes). Never describe a tree in prose if a diagram fits.
 
-6. **Build for recall, not just reference** - add spaced-repetition flashcards (`::` syntax from `obsidian-spaced-repetition`) at the bottom of concept notes. The vault must be *studyable*, not just *readable*.
+6. **Build for recall, not just reference** - structure notes so they can be self-tested: a definition callout that stands alone, an Example section, and Exam cues with model answers. Flashcards are OPTIONAL and OFF by default: only generate a `## Flashcards` section when the user explicitly asked for spaced repetition in intake. Never add one to a vault that does not already use them, and never reintroduce them when rewriting a note that has none.
 
 7. **Respect Obsidian Flavored Markdown** - use wikilinks `[[Note]]`, embeds `![[Note]]`, callouts `> [!definition]`, frontmatter properties, Mermaid fenced blocks. Do not output GitHub-flavored markdown where Obsidian syntax is richer.
 
@@ -136,7 +136,7 @@ Transform scattered inputs - lecture slides (PDF/PPTX), lab scripts (.py, .ipynb
 
 - **(a) Study Sheet** - 400–750 words body. Scannable, mini-boxes per concept, tables, Mermaid. For users who read the slide deck first, then open Obsidian for reinforcement.
 - **(b) Detailed Lecture Notes** - 1200–2500 words body. Narrative paragraphs, worked numerical examples, "why it matters" context, professor-style asides, historical background. For users who want notes that read like what a diligent student wrote while sitting in a lecture.
-- **(c) Golden Template (CBS standard)** - fixed-section template based on the CBS Spring 2026 exemplar (L01 - ML Lifecycle). Strict section order: TL;DR → main concept with `[!abstract]` callout → collapsed slide gallery (embedded PDF + 6-8 extracted images) → 5-9 Key Content subsections → Key terms glossary → Key takeaways → Exam cue → Potential Exam Questions (4 difficulty levels) → Relations → inline `::` Flashcards → Sources. See the full skeleton in Phase 5 Format (c) and `templates/lecture-golden.md`.
+- **(c) Golden Template (argument-led lecture)** - the richest lecture format, validated on a 16-lecture build (roughly 2400 to 4300 words per note). Strict section order: frontmatter with `topic-area` and `description` → `[!example]+` slide callout embedding the source PDF → H1 matching the filename → `[!tldr] TL;DR: the argument of the whole lecture` in PROSE paragraphs, not bullets → `## Navigate this lecture` with a mermaid flowchart → 8 to 11 NUMBERED sections whose headings are CLAIMS not labels → `## Running through the deck` → `## Key terms at a glance` → `## What to be able to do` → `## Exam cues` → OPTIONAL `## Flashcards` → `## Related notes` → `## Source coverage`. See `templates/lecture-golden.md`.
 
    Default if unspecified: **(b) Detailed Lecture Notes** (it's easier to skim a detailed note than to expand a short one later). All formats keep the same core skeleton (frontmatter, H1, TL;DR callout, per-topic sections, exam questions, concepts-introduced list, sources) - they differ in depth and section set.
 
@@ -327,7 +327,7 @@ Single question, header `Mode`, options: `Resume from last step (Recommended)` /
 **Batch B - Style preferences (3 questions):**
 
 1. `Styles` (multiSelect: true) - pick the 4 most relevant explanation styles for the chosen vault type. Defaults by type: `studies` → ELI5 + Worked example + Historical + Real-world. `work` → Real-world + Counter-example + Worked example + Devil's advocate. `research` → Counter-example + Historical + Devil's advocate + Worked example. `personal` → ELI5 + Real-world + Historical + Visual metaphor.
-2. `Flashcards` - Every concept (Recommended) · Key only · None
+2. `Flashcards` - None (Recommended) · Key concepts only · Every concept
 3. `Urgency` - depends on vault type. For `studies`: <1 week · 1–4 weeks (Recommended) · 1–3 months · No rush. For `work`/`research`: weekly · monthly (Recommended) · quarterly · ongoing.
 
 **Batch C - Free-text intake (markdown prompt, NOT chips):**
@@ -1371,82 +1371,113 @@ Use ONLY when the user opted into templates in Phase 1 (Principle 16b). Fill `te
 ---
 tags:
   - lecture
-  - course/<COURSE_CODE>
+  - course/COURSE_CODE
 aliases:
-  - L<NUMBER>
-  - Lecture <NUMBER> <COURSE_SHORT>
-source: Lecture-<NUMBER>.pdf
+  - L0X
+  - Lecture 0X COURSE_SHORT
+source: COURSE-L0X_slides.pdf
 status: new
-created: <MM/DD/YYYY>
+created: YYYY-MM-DD
 exam-likely: true
-course: <COURSE_CODE>
-topic-area: <TOPIC>
+course: COURSE_CODE
+topic-area: [primary theme, secondary theme]
+description: "One sentence naming what this lecture establishes and why it matters."
 ---
 
-# L<NUMBER> — <TITLE>
+> [!example]+ 🎞️ Course slides
+> ![[COURSE-L0X_slides.pdf]]
 
-**TL;DR**
-- <3-5 bullets, max 1 line each - exam cram essentials>
+# L0X — Lecture Title
 
-## <Main concept>
+> [!tldr] TL;DR: the argument of the whole lecture
+> Two to four short paragraphs, prose not bullets, stating the lecture's actual argument end to end. Wikilink the concepts on first mention.
+>
+> A reader who stops here should understand what the lecture claims and why, not merely which topics it lists. Name the problem the lecture solves, the mechanism it introduces, and what it sets up for the next lecture.
 
-> [!abstract] <One-line definition, ≤160 chars>
+## Navigate this lecture
 
-<200-400 words flowing narrative: intuition, historical context or key insight, visual references ("See slide ..."), wikilinks to related concepts.>
+(a fenced mermaid block here: flowchart LR mapping the lecture's arc,
+ Opening problem -> First mechanism -> Core technique -> Extension or limit -> Next lecture)
 
-> [!info]- 📊 Presentation
-> ![[Lecture-<NUMBER>.pdf]]
-> ![[img_pNN_M.jpeg|320]]  <!-- 6-8 most relevant extracted images, max 320px -->
+## 1. Section headings are claims, not labels
 
-## Key content
+Every numbered heading states something arguable. Write "Data only becomes useful in context", never "Data". A reader skimming the headings alone should be able to reconstruct the argument.
 
-### <Concept 1 of 5-9>
-<2-5 sentences defining + explaining, ≤200 words.>
-- specific detail
-- use case or application
-- related concept: [[Related Concept]]
+> [!definition] [[Concept Note Name]]
+> The definition, under 160 plain-text characters so it reads cleanly as a hover preview. No wikilinks and no bold inside a definition callout body.
 
-**Example**: <if applicable>
-**When to use**: <domain guidance>
+Narrative prose develops the claim. Aim for 200 to 400 words per section, referencing the concept notes on first mention.
 
-## Key terms
-| Term | Definition | Context |
-|---|---|---|
+| Term | What it answers | Example | Do not confuse with |
+|---|---|---|---|
+| First | The question it settles | A concrete instance | Its common lookalike |
+| Second | The question it settles | A concrete instance | Its common lookalike |
 
-## Key takeaways
-- <4-6 points, bold for emphasis>
+A "Do not confuse with" column is worth more than a definition restated, because it encodes the distinction an exam actually tests.
 
-## Exam cue
-**<Likely question>?** — <1-2 sentence model answer with [[wikilink]]>  (3-5 of these)
+![[COURSE-L0X-fig-descriptive-name.png|650]]
 
-## Potential Exam Questions
-### Theory / Definitions
-**What is X?** — Model answer (1-2 sentences). See [[Related Note]].
-### Understanding / Comparison
-### Application / Worked problem
-### Critical thinking
+**Read the visual.** Say what the reader should look at and what it proves. A figure without this lead-in is decoration. Name figures descriptively (`fig-three-schema`), never by slide number, so a re-export does not break every embed.
 
-## Relations
-- **Course**: [[<Course Name>]]
-- **Prerequisite concepts**: [[Concept 1]], [[Concept 2]]
-- **Builds toward**: [[Concept 3]], [[Concept 4]]
-- **Related lectures**: [[L02 — ...]], [[L03 — ...]]
+> [!tip] Exam-safe test
+> A short, portable rule the reader can apply under time pressure.
+
+## 2. Keep going for eight to eleven numbered sections
+
+Use `> [!warning]` for a trap, `> [!example]` for a worked case, `> [!quote]` for a primary source. Use fenced code blocks for anything executable, and `$...$` or `$$...$$` for mathematics.
+
+## Running through the deck
+
+Two or three paragraphs explaining why the deck is ordered as it is: what the opening earns, why the middle sits where it does, and what the closing sets up. This is the section that turns a list of topics into a remembered argument.
+
+## Key terms at a glance
+
+| Term | One-line recall |
+|---|---|
+| First term | The compressed version that survives in memory |
+| Second term | The compressed version that survives in memory |
+
+## What to be able to do
+
+1. A verb-first capability, phrased as an exam task rather than a topic.
+2. Compare two things the lecture deliberately contrasted.
+3. Classify a new case using the lecture's own scheme.
+4. Work an end-to-end example, naming the step most people skip.
+5. Defend a judgement call the lecture flagged as contested.
+
+## Exam cues
+
+Three or four `[!question]` callouts, each carrying its model answer inside the callout and
+ending with a pointer to the concept note, for example: See [[Concept Note Name]].
+Include at least one question asking "why", not only "what", since definitions alone rarely carry full marks.
 
 ## Flashcards
-What is X?::Brief definition (≤15 words).
-When would you use Y?::Context + rationale (1-2 sentences).
 
-## Sources
-- Lecture-<NUMBER>.pdf
-- <textbook chapter / supplementary reading if any>
+OPTIONAL section. Omit it entirely unless spaced repetition was requested during intake.
+When it is wanted, pick one format and keep it consistent across the whole vault:
+`Question text?::Answer text.` for the obsidian-spaced-repetition plugin, or
+`**Q:**` / `**A:**` line pairs for a plugin-free prose version.
+
+## Related notes
+
+- [[Concept One]] · [[Concept Two]] · [[Concept Three]]
+- [[Concept Four]] · [[Concept Five]]
+- Next: [[L0Y — Following Lecture]]
+
+## Source coverage
+
+All NN PDF pages are incorporated by topic cluster: opening and definitions (pp. 1-8); the core mechanism (pp. 9-19); worked examples (pp. 20-28); extensions and limits (pp. 29-NN). Figures reproduced above are extracted from the supplied PDF.
+
+**Sources:** `COURSE-L0X_slides.pdf`; textbook reference with chapter; course, institution, term.
+
 ```
 
 Quality checklist for Format (c) - verify before marking a note done:
 
-- [ ] PDF embedded with clear source reference; 6-8 key visuals extracted into the gallery
-- [ ] TL;DR is 3-5 lines max; each Key Content subsection ≤200 words
+- [ ] PDF embedded in a `[!example]+` callout; 6-11 figures extracted with DESCRIPTIVE names, each followed by a bold "**Read the visual.**" lead-in
+- [ ] TL;DR is prose paragraphs stating the argument; numbered section headings are claims, not labels; `## Navigate this lecture` mermaid present
 - [ ] All concepts linked to concept notes via wikilinks; Key terms table exam-ready
-- [ ] Exam questions cover ≥3 difficulty levels; flashcard answers ≤15 words
+- [ ] Exam cues carry model answers, not bare questions; any flashcards (optional) are ≤15 words
 - [ ] Relations section connects course hub + prerequisites; sources cited explicitly
 
 ---

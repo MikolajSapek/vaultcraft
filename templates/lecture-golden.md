@@ -5,108 +5,102 @@ tags:
 aliases:
   - L0X
   - Lecture 0X COURSE_SHORT
-source: Lecture-0X.pdf
+source: COURSE-L0X_slides.pdf
 status: new
-created: MM/DD/YYYY
+created: YYYY-MM-DD
 exam-likely: true
 course: COURSE_CODE
-topic-area: TOPIC
+topic-area: [primary theme, secondary theme]
+description: "One sentence naming what this lecture establishes and why it matters."
 ---
+
+> [!example]+ 🎞️ Course slides
+> ![[COURSE-L0X_slides.pdf]]
 
 # L0X — Lecture Title
 
-**TL;DR**
+> [!tldr] TL;DR: the argument of the whole lecture
+> Two to four short paragraphs, prose not bullets, stating the lecture's actual argument end to end. Wikilink the concepts on first mention.
+>
+> A reader who stops here should understand what the lecture claims and why, not merely which topics it lists. Name the problem the lecture solves, the mechanism it introduces, and what it sets up for the next lecture.
 
-- Key concept 1 — one line max
-- Key concept 2 — one line max
-- Key concept 3 — one line max
-- Key concept 4 — one line max
+## Navigate this lecture
 
-## Main Concept Name
+```mermaid
+flowchart LR
+  A[Opening problem] --> B[First mechanism]
+  B --> C[Core technique]
+  C --> D[Extension or limit]
+  D --> E[Where the next lecture picks up]
+```
 
-> [!abstract] One-line definition of the main concept, under 160 characters so it reads as a single clean line.
+## 1. Section headings are claims, not labels
 
-200–400 words of flowing narrative: an intuitive explanation, the historical context or key insight behind the concept, references to the most important visuals ("See slide L0X-slide-31.png"), and [[wikilinks]] to related concept notes on first mention.
+Every numbered heading states something arguable. Write "Data only becomes useful in context", never "Data". A reader skimming the headings alone should be able to reconstruct the argument.
 
-> [!info]- 📊 Presentation
-> ![[Lecture-0X.pdf]]
-> ![[img_p01_1.jpeg|320]]
-> ![[img_p05_2.jpeg|320]]
-> ![[img_p09_1.jpeg|320]]
-> ![[img_p12_3.jpeg|320]]
-> ![[img_p18_1.jpeg|320]]
-> ![[img_p24_2.jpeg|320]]
+> [!definition] [[Concept Note Name]]
+> The definition, under 160 plain-text characters so it reads cleanly as a hover preview. No wikilinks and no bold inside a definition callout body.
 
-## Key content
+Narrative prose develops the claim. Aim for 200 to 400 words per section, referencing the concept notes on first mention.
 
-### Concept Name 1
+| Term | What it answers | Example | Do not confuse with |
+|---|---|---|---|
+| First | The question it settles | A concrete instance | Its common lookalike |
+| Second | The question it settles | A concrete instance | Its common lookalike |
 
-2–5 sentences defining and explaining the concept (≤200 words per subsection).
+A "Do not confuse with" column is worth more than a definition restated, because it encodes the distinction an exam actually tests.
 
-- Specific detail
-- Use case or application
-- Related concept: [[Related Concept]]
+![[COURSE-L0X-fig-descriptive-name.png|650]]
 
-**Example**: if applicable
-**When to use**: domain guidance
+**Read the visual.** Say what the reader should look at and what it proves. A figure without this lead-in is decoration. Name figures descriptively (`fig-three-schema`), never by slide number, so a re-export does not break every embed.
 
-### Concept Name 2
+> [!tip] Exam-safe test
+> A short, portable rule the reader can apply under time pressure.
 
-(Same pattern — 5–9 subsections total, one per major concept in the lecture.)
+## 2. Keep going for eight to eleven numbered sections
 
-## Key terms
+Use `> [!warning]` for a trap, `> [!example]` for a worked case, `> [!quote]` for a primary source. Use fenced code blocks for anything executable, and `$...$` or `$$...$$` for mathematics.
 
-| Term | Definition | Context |
-|---|---|---|
-| **Term 1** | One-sentence definition | Where/why it appears |
-| **Term 2** | One-sentence definition | Where/why it appears |
+## Running through the deck
 
-## Key takeaways
+Two or three paragraphs explaining why the deck is ordered as it is: what the opening earns, why the middle sits where it does, and what the closing sets up. This is the section that turns a list of topics into a remembered argument.
 
-- **Insight 1** — most exam-relevant point
-- **Insight 2** — ...
-- **Insight 3** — ...
-- **Insight 4** — ...
+## Key terms at a glance
 
-## Exam cue
+| Term | One-line recall |
+|---|---|
+| First term | The compressed version that survives in memory |
+| Second term | The compressed version that survives in memory |
 
-**What's likely to appear?** — 1–2 sentence model answer with [[wikilink]].
-**Second likely question?** — Model answer.
-**Third likely question?** — Model answer.
+## What to be able to do
 
-## Potential Exam Questions
+1. A verb-first capability, phrased as an exam task rather than a topic.
+2. Compare two things the lecture deliberately contrasted.
+3. Classify a new case using the lecture's own scheme.
+4. Work an end-to-end example, naming the step most people skip.
+5. Defend a judgement call the lecture flagged as contested.
 
-### Theory / Definitions
+## Exam cues
 
-**What is X?** — Model answer (1–2 sentences). See [[Related Note]].
-
-### Understanding / Comparison
-
-**Compare X and Y.** — Model answer with [[wikilinks]].
-
-### Application / Worked problem
-
-**Compute X for the following...** — Pointer to worked example.
-
-### Critical thinking
-
-**Argue for or against Z's claim.** — Pointer.
-
-## Relations
-
-- **Course**: [[Course Name]]
-- **Prerequisite concepts**: [[Concept 1]], [[Concept 2]]
-- **Builds toward**: [[Concept 3]], [[Concept 4]]
-- **Related lectures**: [[L02 — ...]], [[L03 — ...]]
+Three or four `[!question]` callouts, each carrying its model answer inside the callout and
+ending with a pointer to the concept note, for example: See [[Concept Note Name]].
+Include at least one question asking "why", not only "what", since definitions alone rarely carry full marks.
 
 ## Flashcards
 
-What is X?::Brief definition or answer (≤15 words).
-When would you use Y?::Context + rationale (1–2 sentences).
-Explain the relationship between A and B.::Key insight (1–2 sentences).
+OPTIONAL section. Omit it entirely unless spaced repetition was requested during intake.
+When it is wanted, pick one format and keep it consistent across the whole vault:
+`Question text?::Answer text.` for the obsidian-spaced-repetition plugin, or
+`**Q:**` / `**A:**` line pairs for a plugin-free prose version.
 
-## Sources
+## Related notes
 
-- Lecture-0X.pdf
-- [Textbook] Ch. X (if referenced)
-- Supplementary reading if any
+- [[Concept One]] · [[Concept Two]] · [[Concept Three]]
+- [[Concept Four]] · [[Concept Five]]
+- Next: [[L0Y — Following Lecture]]
+
+## Source coverage
+
+All NN PDF pages are incorporated by topic cluster: opening and definitions (pp. 1-8); the core mechanism (pp. 9-19); worked examples (pp. 20-28); extensions and limits (pp. 29-NN). Figures reproduced above are extracted from the supplied PDF.
+
+**Sources:** `COURSE-L0X_slides.pdf`; textbook reference with chapter; course, institution, term.

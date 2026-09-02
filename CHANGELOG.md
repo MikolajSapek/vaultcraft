@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) 
 
 ## [Unreleased]
 
+### Changed
+
+- **Flashcards are now opt-in, not the default.** The Phase 1 intake option reads `None (Recommended) · Key concepts only · Every concept`. The agent no longer generates a `## Flashcards` section unless the user explicitly asked for spaced repetition, never adds one to a vault that does not already use them, and never reintroduces one when rewriting an existing note. Templates keep the section as a clearly marked optional block.
+- **Golden Template rewritten** (`templates/lecture-golden.md`) from a fixed-section skeleton into the argument-led format validated on a 16-lecture build (roughly 2400 to 4300 words per note). New required anatomy: `[!tldr] TL;DR: the argument of the whole lecture` in prose rather than bullets, a `## Navigate this lecture` mermaid flowchart, 8 to 11 numbered sections whose headings are claims rather than topic labels, `## Running through the deck`, `## Key terms at a glance`, `## What to be able to do`, `## Exam cues` with model answers inside the callouts, and `## Source coverage` mapping PDF page ranges to topic clusters.
+- **Figures must be named descriptively** (`fig-three-schema`, not `slide-27`) so a re-exported deck does not break every embed, and each embed carries a bold "Read the visual." lead-in explaining what the reader should look at. A figure without that lead-in counts as decoration.
+- Format (c) quality checklist updated to match the new anatomy.
+
 ### Added
 
 - **Maintainer workflow documentation**: added `ROADMAP.md`, `SECURITY.md`, `.gitignore`, and `docs/codex-maintenance.md` to make the public OSS maintenance process clearer. The docs describe Codex-assisted review, installer/security review scope, synthetic fixture work, and manual verification expectations for AI-assisted changes.
