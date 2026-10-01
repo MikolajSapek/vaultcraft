@@ -1,17 +1,18 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# vaultcraft installer
+# vaultcraft installer (manual install; the Claude Code plugin is the recommended route)
 # Usage:
-#   ./install.sh              install agent + skills to ~/.claude/
-#   ./install.sh --demo       install + run agent on bundled NLP demo materials
-#   ./install.sh --uninstall  remove vaultcraft files from ~/.claude/
+#   ./install.sh                      install the agent + front-end skill into ~/.claude/
+#   ./install.sh --templates DIR      also copy note templates into DIR (never overwrites)
+#   ./install.sh --demo               install + show how to run the bundled NLP demo
+#   ./install.sh --uninstall          remove only the files this installer put there
 
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 CLAUDE_DIR="${HOME}/.claude"
 AGENTS_DIR="${CLAUDE_DIR}/agents"
 SKILLS_DIR="${CLAUDE_DIR}/skills"
-TEMPLATES_DIR="${HOME}/Documents/ObsidianVaults/_templates"
+MANIFEST="${CLAUDE_DIR}/.vaultcraft-installed"
 
 GREEN='\033[0;32m'
 BLUE='\033[0;34m'
@@ -31,43 +32,69 @@ banner() {
 EOF
 }
 
+# Copy one file and record it in the manifest, so uninstall removes only what we installed.
+install_file() {
+  local src="$1" dest="$2"
+  mkdir -p "$(dirname "${dest}")"
+  cp "${src}" "${dest}"
+  grep -qxF "${dest}" "${MANIFEST}" 2>/dev/null || echo "${dest}" >> "${MANIFEST}"
+}
+
 install_files() {
-  echo -e "${BLUE}→${RESET} Installing agent to ${AGENTS_DIR}"
-  mkdir -p "${AGENTS_DIR}"
-  cp "${REPO_ROOT}/agents/vaultcraft.md" "${AGENTS_DIR}/"
+  mkdir -p "${CLAUDE_DIR}"
+  touch "${MANIFEST}"
 
-  echo -e "${BLUE}→${RESET} Installing vaultcraft front-end skill to ${SKILLS_DIR}/vaultcraft"
-  mkdir -p "${SKILLS_DIR}/vaultcraft"
-  cp "${REPO_ROOT}/skills/vaultcraft/SKILL.md" "${SKILLS_DIR}/vaultcraft/"
+  echo -e "${BLUE}→${RESET} Installing agent to ${AGENTS_DIR}/vaultcraft.md"
+  install_file "${REPO_ROOT}/agents/vaultcraft.md" "${AGENTS_DIR}/vaultcraft.md"
 
-  echo -e "${BLUE}→${RESET} Installing bundled skills to ${SKILLS_DIR}"
-  mkdir -p "${SKILLS_DIR}"
-  for skill_dir in obsidian-markdown obsidian-bases obsidian-cli json-canvas; do
-    if [ -d "${REPO_ROOT}/skills/${skill_dir}" ]; then
-      cp -R "${REPO_ROOT}/skills/${skill_dir}" "${SKILLS_DIR}/"
-    fi
-  done
+  echo -e "${BLUE}→${RESET} Installing front-end skill to ${SKILLS_DIR}/vaultcraft/"
+  install_file "${REPO_ROOT}/skills/vaultcraft/SKILL.md" "${SKILLS_DIR}/vaultcraft/SKILL.md"
 
-  echo -e "${BLUE}→${RESET} Copying templates to ${TEMPLATES_DIR}"
-  mkdir -p "${TEMPLATES_DIR}"
-  cp "${REPO_ROOT}/templates/"*.md "${TEMPLATES_DIR}/" 2>/dev/null || true
-
-  echo -e "${GREEN}✓${RESET} Install complete."
+  echo -e "${GREEN}✓${RESET} Install complete. Nothing else in ~/.claude was touched."
   echo
-  echo "Next: open Claude Code and run the skill (it shows the banner and asks the"
-  echo "intake questions in the main chat, then hands off to the agent):"
+  echo "Recommended: the official Obsidian skills by Steph Ango (MIT). In Claude Code:"
+  echo "      /plugin marketplace add kepano/obsidian-skills"
+  echo "      /plugin install obsidian@obsidian-skills"
+  echo
+  echo "Then run the skill in Claude Code (banner + intake in the main chat, then the agent builds):"
   echo "      > /vaultcraft"
   echo "      > /vaultcraft build a vault from ~/Downloads/slides/"
 }
 
-uninstall_files() {
-  echo -e "${YELLOW}!${RESET} Removing vaultcraft files from ${CLAUDE_DIR}"
-  rm -f "${AGENTS_DIR}/vaultcraft.md"
-  rm -rf "${SKILLS_DIR:?}/vaultcraft"
-  for skill_dir in obsidian-markdown obsidian-bases obsidian-cli json-canvas; do
-    rm -rf "${SKILLS_DIR:?}/${skill_dir}"
+install_templates() {
+  local dir="$1"
+  echo -e "${BLUE}→${RESET} Copying note templates to ${dir} (existing files are kept)"
+  mkdir -p "${dir}"
+  for f in "${REPO_ROOT}/templates/"*.md; do
+    if [ -e "${dir}/$(basename "${f}")" ]; then
+      echo -e "  ${YELLOW}skip${RESET} $(basename "${f}") (already exists)"
+    else
+      cp "${f}" "${dir}/"
+    fi
   done
-  echo -e "${GREEN}✓${RESET} Uninstalled. Templates at ${TEMPLATES_DIR} were left untouched."
+}
+
+uninstall_files() {
+  if [ ! -f "${MANIFEST}" ]; then
+    echo -e "${YELLOW}!${RESET} No install manifest at ${MANIFEST}; nothing to remove."
+    echo "  (If you installed vaultcraft as a plugin, use: /plugin uninstall vaultcraft@vaultcraft)"
+    return
+  fi
+  echo -e "${YELLOW}!${RESET} Removing the files vaultcraft installed:"
+  while IFS= read -r path; do
+    [ -n "${path}" ] || continue
+    case "${path}" in
+      "${CLAUDE_DIR}"/*) ;;
+      *) echo "  skip ${path} (outside ${CLAUDE_DIR})"; continue ;;
+    esac
+    if [ -e "${path}" ]; then
+      rm -f "${path}"
+      echo "  removed ${path}"
+    fi
+  done < "${MANIFEST}"
+  rmdir "${SKILLS_DIR}/vaultcraft" 2>/dev/null || true
+  rm -f "${MANIFEST}"
+  echo -e "${GREEN}✓${RESET} Uninstalled. Other skills and agents were left alone."
 }
 
 run_demo() {
@@ -84,41 +111,65 @@ run_demo() {
   echo "  Source materials : ${demo_src}"
   echo "  Output vault     : ${demo_out}"
   echo
-  echo "After install, open Claude Code in this directory and paste:"
+  echo "Open Claude Code in this directory and paste:"
   echo
   cat <<EOF
-> use vaultcraft to build a 'studies' vault called "NLP Demo"
+> /vaultcraft build a 'studies' vault called "NLP Demo"
 > from sources at ${demo_src}
 > output at ${demo_out}
 > language English, depth lean, format Detailed narrative
 EOF
   echo
-  echo "The agent will run Phase 1 intake (chip-style), confirm the plan, and build a"
+  echo "The skill asks the intake questions, confirms the plan, then the agent builds a"
   echo "small but complete sample vault you can open in Obsidian."
 }
 
-main() {
-  banner
-  echo
+usage() {
+  cat <<EOF
+Usage:
+  ./install.sh                      install the agent + front-end skill into ~/.claude/
+  ./install.sh --templates DIR      also copy note templates into DIR (never overwrites)
+  ./install.sh --demo               install + show how to run the bundled NLP demo
+  ./install.sh --uninstall          remove only the files this installer put there
 
+Recommended instead: install as a Claude Code plugin (works on macOS, Linux and Windows):
+  /plugin marketplace add MikolajSapek/vaultcraft
+  /plugin install vaultcraft@vaultcraft
+EOF
+}
+
+main() {
   case "${1:-install}" in
     --uninstall|uninstall)
+      banner; echo
       uninstall_files
       ;;
     --demo|demo)
+      banner; echo
       install_files
       run_demo
       ;;
+    --templates)
+      if [ -z "${2:-}" ]; then
+        echo -e "${RED}✗${RESET} --templates needs a target directory" >&2
+        usage >&2
+        exit 1
+      fi
+      banner; echo
+      install_files
+      install_templates "$2"
+      ;;
     --help|-h|help)
-      cat <<EOF
-Usage:
-  ./install.sh              install agent + skills to ~/.claude/
-  ./install.sh --demo       install + show how to run the bundled NLP demo
-  ./install.sh --uninstall  remove vaultcraft files from ~/.claude/
-EOF
+      usage
+      ;;
+    install)
+      banner; echo
+      install_files
       ;;
     *)
-      install_files
+      echo -e "${RED}✗${RESET} Unknown option: $1" >&2
+      usage >&2
+      exit 1
       ;;
   esac
 }

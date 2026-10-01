@@ -5,11 +5,17 @@ on:
     branches: [main]
     paths:
       - '**.sh'
+      - 'agents/**'
+      - 'skills/**'
+      - 'templates/**'
       - '.github/workflows/shellcheck.yml'
   pull_request:
     branches: [main]
     paths:
       - '**.sh'
+      - 'agents/**'
+      - 'skills/**'
+      - 'templates/**'
       - '.github/workflows/shellcheck.yml'
 
 jobs:
@@ -24,3 +30,6 @@ jobs:
           severity: error
           scandir: '.'
           ignore_paths: 'node_modules .git'
+
+      - name: Installer regression test
+        run: ./tests/install-test.sh
