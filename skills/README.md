@@ -1,55 +1,39 @@
-# Skills bundled with vaultcraft
+# Skills
 
-The vaultcraft agent calls four Obsidian-specific [Claude Code skills](https://docs.claude.com/en/docs/claude-code/skills). To save you a separate install, copies are bundled here.
+This folder holds one skill: **`vaultcraft/`**, the interactive front-end. It shows the banner and runs the intake questions in the main conversation, then hands the build to the `vaultcraft` agent (a subagent cannot show a banner or ask interactive questions itself).
 
-## Installation
+## Recommended companion: Obsidian skills by Steph Ango
 
-```bash
-mkdir -p ~/.claude/skills
-cp -r skills/* ~/.claude/skills/
+The agent works best with the official Obsidian skills from [kepano/obsidian-skills](https://github.com/kepano/obsidian-skills) (MIT licence, by Steph Ango). They are **not** copied into this repo; install them from the source so you always get the current version.
+
+As a Claude Code plugin:
+
+```text
+/plugin marketplace add kepano/obsidian-skills
+/plugin install obsidian@obsidian-skills
 ```
 
-After this, Claude Code will auto-discover them on the next session.
+Or manually, by following the instructions in that repository.
 
-## What each skill does
+| Skill | What vaultcraft uses it for |
+|---|---|
+| `obsidian-markdown` | Valid Obsidian Flavored Markdown: wikilinks, embeds, callouts, properties |
+| `obsidian-bases` | `.base` files for the Study Dashboard |
+| `obsidian-cli` | Bulk vault operations (rename, move, link checks) |
+| `json-canvas` | `.canvas` concept maps |
 
-| Skill | Purpose | When the agent invokes it |
-|---|---|---|
-| `obsidian-markdown` | Generate valid Obsidian Flavored Markdown (wikilinks, embeds, callouts, properties) | Any time the agent writes a note - handles edge cases the agent doesn't memorise |
-| `obsidian-bases` | Build `.base` files (Obsidian Bases) - filterable database views | Phase 7, when generating the Study Dashboard |
-| `obsidian-cli` | Bulk vault operations (rename, move, link verification) via Obsidian CLI | Optional - used when doing >20 file operations in one pass |
-| `json-canvas` | Build `.canvas` JSON Canvas files (visual concept maps) | Phase 6, when generating the optional Course Map |
+## Are they required?
 
-## Are these required?
+**No.** If a skill is missing, the agent falls back to its own `Read`/`Write`/`Edit` tools:
 
-**No.** The agent gracefully falls back to direct `Read`/`Write`/`Edit` tools if a skill is missing. The skills speed things up and avoid syntax mistakes, but the agent works without them.
+- it still writes valid Obsidian Markdown from its own knowledge,
+- the Study Dashboard (`.base`) and Course Map (`.canvas`) become optional,
+- bulk file operations go through Bash.
 
-If you skip the install, the agent will:
+## Other skills the agent can use if you have them
 
-- Still produce valid Obsidian-flavored markdown (using its own knowledge)
-- Skip `.base` generation (Phase 7's Study Dashboard becomes optional)
-- Skip `.canvas` generation (Phase 6 was already low-priority)
-- Use Bash for any bulk file ops
+`defuddle`, `deep-research`, `exa-search`, `docs` and `iterative-retrieval` are general-purpose skills with their own install paths. None is required:
 
-## Attribution
-
-These skill files were installed locally on the maintainer's machine in April 2026, source unknown (no `LICENSE` file present at install). They are bundled here verbatim for convenience.
-
-**If you authored any of these skills and want attribution credit or removal from this repo, please open an issue.** We will update or remove on request - no questions asked.
-
-## Skills the agent references but does NOT bundle
-
-The agent's "Skills You Leverage" section also mentions these general-purpose skills:
-
-- `defuddle` - clean markdown extraction from web pages
-- `deep-research` - multi-source web research with synthesis (firecrawl + exa MCPs)
-- `exa-search` - neural search via Exa MCP
-- `docs` - Context7 documentation lookup
-- `iterative-retrieval` - progressive context retrieval for very long PDFs
-- `context-engineering` - meta-skill for agent context optimisation
-
-These are NOT bundled because they are general-purpose tools used across many agents and have their own install paths. The agent will function without them - they are nice-to-have for specific phases:
-
-- Phase 2 web supplementation: prefer `WebSearch` + `WebFetch` if `deep-research`/`exa-search` aren't installed
-- Phase 4 lab notes: skip API verification if `docs` isn't installed
-- Phase 2 large PDFs: use `Read` with `pages` parameter if `iterative-retrieval` isn't installed
+- web supplementation falls back to `WebSearch` + `WebFetch`,
+- lab notes skip API verification without `docs`,
+- large PDFs are read page by page with `Read` when `iterative-retrieval` is missing.
