@@ -78,7 +78,7 @@ styles, flashcards, name, path, sources, mode). Then one `AskUserQuestion`, head
 
 ## Step 5 — Delegate generation to the `vaultcraft` agent
 
-On Proceed, dispatch the `vaultcraft` agent (Task tool, `subagent_type: vaultcraft`)
+On Proceed, dispatch the `vaultcraft` agent (Agent tool, `subagent_type: vaultcraft`; when vaultcraft is installed as a plugin the type is `vaultcraft:vaultcraft`, so use whichever of the two the Agent tool lists)
 with a prompt that starts with this exact marker so the agent skips its own banner
 and intake:
 

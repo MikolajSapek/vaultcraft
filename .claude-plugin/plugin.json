@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "vaultcraft",
+  "version": "0.2.0",
+  "description": "Turns lecture slides, labs, meeting notes and papers into an exam-ready, linked Obsidian vault: atomic notes with hover definitions, embedded slides, comparison tables and cross-course bridges.",
+  "author": {
+    "name": "Mikołaj Sapek",
+    "url": "https://github.com/MikolajSapek"
+  },
+  "homepage": "https://github.com/MikolajSapek/vaultcraft",
+  "repository": "https://github.com/MikolajSapek/vaultcraft",
+  "license": "MIT",
+  "keywords": [
+    "obsidian",
+    "study",
+    "notes",
+    "knowledge-vault",
+    "education"
+  ]
+}
