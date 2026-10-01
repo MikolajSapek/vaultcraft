@@ -11,7 +11,7 @@
 [![Obsidian](https://img.shields.io/badge/Obsidian-compatible-7C5CB8)](https://obsidian.md)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
-A [Claude Code](https://claude.com/claude-code) agent that turns any scattered materials — lecture slides, meeting notes, project docs, research papers — into a navigable, richly visual [Obsidian](https://obsidian.md) knowledge vault. Hover-visible definitions, embedded PDFs, extracted figures, ELI5 analogies, comparison tables, Kanban boards, stakeholder profiles, and spaced-repetition flashcards.
+A [Claude Code](https://claude.com/claude-code) agent that turns any scattered materials — lecture slides, meeting notes, project docs, research papers — into a navigable, richly visual [Obsidian](https://obsidian.md) knowledge vault. Hover-visible definitions, embedded PDFs, extracted figures, ELI5 analogies, comparison tables, Kanban boards, stakeholder profiles, and optional spaced-repetition flashcards.
 
 [Quick start](#installation) · [How to use](#how-to-use) · [Vault types](#vault-types) · [Examples](docs/examples.md) · [Conventions](docs/conventions.md) · [Roadmap](ROADMAP.md) · [Contributing](CONTRIBUTING.md)
 
@@ -57,7 +57,7 @@ The first intake question — *what kind of vault is this?* — determines folde
 
 | Type | Built for | Key outputs |
 |---|---|---|
-| **`studies`** | Exam prep, course notes | Concept notes, lecture sheets, `Tables.md`, spaced-repetition flashcards, exam questions |
+| **`studies`** | Exam prep, course notes | Concept notes, lecture sheets, `Tables.md`, exam questions, optional flashcards |
 | **`work`** | Professional knowledge base | Kanban board, meeting notes, stakeholder profiles, decision log, project hubs, `Documents/` per person |
 | **`research`** | Literature review, paper notes | Paper notes, concept notes, hypotheses, bibliography-compatible frontmatter |
 | **`personal`** | Hobbies, life skills, curiosity | Topic notes, practice logs, ELI5 analogies, optional flashcards |
@@ -197,13 +197,13 @@ The Obsidian graph view of the four-course vault:
 
 Phase 6 runs automatically. The agent copies source materials into the vault, converts `.pptx` / `.docx` to PDF, drops an inline callout in each lecture note, and embeds extracted figures at the relevant section:
 
-![Lecture note with source slides and extracted figure embedded inline](examples/screenshots/source-slide-embedded.png)
+![Lecture note with the source slides embedded inline](examples/screenshots/source-slide-embedded.png)
 
-**What you're looking at:**
+**What you're looking at** (built from the bundled demo materials):
 
-- The `> [!example]+ 🎞️ Course slides` callout renders the converted PDF using Obsidian's native viewer
-- An extracted figure (`![[Assets/ML-L08-fig12-relu-vs-sigmoid.png|600]]`) embedded inline at the activation-functions section
-- The typed lecture summary continues below — notes and original deck in the same scroll
+- The lecture note's properties: course, session, source file, exam-likely flag
+- The `> [!example]+ 🎞️ Course slides` callout rendering the slide PDF in Obsidian's native viewer, opened at the relevant page
+- Extracted figures (e.g. `![[Assets/ML-L08-fig12-relu-vs-sigmoid.png|600]]`) are embedded the same way at the matching section, so notes and the original deck sit in one scroll
 
 ---
 
@@ -220,20 +220,36 @@ Phase 6 runs automatically. The agent copies source materials into the vault, co
 
 4. **LibreOffice** (for PPTX/DOCX → PDF conversion): `brew install --cask libreoffice`. Optional — without it, `.pptx` files can't be embedded inline.
 
-### Install the agent
+### Install
 
-```bash
-# 1. Clone this repo
-git clone https://github.com/MikolajSapek/vaultcraft.git
-cd vaultcraft
+**Option A: Claude Code plugin (recommended; macOS, Linux and Windows).** In Claude Code:
 
-# 2. Run the installer
-./install.sh                 # install agent + skills + templates
-./install.sh --demo          # install + show how to run the bundled NLP demo
-./install.sh --uninstall     # remove vaultcraft from ~/.claude/
+```text
+/plugin marketplace add MikolajSapek/vaultcraft
+/plugin install vaultcraft@vaultcraft
 ```
 
-The installer copies the agent to `~/.claude/agents/`, bundled skills to `~/.claude/skills/`, and templates to `~/Documents/ObsidianVaults/_templates/`.
+Recommended companion: the official Obsidian skills by Steph Ango ([kepano/obsidian-skills](https://github.com/kepano/obsidian-skills), MIT). vaultcraft works without them, but uses them for Obsidian syntax, Bases and Canvas when they are there:
+
+```text
+/plugin marketplace add kepano/obsidian-skills
+/plugin install obsidian@obsidian-skills
+```
+
+Then type `/vaultcraft` and pick it from the list (installed as a plugin it shows up as `/vaultcraft:vaultcraft`). Update later with `/plugin update vaultcraft@vaultcraft`.
+
+**Option B: install script (macOS and Linux).**
+
+```bash
+git clone https://github.com/MikolajSapek/vaultcraft.git
+cd vaultcraft
+./install.sh                          # agent + front-end skill into ~/.claude/
+./install.sh --templates <folder>     # optional: copy note templates into <folder>
+./install.sh --demo                   # install + show how to run the bundled NLP demo
+./install.sh --uninstall              # remove only what the installer added
+```
+
+The script copies two files (the agent and the `/vaultcraft` skill), records them in `~/.claude/.vaultcraft-installed`, and never overwrites or deletes any other skill or agent. Templates are copied only when you ask, and existing templates are kept.
 
 ### Try the demo (60 seconds)
 
@@ -242,6 +258,10 @@ The installer copies the agent to `~/.claude/agents/`, bundled skills to `~/.cla
 ```
 
 This installs the agent and shows you exactly what to paste into Claude Code to build a small NLP vault from three bundled lecture stubs. Output lands at `~/Documents/ObsidianVaults/vaultcraft-demo/`.
+
+### Long runs
+
+A single run stops after 150 turns. For a big course, Claude Code then returns a partial result: just say *continue*. The agent keeps its place in `.vault-progress.md` at the vault root and picks up where it stopped.
 
 ---
 
@@ -316,14 +336,16 @@ The agent uses **3-tier model routing** — Haiku for mechanical writing, Sonnet
 
 ```text
 vaultcraft/
+├── .claude-plugin/
+│   ├── plugin.json              ← Claude Code plugin manifest
+│   └── marketplace.json         ← Lets this repo act as its own plugin marketplace
 ├── agents/
 │   └── vaultcraft.md            ← The agent definition
-├── skills/                      ← Obsidian skills the agent uses
-│   ├── obsidian-markdown/
-│   ├── obsidian-bases/
-│   ├── obsidian-cli/
-│   ├── json-canvas/
-│   └── README.md
+├── skills/
+│   ├── vaultcraft/SKILL.md      ← The /vaultcraft front-end (banner + intake)
+│   └── README.md                ← Recommended companion skills (kepano/obsidian-skills)
+├── tests/
+│   └── install-test.sh          ← Installer regression test (runs in CI)
 ├── docs/
 │   ├── installation.md
 │   ├── usage.md

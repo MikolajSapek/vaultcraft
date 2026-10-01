@@ -38,29 +38,40 @@ Without a working MCP connection, vaultcraft falls back to writing files directl
 
 ## Step 1 - Install the agent
 
+**Recommended: as a Claude Code plugin** (macOS, Linux and Windows). In Claude Code:
+
+```text
+/plugin marketplace add MikolajSapek/vaultcraft
+/plugin install vaultcraft@vaultcraft
+```
+
+Optional but recommended, the official Obsidian skills by Steph Ango ([kepano/obsidian-skills](https://github.com/kepano/obsidian-skills), MIT):
+
+```text
+/plugin marketplace add kepano/obsidian-skills
+/plugin install obsidian@obsidian-skills
+```
+
+The agent falls back to its own tools when these skills are missing. See [`skills/README.md`](../skills/README.md) for what each one adds.
+
+**Alternative: the install script** (macOS and Linux):
+
 ```bash
 git clone https://github.com/MikolajSapek/vaultcraft.git
 cd vaultcraft
-
-# Install the agent
-mkdir -p ~/.claude/agents
-cp agents/vaultcraft.md ~/.claude/agents/
-
-# Install the bundled Obsidian skills (recommended)
-mkdir -p ~/.claude/skills
-cp -r skills/obsidian-markdown skills/obsidian-bases skills/obsidian-cli skills/json-canvas ~/.claude/skills/
+./install.sh
 ```
 
-The `skills/` install is **recommended but optional** - the agent gracefully falls back to direct tools if any skill is missing. See [`skills/README.md`](../skills/README.md) for which skills do what.
+It copies only `agents/vaultcraft.md` and `skills/vaultcraft/SKILL.md` into `~/.claude/`, records them in `~/.claude/.vaultcraft-installed`, and leaves every other skill and agent alone. `./install.sh --uninstall` removes exactly those files.
 
 Verify Claude Code sees the agent:
 
 ```bash
-ls ~/.claude/agents/ | grep obsidian
+ls ~/.claude/agents/ | grep vaultcraft
 # vaultcraft.md
 ```
 
-That's it for the agent - Claude Code picks up agents from `~/.claude/agents/` automatically on each invocation.
+Plugin installs show up under `/plugin` instead.
 
 ## Step 2 - Set up your first vault folder
 
@@ -133,7 +144,7 @@ If not, check:
 
 **"PPTX cannot be read"** → install LibreOffice (`brew install --cask libreoffice` on macOS) and confirm `soffice --version` works in terminal.
 
-**"Agent timed out at 40 turns"** → the agent has a `maxTurns: 40` cap. Use `depth: lean` in your initial intake or split the work into incremental runs (the agent's incremental mode preserves config and only adds new content).
+**"The agent stopped with a partial result"** → a run is capped at 150 turns (`maxTurns: 150`). Say *continue*: the agent resumes from `.vault-progress.md`. For very large courses, `depth: lean` or splitting the work into incremental runs also helps.
 
 **"Hover preview doesn't show definition"** → ensure Obsidian's `Page preview` core plugin is enabled (Settings → Core plugins → Page preview).
 

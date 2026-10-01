@@ -145,9 +145,9 @@ sudo apt install libreoffice  # or your distro equivalent
 
 Test: `soffice --version` should print a version. If "command not found", add LibreOffice's `program/` folder to PATH.
 
-### Agent timed out at 40 turns
+### The agent stopped with a partial result
 
-The agent has `maxTurns: 40` to prevent runaway costs. For very large courses (30+ lectures), one run isn't enough. Two strategies:
+A run is capped at `maxTurns: 150` to prevent runaway costs. When it hits the cap, Claude Code returns a partial result; say *continue* and the agent resumes from `.vault-progress.md`. For very large courses (30+ lectures) you can also plan for it:
 
 - **Split:** run lectures+concepts first, labs+Tables in a second invocation
 - **Lean first:** use `depth: lean` for the first pass; targeted re-runs to expand specific lectures
@@ -161,14 +161,14 @@ Two possible causes:
 
 ### "I get errors saying skill X not found"
 
-Make sure you ran the install steps in `docs/installation.md`:
+The Obsidian skills are optional and no longer bundled. Install them from the source ([kepano/obsidian-skills](https://github.com/kepano/obsidian-skills)):
 
-```bash
-mkdir -p ~/.claude/skills
-cp -r skills/* ~/.claude/skills/
+```text
+/plugin marketplace add kepano/obsidian-skills
+/plugin install obsidian@obsidian-skills
 ```
 
-If still missing, the agent should fall back to direct tools - but if it doesn't, add a frontmatter override at the top of the agent file:
+If a skill is still missing, the agent should fall back to direct tools - but if it doesn't, add a frontmatter override at the top of the agent file:
 
 ```yaml
 ---

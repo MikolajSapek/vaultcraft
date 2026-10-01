@@ -6,6 +6,27 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) 
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-10-01
+
+### Added
+
+- **Claude Code plugin.** `.claude-plugin/plugin.json` and `.claude-plugin/marketplace.json` make the repo installable on macOS, Linux and Windows with `/plugin marketplace add MikolajSapek/vaultcraft` and `/plugin install vaultcraft@vaultcraft`, and updatable with `/plugin update`.
+- **Installer regression test** (`tests/install-test.sh`), run in CI next to shellcheck. It fails if the installer overwrites or deletes anything it did not install.
+
+### Changed
+
+- **Installer no longer touches other people's files.** `install.sh` copies only the agent and the `/vaultcraft` front-end skill, records them in `~/.claude/.vaultcraft-installed`, and `--uninstall` removes exactly those files. Previously it overwrote same-named Obsidian skills and its uninstall deleted them.
+- **Templates are copied only on request** with `./install.sh --templates <folder>`, and existing templates are kept. The installer no longer creates `~/Documents/ObsidianVaults/_templates` on its own.
+- **`maxTurns` raised from 40 to 150**, with the turn budget in Phase 1.5 updated to match. A run that still hits the cap returns a partial result; saying *continue* resumes from `.vault-progress.md`.
+- The front-end skill dispatches the agent as `vaultcraft` or, when installed as a plugin, `vaultcraft:vaultcraft`; the agent accepts plugin-prefixed Obsidian skill names.
+- README screenshot of an embedded slide deck now comes from the bundled demo materials instead of real course slides.
+
+### Removed
+
+- **Bundled copies of the Obsidian skills** (`obsidian-markdown`, `obsidian-bases`, `obsidian-cli`, `json-canvas`). They belong to [kepano/obsidian-skills](https://github.com/kepano/obsidian-skills) by Steph Ango (MIT) and were outdated copies without the licence notice. The docs now point to installing them from the source; the agent still falls back to its own tools without them.
+
+### Earlier unreleased changes (shipped in 0.2.0)
+
 ### Changed
 
 - **Flashcards are now opt-in, not the default.** The Phase 1 intake option reads `None (Recommended) · Key concepts only · Every concept`. The agent no longer generates a `## Flashcards` section unless the user explicitly asked for spaced repetition, never adds one to a vault that does not already use them, and never reintroduces one when rewriting an existing note. Templates keep the section as a clearly marked optional block.
@@ -82,5 +103,6 @@ First public release of vaultcraft.
 - Demo GIF showing agent in action
 - Course-recipe library (community-contributed working configurations for specific courses)
 
-[Unreleased]: https://github.com/MikolajSapek/vaultcraft/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/MikolajSapek/vaultcraft/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/MikolajSapek/vaultcraft/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/MikolajSapek/vaultcraft/releases/tag/v0.1.0
