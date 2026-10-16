@@ -52,8 +52,8 @@ case "${desc}" in *"<"*|*">"*) fail "SKILL.md description contains angle bracket
 
 [ -z "$(git ls-files | grep -E '(^|/)(\.DS_Store|Thumbs\.db|desktop\.ini|__MACOSX)')" ] || fail "OS junk files tracked"
 # The whole repo is the plugin, and the Claude scan holds any image a file names.
-# README images live on the media branch; logos are SVG.
-binaries="$(git ls-files | grep -iE '\.(png|jpe?g|gif|webp|ico|pdf|zip)$' || true)"
+# README images live on the media branch; the only image is the Claude directory icon.
+binaries="$(git ls-files | grep -iE '\.(png|jpe?g|gif|webp|ico|pdf|zip)$' | grep -vx '.claude-plugin/icon.png' || true)"
 [ -z "${binaries}" ] || fail "binary files tracked (move them to the media branch): ${binaries}"
 while IFS= read -r f; do
   [ "$(wc -c < "${f}")" -le 262144 ] || fail "${f} is over 256 KiB"
