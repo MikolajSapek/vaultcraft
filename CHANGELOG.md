@@ -6,6 +6,24 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) 
 
 ## [Unreleased]
 
+## [0.3.1] - 2026-10-16
+
+### Added
+
+- `PRIVACY.md`, linked from the README and declared as `privacyPolicyUrl` / `privacyPolicyURL` in both manifests.
+- Codex `supportURL`.
+
+### Changed
+
+- README images moved to the `media` branch, so the plugin ships no binary files.
+- The Codex logo and composer icon use `assets/logo.svg`.
+- The Codex listing meets the OpenAI directory limits: short description of 30 characters or fewer, category `Education & Research`.
+- `tests/manifest-test.sh` checks for binaries and enforces the OpenAI listing limits.
+
+### Removed
+
+- The outdated Obsidian MCP and API key setup from `docs/installation.md`.
+
 ## [0.3.0] - 2026-10-15
 
 ### Added
