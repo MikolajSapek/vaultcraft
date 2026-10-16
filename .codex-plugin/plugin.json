@@ -35,6 +35,7 @@
     ],
     "brandColor": "#7C5CB8",
     "composerIcon": "./assets/icon.png",
-    "logo": "./assets/logo.png"
+    "logo": "./assets/logo.png",
+    "privacyPolicyURL": "https://github.com/MikolajSapek/vaultcraft/blob/main/PRIVACY.md"
   }
 }

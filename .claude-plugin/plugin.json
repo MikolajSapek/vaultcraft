@@ -10,6 +10,7 @@
   },
   "homepage": "https://github.com/MikolajSapek/vaultcraft",
   "repository": "https://github.com/MikolajSapek/vaultcraft",
+  "privacyPolicyUrl": "https://github.com/MikolajSapek/vaultcraft/blob/main/PRIVACY.md",
   "license": "MIT",
   "keywords": [
     "obsidian",
