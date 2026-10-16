@@ -1,6 +1,6 @@
 <div align="center">
 
-![vaultcraft banner](.github/banner.png)
+![vaultcraft banner](https://raw.githubusercontent.com/MikolajSapek/vaultcraft/media/banner.png)
 
 # vaultcraft
 
@@ -184,7 +184,7 @@ The screenshots below show the author's own vault — built from four CS courses
 
 The Obsidian graph view of the four-course vault:
 
-![Graph view of a 4-course vault built by vaultcraft](examples/screenshots/graph-view-example.png)
+![Graph view of a 4-course vault built by vaultcraft](https://raw.githubusercontent.com/MikolajSapek/vaultcraft/media/graph-view-example.png)
 
 **What you're looking at:**
 
@@ -198,7 +198,7 @@ The Obsidian graph view of the four-course vault:
 
 Phase 6 runs automatically. The agent copies source materials into the vault, converts `.pptx` / `.docx` to PDF, drops an inline callout in each lecture note, and embeds extracted figures at the relevant section:
 
-![Lecture note with the source slides embedded inline](examples/screenshots/source-slide-embedded.png)
+![Lecture note with the source slides embedded inline](https://raw.githubusercontent.com/MikolajSapek/vaultcraft/media/source-slide-embedded.png)
 
 **What you're looking at** (built from the bundled demo materials):
 
@@ -378,7 +378,7 @@ vaultcraft/
 │   ├── conventions.md
 │   ├── examples.md
 │   └── codex-maintenance.md
-├── examples/screenshots/
+├── examples/demo-materials/
 ├── .github/
 ├── README.md
 ├── ROADMAP.md

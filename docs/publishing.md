@@ -50,7 +50,7 @@ Requires an OpenAI Platform organisation where you are owner or have **Apps Mana
 2. Open the plugin submission flow in the OpenAI Platform ([submission docs](https://developers.openai.com/plugins/deploy/submission)) and upload the zip. Pick your verified developer identity.
 3. Listing fields, all read from `.codex-plugin/plugin.json`:
    - Display name: `vaultcraft`
-   - Category: `Education`
+   - Category: `Education & Research`
    - Short and long description: the `interface` block
    - Developer name: `Mikołaj Sapek`
 4. vaultcraft is skills only, so there is no MCP review, no test cases and no demo recording. Wait for the automated skill scan to finish, resolve anything it marks required, complete the policy attestations, and submit.
