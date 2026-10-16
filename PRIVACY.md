@@ -20,7 +20,7 @@ vaultcraft sends nothing to any other service.
 
 ## Optional vaultcraft server (ChatGPT and Codex directory version only)
 
-The Claude and Cursor versions, and installs from GitHub, do not use this server.
+The Claude and Cursor versions, and installs from GitHub, do not connect to this server unless you add it to your assistant yourself.
 
 - **What it receives.** For `get_vault_config` and `get_note_template`: the vault type, a language code and a template name. For `check_vault`: the paths and Markdown text of the notes the assistant passes in, and the names of attachment files. Notes can contain whatever personal data your materials contain.
 - **Why.** Only to return the requested settings, template or link report in the same request.
