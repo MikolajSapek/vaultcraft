@@ -12,7 +12,7 @@
 [![Obsidian](https://img.shields.io/badge/Obsidian-compatible-7C5CB8)](https://obsidian.md)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
-A plugin for Claude (claude.ai, Cowork, Claude Code), ChatGPT and Codex that turns any scattered materials — lecture slides, meeting notes, project docs, research papers — into a navigable, richly visual [Obsidian](https://obsidian.md) knowledge vault. Hover-visible definitions, embedded PDFs, extracted figures, ELI5 analogies, comparison tables, Kanban boards, stakeholder profiles, and optional spaced-repetition flashcards.
+A plugin for Claude (claude.ai, Cowork, Claude Code), ChatGPT, Codex and Cursor that turns any scattered materials — lecture slides, meeting notes, project docs, research papers — into a navigable, richly visual [Obsidian](https://obsidian.md) knowledge vault. Hover-visible definitions, embedded PDFs, extracted figures, ELI5 analogies, comparison tables, Kanban boards, stakeholder profiles, and optional spaced-repetition flashcards.
 
 [Quick start](#installation) · [How to use](#how-to-use) · [Vault types](#vault-types) · [Examples](docs/examples.md) · [Conventions](docs/conventions.md) · [Roadmap](ROADMAP.md) · [Contributing](CONTRIBUTING.md)
 
@@ -216,6 +216,7 @@ Phase 6 runs automatically. The agent copies source materials into the vault, co
 
 - **Claude** (claude.ai, the desktop app, Cowork and Claude Code): open **Customize > Plugins > Discover**, search for **vaultcraft** and add it. In Claude Code you can also run `/plugin directory`. A plugin added on claude.ai shows up in Claude Code too.
 - **ChatGPT and Codex**: open the **Plugins** tab in ChatGPT or the ChatGPT desktop app, search for **vaultcraft** and select **+**. In the Codex CLI, run `/plugins`.
+- **Cursor**: open the [Cursor Marketplace](https://cursor.com/marketplace), find **vaultcraft** and install it, or type `/add-plugin` in the agent chat.
 
 Then ask: *"Build an Obsidian study vault from these lecture slides"*, or type `/vaultcraft`.
 
@@ -250,7 +251,7 @@ The script copies the agent and the `skills/vaultcraft/` folder, records every f
 | Where | How it works | Where the vault ends up |
 |---|---|---|
 | Claude Code, Cowork | The skill runs the intake, then hands generation to the vaultcraft agent | Written straight to your vault folder |
-| Codex | The skill runs the whole pipeline itself | Written straight to your vault folder |
+| Codex, Cursor | The skill runs the whole pipeline itself | Written straight to your vault folder |
 | claude.ai chat, ChatGPT | The skill runs the whole pipeline in the chat's sandbox | A `.zip` you unzip and open in Obsidian with **Open folder as vault** |
 
 Optional helpers on your own machine: **poppler** (`brew install poppler`) extracts figures from PDFs, and **LibreOffice** (`brew install --cask libreoffice`) converts `.pptx`/`.docx` so they embed inline. Without them, figures stay inside the PDFs and slides are linked instead of embedded. Companion skills: the official Obsidian skills by Steph Ango ([kepano/obsidian-skills](https://github.com/kepano/obsidian-skills), MIT) are used for Obsidian syntax, Bases and Canvas when installed.
@@ -356,6 +357,7 @@ vaultcraft/
 │   └── marketplace.json         ← Lets this repo act as its own Claude marketplace
 ├── .codex-plugin/plugin.json    ← ChatGPT and Codex plugin manifest
 ├── .agents/plugins/marketplace.json ← Lets this repo act as its own Codex marketplace
+├── .cursor-plugin/plugin.json   ← Cursor plugin manifest
 ├── assets/                      ← Plugin logo and icon
 ├── agents/
 │   └── vaultcraft.md            ← Agent for Claude Code and Cowork, generated from the skill

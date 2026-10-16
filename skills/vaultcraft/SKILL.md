@@ -44,7 +44,7 @@ Skip any question the user's prompt already answered. If your host has an intera
 question tool (`AskUserQuestion` in Claude Code and Cowork), use it: ≤4 questions and
 ≤4 options per call, headers ≤12 chars, Recommended option first with `(Recommended)`,
 `multiSelect: true` where multiple answers fit, `preview` for Format/Style. If it has
-none (claude.ai chat, ChatGPT, Codex), send Batches A and B as ONE numbered plain-text
+none (claude.ai chat, ChatGPT, Codex, Cursor), send Batches A and B as ONE numbered plain-text
 list with the options and the recommended default on each line, and tell the user they
 can reply "defaults" to accept every recommendation.
 
@@ -118,7 +118,7 @@ file fails to parse), ask the user and re-dispatch.
 
 ### 5b. Everywhere else: run the pipeline yourself
 
-No vaultcraft agent listed (claude.ai chat, ChatGPT, Codex, or Claude Code with the
+No vaultcraft agent listed (claude.ai chat, ChatGPT, Codex, Cursor, or Claude Code with the
 skill alone): run the pipeline in this conversation.
 
 1. Read `references/principles.md` and `references/operations.md` now.
@@ -142,7 +142,7 @@ with the name of the model you actually are (not the Claude tiers in its example
 
 ### Where the vault goes
 
-- **You can write to the user's disk** (Claude Code, Cowork with a folder, Codex): write
+- **You can write to the user's disk** (Claude Code, Cowork with a folder, Codex, Cursor): write
   to the vault path from Batch C.
 - **You run in a sandbox** (claude.ai chat, ChatGPT): build the vault in a working
   folder named after the course, then zip it as `<name>-vault.zip` and give the user

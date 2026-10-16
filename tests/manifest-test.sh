@@ -12,8 +12,10 @@ json() { python3 -c "import json,sys; d=json.load(open(sys.argv[1])); print(eval
 v_claude="$(json .claude-plugin/plugin.json 'd["version"]')"
 v_market="$(json .claude-plugin/marketplace.json 'd["plugins"][0]["version"]')"
 v_codex="$(json .codex-plugin/plugin.json 'd["version"]')"
-[ "${v_claude}" = "${v_market}" ] && [ "${v_claude}" = "${v_codex}" ] \
-  || fail "versions differ: claude ${v_claude}, marketplace ${v_market}, codex ${v_codex}"
+v_cursor="$(json .cursor-plugin/plugin.json 'd["version"]')"
+[ "${v_claude}" = "${v_market}" ] && [ "${v_claude}" = "${v_codex}" ] && [ "${v_claude}" = "${v_cursor}" ] \
+  || fail "versions differ: claude ${v_claude}, marketplace ${v_market}, codex ${v_codex}, cursor ${v_cursor}"
+[ -f "$(json .cursor-plugin/plugin.json 'd["logo"]')" ] || fail "cursor logo missing"
 grep -q "^## \[${v_claude}\]" CHANGELOG.md || fail "CHANGELOG has no entry for ${v_claude}"
 
 for field in logo composerIcon; do

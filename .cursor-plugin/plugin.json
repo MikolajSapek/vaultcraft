@@ -1,0 +1,28 @@
+{
+  "name": "vaultcraft",
+  "displayName": "vaultcraft",
+  "version": "0.3.1",
+  "description": "Turns lecture slides, labs, meeting notes and papers into an exam-ready, linked Obsidian vault: atomic notes with hover definitions, embedded slides, comparison tables and cross-course bridges.",
+  "author": {
+    "name": "Mikołaj Sapek"
+  },
+  "homepage": "https://github.com/MikolajSapek/vaultcraft",
+  "repository": "https://github.com/MikolajSapek/vaultcraft",
+  "license": "MIT",
+  "logo": "assets/logo.svg",
+  "keywords": [
+    "obsidian",
+    "study",
+    "notes",
+    "knowledge-vault",
+    "education"
+  ],
+  "category": "education",
+  "tags": [
+    "obsidian",
+    "study-notes",
+    "knowledge-base"
+  ],
+  "skills": "./skills/",
+  "agents": []
+}
