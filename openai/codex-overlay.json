@@ -15,7 +15,7 @@
               "description": "Work vault in Polish",
               "prompt": "I want a work vault for my team's project notes, written in Polish. Which Obsidian settings and folders should it have?",
               "tools_triggered": "get_vault_config",
-              "expected_behavior": "Calls get_vault_config with vault_type work and spellcheck_language pl; app.json lists pl as the spellcheck language and the folders are Projects, Meetings, Companies, People, Decisions, Concepts."
+              "expected_behavior": "Calls get_vault_config with vault_type work and spellcheck_language pl. The answer recommends Polish spellcheck, hover previews, graph colours per folder and the work folders (meetings, projects, companies, people, decisions, concepts), possibly with Polish folder names."
             },
             {
               "description": "Concept note template",
