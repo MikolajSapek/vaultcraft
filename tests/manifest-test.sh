@@ -16,9 +16,9 @@ v_codex="$(json .codex-plugin/plugin.json 'd["version"]')"
   || fail "versions differ: claude ${v_claude}, marketplace ${v_market}, codex ${v_codex}"
 grep -q "^## \[${v_claude}\]" CHANGELOG.md || fail "CHANGELOG has no entry for ${v_claude}"
 
-for key in logo composerIcon; do
-  f="$(json .codex-plugin/plugin.json "d['interface']['${key}']")"
-  [ -f "${f}" ] || fail "codex ${key} ${f} missing"
+for field in logo composerIcon; do
+  f="$(json .codex-plugin/plugin.json "d['interface']['${field}']")"
+  [ -f "${f}" ] || fail "codex ${field} ${f} missing"
 done
 json .agents/plugins/marketplace.json 'd["plugins"][0]["name"]' | grep -qx vaultcraft || fail "codex marketplace entry missing"
 
