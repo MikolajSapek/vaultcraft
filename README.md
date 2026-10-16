@@ -264,7 +264,7 @@ vaultcraft is instructions only: no server, no telemetry, no code that runs on i
 - runs local commands such as `pdfimages` and `soffice --convert-to pdf` to extract figures and convert slides. It asks before installing anything;
 - searches the web (your assistant's own web tool) only to fill gaps in a concept, and cites every source in the note. Those search queries leave your machine; your files do not.
 
-Full details: [Privacy](PRIVACY.md).
+Full details: [Privacy](https://github.com/MikolajSapek/vaultcraft/blob/main/PRIVACY.md).
 
 ### Try the demo (60 seconds)
 
