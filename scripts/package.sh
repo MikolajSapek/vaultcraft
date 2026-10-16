@@ -11,5 +11,5 @@ out="dist/vaultcraft-${version}.zip"
 
 mkdir -p dist
 rm -f "${out}"
-git ls-files .claude-plugin .codex-plugin agents skills assets README.md LICENSE | zip -q -X "${out}" -@
+git ls-files .claude-plugin .codex-plugin agents skills assets README.md LICENSE PRIVACY.md | zip -q -X "${out}" -@
 echo "${out} ($(unzip -l "${out}" | tail -1 | awk '{print $2}') files)"
