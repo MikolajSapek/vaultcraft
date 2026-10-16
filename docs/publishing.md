@@ -44,17 +44,16 @@ Later releases: raise `version` in all three manifests (the manifest test enforc
 
 ## ChatGPT and Codex plugin directory
 
-Requires an OpenAI Platform organisation where you are owner or have **Apps Management Write**, and completed individual or business verification under organisation settings.
+OpenAI is not accepting skills-only plugins (2026-10-16), so this listing ships with the optional vaultcraft MCP server (code: [MikolajSapek/vaultcraft-mcp](https://github.com/MikolajSapek/vaultcraft-mcp), endpoint `https://vaultcraft.sapcorp.eu/mcp`). The server config and the review test cases live in `openai/` and go only into the OpenAI zip, so Claude and Cursor installs never connect to it.
 
-1. Run `./scripts/package.sh` and keep `dist/vaultcraft-<version>.zip`.
-2. Open the plugin submission flow in the OpenAI Platform ([submission docs](https://developers.openai.com/plugins/deploy/submission)) and upload the zip. Pick your verified developer identity.
-3. Listing fields, all read from `.codex-plugin/plugin.json`:
-   - Display name: `vaultcraft`
-   - Category: `Education & Research`
-   - Short and long description: the `interface` block
-   - Developer name: `Mikołaj Sapek`
-4. vaultcraft is skills only, so there is no MCP review, no test cases and no demo recording. Wait for the automated skill scan to finish, resolve anything it marks required, complete the policy attestations, and submit.
-5. Feedback arrives by email. Only one review per plugin can be open at a time.
+Requires an OpenAI Platform organisation where you are owner or have **Apps Management Write**, completed individual or business verification, and a project with global (not EU) data residency.
+
+1. Deploy the server and check `https://vaultcraft.sapcorp.eu/healthz` answers `ok`.
+2. Run `./scripts/package.sh` and keep `dist/vaultcraft-<version>-openai.zip`.
+3. Open [Plugins](https://platform.openai.com/plugins), select **Upload new or existing plugin**, pick your verified identity and upload the zip.
+4. **MCPs**: select `vaultcraft`, then **Connect**, authentication **None**. Put the domain-verification token in the server's `.env` as `OPENAI_APPS_CHALLENGE`, restart it, and finish verification. Wait for the tool scan.
+5. **Review details**: the five positive and three negative test cases come from the zip. Add the video walkthrough URL (record the test cases in ChatGPT).
+6. Resolve findings, complete the policy attestations and submit. Feedback arrives by email; only one review per plugin can be open at a time.
 
 ## Without a directory listing
 

@@ -43,6 +43,28 @@ print("\n".join(errs), file=sys.stderr); sys.exit(bool(errs))
 EOF
 json .agents/plugins/marketplace.json 'd["plugins"][0]["name"]' | grep -qx vaultcraft || fail "codex marketplace entry missing"
 
+# The MCP server ships only in the OpenAI zip: Claude and Cursor would auto-load a root .mcp.json.
+[ ! -e .mcp.json ] || fail "root .mcp.json would add the server to Claude and Cursor installs"
+python3 - <<'EOF' || fail "openai/ overlay breaks the OpenAI MCP review requirements"
+import json, sys
+o = json.load(open("openai/codex-overlay.json"))
+servers = json.load(open("openai/mcp.json"))["mcpServers"]
+i = json.load(open(".codex-plugin/plugin.json"))["interface"]
+errs = []
+if o.get("mcpServers") != "./.mcp.json": errs.append("overlay mcpServers must be ./.mcp.json")
+if len(servers) != 1 or not all(s.get("url", "").startswith("https://") for s in servers.values()):
+    errs.append("exactly one https MCP server")
+for k in ("websiteURL", "supportURL", "privacyPolicyURL", "termsOfServiceURL"):
+    if not i.get(k, "").startswith("https://"): errs.append(f"{k} required for MCP review")
+cases = o["extensions"]["com.openai"]["review"]["test_cases"]
+if len(cases["positive"]) != 5 or len(cases["negative"]) != 3: errs.append("need 5 positive and 3 negative cases")
+for c in cases["positive"]:
+    if not all(c.get(k) for k in ("description", "prompt", "tools_triggered", "expected_behavior")): errs.append(f"incomplete case {c.get('description')}")
+for c in cases["negative"]:
+    if not all(c.get(k) for k in ("description", "prompt")): errs.append("incomplete negative case")
+print("\n".join(errs), file=sys.stderr); sys.exit(bool(errs))
+EOF
+
 skill=skills/vaultcraft
 while IFS= read -r ref; do
   [ -f "${skill}/${ref}" ] || fail "SKILL.md points to missing ${ref}"

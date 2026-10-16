@@ -6,10 +6,22 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) 
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-10-16
+
 ### Added
 
+- Optional vaultcraft MCP server for the ChatGPT and Codex directory version
+  (`openai/`, server code in MikolajSapek/vaultcraft-mcp): `get_vault_config`,
+  `get_note_template` and `check_vault`. The skill uses them when the host lists them.
+- `TERMS.md`, declared as `termsOfServiceURL` in the Codex manifest.
+- `scripts/package.sh` also builds `dist/vaultcraft-<version>-openai.zip` with the
+  server config and the OpenAI review test cases.
 - Cursor plugin manifest (`.cursor-plugin/plugin.json`, skills only).
 - Claude directory icon (`.claude-plugin/icon.png`, declared as `icon`).
+
+### Changed
+
+- `PRIVACY.md` describes the optional server. The Claude and Cursor versions do not use it.
 
 ## [0.3.1] - 2026-10-16
 

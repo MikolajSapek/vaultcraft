@@ -127,6 +127,11 @@ skill alone): run the pipeline in this conversation.
    `phase-0-1-intake.md`, `phase-2-3-extract.md`, `phase-4-notes.md`,
    `phase-5-lectures.md`, `phase-6-9-finish.md`.
 3. Apply the substitutions below wherever those files name a tool you do not have.
+4. If your host lists the vaultcraft server tools `get_vault_config`, `get_note_template`
+   and `check_vault` (the ChatGPT and Codex directory version), use `get_vault_config`
+   for the Phase 2.5 settings, `get_note_template` before writing each note type, and run
+   `check_vault` on all notes before the final report or zip, then fix what it reports.
+   Without these tools, follow the references as written.
 
 | The references say | If you don't have it, do this instead |
 |---|---|

@@ -1,0 +1,66 @@
+{
+  "mcpServers": "./.mcp.json",
+  "extensions": {
+    "com.openai": {
+      "review": {
+        "test_cases": {
+          "positive": [
+            {
+              "description": "Settings for a new study vault",
+              "prompt": "Set up the Obsidian settings for a new study vault for my statistics course.",
+              "tools_triggered": "get_vault_config",
+              "expected_behavior": "Calls get_vault_config with vault_type studies and returns the .obsidian files (app.json, appearance.json, core-plugins.json, page-preview.json, graph.json, snippets/callouts.css, snippets/concept-cards.css) and the folder list Lectures, Labs, Concepts, Formulas, Examples."
+            },
+            {
+              "description": "Work vault in Polish",
+              "prompt": "I want a work vault for my team's project notes, written in Polish. Which Obsidian settings and folders should it have?",
+              "tools_triggered": "get_vault_config",
+              "expected_behavior": "Calls get_vault_config with vault_type work and spellcheck_language pl; app.json lists pl as the spellcheck language and the folders are Projects, Meetings, Companies, People, Decisions, Concepts."
+            },
+            {
+              "description": "Concept note template",
+              "prompt": "Show me the vaultcraft template for a concept note.",
+              "tools_triggered": "get_note_template",
+              "expected_behavior": "Calls get_note_template with kind concept and shows the template, which starts with frontmatter (tags, source, status, difficulty) and a definition callout."
+            },
+            {
+              "description": "Broken link with a suggested fix",
+              "prompt": "Check these vault notes for broken links:\nConcepts/TF-IDF.md: '---\\ntags: [concept]\\nsource: \"[[L01 - Intro]]\"\\n---\\n> [!definition] TF-IDF\\n> Weights a word by how rare it is.\\n\\nBuilds on [[Bag of Word]].'\nConcepts/Bag of Words.md: 'Counts words. See [[TF-IDF]].'\nLectures/L01 - Intro.md: 'First lecture.'",
+              "tools_triggered": "check_vault",
+              "expected_behavior": "Calls check_vault with the three notes. Reports one broken link, [[Bag of Word]] in Concepts/TF-IDF.md, with the suggestion [[Bag of Words]]; reports that L01 - Intro does not list TF-IDF and that TF-IDF has no example."
+            },
+            {
+              "description": "Build a vault from lecture notes",
+              "prompt": "Build an Obsidian study vault from these lecture notes. Use the defaults.",
+              "tools_triggered": "get_vault_config, get_note_template, check_vault",
+              "expected_behavior": "The vaultcraft skill asks its intake questions or accepts the defaults, writes concept and lecture notes from the attached files, calls check_vault on them, fixes reported problems, and returns the vault as a zip file to open in Obsidian.",
+              "file_attachment_urls": [
+                "https://raw.githubusercontent.com/MikolajSapek/vaultcraft/main/examples/demo-materials/L01_intro_to_nlp.md",
+                "https://raw.githubusercontent.com/MikolajSapek/vaultcraft/main/examples/demo-materials/L02_text_preprocessing.md"
+              ]
+            }
+          ],
+          "negative": [
+            {
+              "description": "Deleting notes is not supported: every tool is read-only.",
+              "prompt": "Delete all notes with broken links from my Obsidian vault."
+            },
+            {
+              "description": "No access to the user's computer: the server cannot open local files.",
+              "prompt": "Open the Obsidian vault in my Documents folder and fix its links for me."
+            },
+            {
+              "description": "Unrelated request: no vaultcraft tool should be called.",
+              "prompt": "What is the weather in Copenhagen tomorrow?"
+            }
+          ]
+        },
+        "commerce": false,
+        "commerce_description": "vaultcraft is free. It does not sell anything or process payments."
+      },
+      "publication": {
+        "release_notes": "Adds the optional vaultcraft server: Obsidian vault settings, note templates and a link check for finished notes."
+      }
+    }
+  }
+}

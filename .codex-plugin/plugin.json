@@ -1,6 +1,6 @@
 {
   "name": "vaultcraft",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "description": "Turns lecture slides, labs, meeting notes and papers into an exam-ready, linked Obsidian vault: atomic notes with hover definitions, embedded slides, comparison tables and cross-course bridges.",
   "author": {
     "name": "Mikołaj Sapek",
@@ -37,6 +37,7 @@
     "composerIcon": "./assets/logo.svg",
     "logo": "./assets/logo.svg",
     "privacyPolicyURL": "https://github.com/MikolajSapek/vaultcraft/blob/main/PRIVACY.md",
-    "supportURL": "https://github.com/MikolajSapek/vaultcraft/issues"
+    "supportURL": "https://github.com/MikolajSapek/vaultcraft/issues",
+    "termsOfServiceURL": "https://github.com/MikolajSapek/vaultcraft/blob/main/TERMS.md"
   }
 }
