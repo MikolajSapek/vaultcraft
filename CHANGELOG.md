@@ -6,6 +6,20 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) 
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-10-15
+
+### Added
+
+- **One plugin for Claude, ChatGPT and Codex.** `.codex-plugin/plugin.json` (with logo and icon in `assets/`) and `.agents/plugins/marketplace.json` sit next to the Claude manifests, so the same repo installs in Codex with `codex plugin marketplace add MikolajSapek/vaultcraft` and can be submitted to the ChatGPT/Codex plugin directory and to the Claude directory (claude.ai, Cowork, Claude Code).
+- **Runs without the agent.** In claude.ai chat, ChatGPT and Codex the skill runs the whole pipeline itself, falls back to plain-text intake questions, uses Python for PDF figures when `pdfimages` is missing, and delivers the vault as a zip when it cannot write to your disk.
+- **`tests/manifest-test.sh`** checks that all manifests carry the same version and that the repo stays within the plugin directories' file rules. **`scripts/package.sh`** builds the upload zips.
+
+### Changed
+
+- **The pipeline moved from the agent into the skill.** The instructions now live in `skills/vaultcraft/references/*.md`, one file per phase group, so every platform runs the same text. `agents/vaultcraft.md` is generated from them by `scripts/build-agent.sh`, and CI fails if it is out of date. Note templates moved to `skills/vaultcraft/templates/`, so they travel with the skill.
+- **No silent installs.** The pipeline now asks before running `brew install` for poppler or LibreOffice.
+- **README** documents directory installs, where the vault ends up on each platform, and everything the plugin does on your machine. The outdated Obsidian MCP prerequisite is gone; vaultcraft writes files directly.
+
 ## [0.2.0] - 2026-10-01
 
 ### Added

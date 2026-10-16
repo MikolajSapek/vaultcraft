@@ -17,6 +17,8 @@ echo "user's own copy" > "${FAKE_HOME}/.claude/skills/obsidian-markdown/SKILL.md
 run
 [ -f "${FAKE_HOME}/.claude/agents/vaultcraft.md" ] || fail "agent not installed"
 [ -f "${FAKE_HOME}/.claude/skills/vaultcraft/SKILL.md" ] || fail "front-end skill not installed"
+[ -f "${FAKE_HOME}/.claude/skills/vaultcraft/references/principles.md" ] || fail "skill references not installed"
+[ -f "${FAKE_HOME}/.claude/skills/vaultcraft/templates/lecture-golden.md" ] || fail "skill templates not installed"
 grep -qx "user's own copy" "${FAKE_HOME}/.claude/skills/obsidian-markdown/SKILL.md" || fail "install overwrote a foreign skill"
 
 # Templates go only where asked, and existing files are kept.

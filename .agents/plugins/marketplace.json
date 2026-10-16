@@ -1,0 +1,20 @@
+{
+  "name": "vaultcraft",
+  "interface": {
+    "displayName": "vaultcraft"
+  },
+  "plugins": [
+    {
+      "name": "vaultcraft",
+      "source": {
+        "source": "local",
+        "path": "./"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Education"
+    }
+  ]
+}

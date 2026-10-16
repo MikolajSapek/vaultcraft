@@ -7,7 +7,10 @@ on:
       - '**.sh'
       - 'agents/**'
       - 'skills/**'
-      - 'templates/**'
+      - '.claude-plugin/**'
+      - '.codex-plugin/**'
+      - '.agents/**'
+      - 'CHANGELOG.md'
       - '.github/workflows/shellcheck.yml'
   pull_request:
     branches: [main]
@@ -15,7 +18,10 @@ on:
       - '**.sh'
       - 'agents/**'
       - 'skills/**'
-      - 'templates/**'
+      - '.claude-plugin/**'
+      - '.codex-plugin/**'
+      - '.agents/**'
+      - 'CHANGELOG.md'
       - '.github/workflows/shellcheck.yml'
 
 jobs:
@@ -33,3 +39,6 @@ jobs:
 
       - name: Installer regression test
         run: ./tests/install-test.sh
+
+      - name: Manifest and directory-rule checks
+        run: ./tests/manifest-test.sh

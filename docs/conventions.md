@@ -21,7 +21,7 @@ Cross-course material lives in `_Shared/Concepts/`.
 Vault root:
 
 - `Starting point.md` - root MOC
-- `VAULT SPEC.md` - this conventions doc (in real vaults, copy from `templates/`)
+- `VAULT SPEC.md` - this conventions doc (in real vaults, copy from `skills/vaultcraft/templates/`)
 - `Tables.md` - comparison tables for oral exams
 - `README_PLUGINS.md` - recommended plugin list
 

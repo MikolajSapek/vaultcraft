@@ -1,0 +1,40 @@
+{
+  "name": "vaultcraft",
+  "version": "0.3.0",
+  "description": "Turns lecture slides, labs, meeting notes and papers into an exam-ready, linked Obsidian vault: atomic notes with hover definitions, embedded slides, comparison tables and cross-course bridges.",
+  "author": {
+    "name": "Mikołaj Sapek",
+    "url": "https://github.com/MikolajSapek"
+  },
+  "homepage": "https://github.com/MikolajSapek/vaultcraft",
+  "repository": "https://github.com/MikolajSapek/vaultcraft",
+  "license": "MIT",
+  "keywords": [
+    "obsidian",
+    "study",
+    "notes",
+    "knowledge-vault",
+    "education"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "vaultcraft",
+    "shortDescription": "Turn course materials into a linked Obsidian study vault",
+    "longDescription": "vaultcraft reads your lecture slides, lab notebooks, meeting notes or papers and builds an Obsidian vault from them: one note per concept with a hover-visible definition, lecture sheets with exam questions, embedded source slides, comparison tables and a map of content. It asks a few questions first (vault type, format, depth, language), then writes the vault to your disk, or hands you a zip to open in Obsidian.",
+    "developerName": "Mikołaj Sapek",
+    "category": "Education",
+    "capabilities": [
+      "Interactive",
+      "Read",
+      "Write"
+    ],
+    "websiteURL": "https://github.com/MikolajSapek/vaultcraft",
+    "defaultPrompt": [
+      "Build an Obsidian study vault from these lecture slides",
+      "Add this new lab to my existing Obsidian vault"
+    ],
+    "brandColor": "#7C5CB8",
+    "composerIcon": "./assets/icon.png",
+    "logo": "./assets/logo.png"
+  }
+}

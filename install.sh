@@ -47,8 +47,11 @@ install_files() {
   echo -e "${BLUE}→${RESET} Installing agent to ${AGENTS_DIR}/vaultcraft.md"
   install_file "${REPO_ROOT}/agents/vaultcraft.md" "${AGENTS_DIR}/vaultcraft.md"
 
-  echo -e "${BLUE}→${RESET} Installing front-end skill to ${SKILLS_DIR}/vaultcraft/"
-  install_file "${REPO_ROOT}/skills/vaultcraft/SKILL.md" "${SKILLS_DIR}/vaultcraft/SKILL.md"
+  echo -e "${BLUE}→${RESET} Installing skill (SKILL.md, references, templates) to ${SKILLS_DIR}/vaultcraft/"
+  local src
+  while IFS= read -r src; do
+    install_file "${src}" "${SKILLS_DIR}/vaultcraft/${src#"${REPO_ROOT}/skills/vaultcraft/"}"
+  done < <(find "${REPO_ROOT}/skills/vaultcraft" -type f -name '*.md')
 
   echo -e "${GREEN}✓${RESET} Install complete. Nothing else in ~/.claude was touched."
   echo
@@ -65,7 +68,7 @@ install_templates() {
   local dir="$1"
   echo -e "${BLUE}→${RESET} Copying note templates to ${dir} (existing files are kept)"
   mkdir -p "${dir}"
-  for f in "${REPO_ROOT}/templates/"*.md; do
+  for f in "${REPO_ROOT}/skills/vaultcraft/templates/"*.md; do
     if [ -e "${dir}/$(basename "${f}")" ]; then
       echo -e "  ${YELLOW}skip${RESET} $(basename "${f}") (already exists)"
     else
@@ -92,7 +95,7 @@ uninstall_files() {
       echo "  removed ${path}"
     fi
   done < "${MANIFEST}"
-  rmdir "${SKILLS_DIR}/vaultcraft" 2>/dev/null || true
+  [ -d "${SKILLS_DIR}/vaultcraft" ] && find "${SKILLS_DIR}/vaultcraft" -depth -type d -empty -delete
   rm -f "${MANIFEST}"
   echo -e "${GREEN}✓${RESET} Uninstalled. Other skills and agents were left alone."
 }

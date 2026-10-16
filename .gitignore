@@ -17,3 +17,6 @@ demo-output/
 *.log
 tmp/
 temp/
+
+# Built plugin zips
+dist/

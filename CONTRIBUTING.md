@@ -8,7 +8,7 @@ Thanks for considering a contribution! This project lives by students and learne
 |---|---|---|
 | **Bug report** | 5 min | Open an issue describing what the agent did wrong |
 | **Course recipe** | 15 min | Share intake answers + sample output that worked well for your course type |
-| **Improvement to the agent prompt** | 30 min | PR with a tested change to `agents/vaultcraft.md` |
+| **Improvement to the agent prompt** | 30 min | PR with a tested change to `skills/vaultcraft/references/` |
 | **New template** | 30 min | PR adding a template for a course type that's not covered (e.g., language courses, lab-heavy courses) |
 | **Documentation improvement** | 10–60 min | PR fixing typos / clarifying instructions / adding examples |
 | **GitHub Action / CI** | varies | PR adding linting, link-checking, or other automation |
@@ -47,8 +47,9 @@ git push origin feature/short-description
 
 ## Style and conventions
 
-### Agent file (`agents/vaultcraft.md`)
+### Pipeline instructions (`skills/vaultcraft/references/`)
 
+- Edit the reference files, never `agents/vaultcraft.md`. Then run `./scripts/build-agent.sh`; CI fails if the agent is out of date.
 - Numbered principles must remain in their existing slots - adding a principle = appending at the end and bumping the count, not inserting and shifting.
 - Cross-references like *"per Principle 18"* must be updated when you renumber.
 - Phase ordering is load-bearing - don't reorder phases; add new phases as `Phase X.5` between existing ones if needed.
@@ -61,7 +62,7 @@ git push origin feature/short-description
 - Code samples use markdown fenced code blocks with language hints.
 - Examples should be runnable / verifiable, not aspirational.
 
-### Templates (`templates/`)
+### Templates (`skills/vaultcraft/templates/`)
 
 - Templates are skeletons, not examples. They have placeholder text in `<angle brackets>` or `UPPERCASE_PLACEHOLDERS`.
 - Match the conventions in `docs/conventions.md` exactly - templates ARE the spec.
