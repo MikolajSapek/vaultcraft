@@ -10,7 +10,7 @@
       "name": "vaultcraft",
       "source": "./",
       "description": "Turns lecture slides, labs, meeting notes and papers into an exam-ready, linked Obsidian vault: atomic notes with hover definitions, embedded slides, comparison tables and cross-course bridges.",
-      "version": "0.4.0"
+      "version": "0.5.0"
     }
   ]
 }

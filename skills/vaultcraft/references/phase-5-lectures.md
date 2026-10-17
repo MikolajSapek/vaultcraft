@@ -4,7 +4,7 @@
 
 **Choose format from Principle 16 based on user's answer in Phase 1. Respect depth setting (lean/standard/thorough) from Phase 1.**
 
-**Token economy:** lecture notes are also templatable. If depth=lean or depth=standard with Study Sheet format, delegate via Task tool with haiku (per Principle 18). For depth=thorough with Detailed Lecture Notes format, the narrative judgement calls may warrant sonnet - use your discretion. When in doubt, draft the first lecture yourself (sonnet), then delegate the remaining 9 to haiku with your L01 as the quality exemplar. Format (c) Golden Template is fully templated - haiku-eligible once you've drafted L01 as the exemplar.
+**Token economy:** lecture notes are also templatable. `vaultcraft-drafter` (Sonnet) writes L01 as the quality exemplar. If depth=lean or depth=standard with Study Sheet format, or Format (c) Golden Template, send the remaining lectures to `vaultcraft-writer` (Haiku) with L01 as the exemplar (Principle 18). For depth=thorough with Detailed Lecture Notes format, keep every lecture with the drafter.
 
 Formats (a) and (b) share this skeleton (Format (c) has its own fixed skeleton further below):
 

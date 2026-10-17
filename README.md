@@ -250,7 +250,7 @@ The script copies the agent and the `skills/vaultcraft/` folder, records every f
 
 | Where | How it works | Where the vault ends up |
 |---|---|---|
-| Claude Code, Cowork | The skill runs the intake, then hands generation to the vaultcraft agent | Written straight to your vault folder |
+| Claude Code, Cowork | The skill runs the intake, then the vaultcraft agent (Opus) runs the work loop with Haiku and Sonnet workers | Written straight to your vault folder |
 | Codex, Cursor | The skill runs the whole pipeline itself | Written straight to your vault folder |
 | claude.ai chat, ChatGPT | The skill runs the whole pipeline in the chat's sandbox | A `.zip` you unzip and open in Obsidian with **Open folder as vault** |
 
@@ -325,7 +325,16 @@ For work vaults, Batch C also asks: *"List your key stakeholders (names / compan
 | Work — 10 stakeholders, 20 meetings | ~45 min |
 | Research — 20 papers | ~40 min |
 
-The agent uses **3-tier model routing** — Haiku for mechanical writing, Sonnet for synthesis, Opus only for hard reasoning. Full decision flow in [Principle 18 of the agent](agents/vaultcraft.md).
+In Claude Code and Cowork the work is split across agents, each pinned to its model, so the expensive model only decides:
+
+| Agent | Model | Does |
+|---|---|---|
+| `vaultcraft` | Opus | Plans, builds the concept inventory, sorts the work, writes briefs, judges the audit |
+| `vaultcraft-drafter` | Sonnet | Exemplar notes, hard concepts, lecture walkthroughs, comparison tables |
+| `vaultcraft-extractor` | Haiku | Reads each source: text, slides, figures, named items |
+| `vaultcraft-writer` | Haiku | Writes the bulk of the notes from briefs, and applies audit fixes |
+
+It works in a loop, one batch of sources at a time: extract, decide, write, then audit and fix until the batch is clean (at most 3 fix rounds), and record progress before the next batch. Full rules in [Principle 18](skills/vaultcraft/references/principles.md).
 
 ---
 
@@ -360,7 +369,8 @@ vaultcraft/
 ├── .cursor-plugin/plugin.json   ← Cursor plugin manifest
 ├── assets/                      ← Plugin logo and icon
 ├── agents/
-│   └── vaultcraft.md            ← Agent for Claude Code and Cowork, generated from the skill
+│   ├── vaultcraft.md            ← Opus orchestrator for Claude Code and Cowork, generated from the skill
+│   └── vaultcraft-*.md          ← Workers: extractor and writer (Haiku), drafter (Sonnet)
 ├── skills/
 │   ├── vaultcraft/
 │   │   ├── SKILL.md             ← Entry point: banner, intake, then generation

@@ -15,7 +15,9 @@ mkdir -p "${FAKE_HOME}/.claude/skills/obsidian-markdown"
 echo "user's own copy" > "${FAKE_HOME}/.claude/skills/obsidian-markdown/SKILL.md"
 
 run
-[ -f "${FAKE_HOME}/.claude/agents/vaultcraft.md" ] || fail "agent not installed"
+for a in vaultcraft vaultcraft-extractor vaultcraft-writer vaultcraft-drafter; do
+  [ -f "${FAKE_HOME}/.claude/agents/${a}.md" ] || fail "agent ${a} not installed"
+done
 [ -f "${FAKE_HOME}/.claude/skills/vaultcraft/SKILL.md" ] || fail "front-end skill not installed"
 [ -f "${FAKE_HOME}/.claude/skills/vaultcraft/references/principles.md" ] || fail "skill references not installed"
 [ -f "${FAKE_HOME}/.claude/skills/vaultcraft/templates/lecture-golden.md" ] || fail "skill templates not installed"
@@ -30,7 +32,7 @@ grep -qx "mine" "${FAKE_HOME}/tpl/concept.md" || fail "--templates overwrote an 
 [ ! -e "${FAKE_HOME}/Documents" ] || fail "installer created ~/Documents without being asked"
 
 run --uninstall
-[ ! -e "${FAKE_HOME}/.claude/agents/vaultcraft.md" ] || fail "uninstall left the agent"
+[ -z "$(ls "${FAKE_HOME}/.claude/agents" 2>/dev/null)" ] || fail "uninstall left an agent"
 [ ! -e "${FAKE_HOME}/.claude/skills/vaultcraft" ] || fail "uninstall left the front-end skill"
 grep -qx "user's own copy" "${FAKE_HOME}/.claude/skills/obsidian-markdown/SKILL.md" || fail "uninstall deleted a foreign skill"
 

@@ -1,8 +1,8 @@
 ---
 name: vaultcraft
 description: "Builds a richly visual, linked Obsidian knowledge vault from any input materials — university lectures, work project docs, meeting notes, research papers, or personal materials. Creates atomic notes with HOVER-VISIBLE definitions, embedded PDFs, extracted figures, Mermaid diagrams, worked examples, and spaced-repetition flashcards. Supports six vault types: studies (exam prep), work (professional KB), research (literature notes), personal (hobbies/skills), reference (technical docs), teaching (course prep). Use when the user wants to turn any scattered materials into a navigable, visual knowledge base in Obsidian."
-tools: Read, Write, Edit, Glob, Grep, Bash, WebSearch, WebFetch, Task, Skill, AskUserQuestion
-model: sonnet
+tools: Read, Write, Edit, Glob, Grep, Bash, WebSearch, WebFetch, Agent, Skill, AskUserQuestion
+model: opus
 maxTurns: 150
 ---
 

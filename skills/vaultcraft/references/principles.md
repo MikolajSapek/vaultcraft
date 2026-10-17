@@ -99,7 +99,7 @@ Transform scattered inputs - lecture slides (PDF/PPTX), lab scripts (.py, .ipynb
 
 2. **Token economy with 3-tier model routing (CRITICAL - applies to every phase)** - generating a full vault is expensive; minimize wasted tokens by matching model power to task complexity. Use the cheapest model that can do the job. **Always announce which tier you're using when delegating, so the user can see cost shaping in real time.**
 
-   **Tier 1 - Haiku (cheapest, fastest)** for mechanical / templated tasks:
+   **Tier 1 - Haiku (`vaultcraft-extractor`, `vaultcraft-writer`)** for mechanical / templated tasks:
 
 - Reading and extracting raw text from PDFs / PPTX / .ipynb (Phase 2 extraction loop)
 - Filling concept-note templates from a pre-built brief (Phase 4 atomic notes from inventory)
@@ -110,18 +110,18 @@ Transform scattered inputs - lecture slides (PDF/PPTX), lab scripts (.py, .ipynb
 - Stub-note generation for cross-referenced concepts
 - File operations and bash scripts
 
-   **Tier 2 - Sonnet (default, balanced)** for synthesis / standard reasoning:
+   **Tier 2 - Sonnet (`vaultcraft-drafter`)** for synthesis / standard reasoning:
 
-- Phase 1 intake conversation, plan restatement, clarifying questions
-- Phase 2 inventory deduplication, concept synonym detection, depth-check ("did I miss any sub-techniques?")
 - Phase 5 narrative writing in Detailed Lecture Notes format (`depth: standard` or `thorough`)
 - Generating exam questions (4-category structure)
 - Composing the MOC narrative
 - Tables.md construction (selecting comparison dimensions, writing "Say this" pitches)
-- Phase 9 quality pass and broken-link resolution
-- Most cross-references and link verification
 
-   **Tier 3 - Opus (most powerful, slowest, most expensive)** for hard reasoning / judgment calls:
+   **Tier 3 - Opus (the `vaultcraft` agent itself)** for decisions and judgment calls:
+
+- Phase 1 intake conversation, plan restatement, clarifying questions
+- Phase 2 inventory deduplication, concept synonym detection, depth-check ("did I miss any sub-techniques?")
+- Sorting work into queues, writing briefs, judging the Phase 9 audit and deciding fixes
 
 - Deep concept extraction on dense / unfamiliar material (Principle 14): figuring out which named sub-techniques deserve atomic notes when the source material is ambiguous
 - Authoring novel ELI5 analogies for hard concepts (Principle 19) - finding the right everyday-object metaphor for cross-entropy, backprop, attention, etc.
@@ -130,22 +130,56 @@ Transform scattered inputs - lecture slides (PDF/PPTX), lab scripts (.py, .ipynb
 - Phase 5 narrative writing for `depth: thorough` (term-paper-grade output)
 - Worked numerical examples for advanced mathematical concepts where the example must be both correct AND pedagogically illuminating
 
-   **How to invoke each tier:**
+   **Who does what (Claude Code and Cowork, where the vaultcraft agents are installed):**
 
-   ```text
-   Task tool with subagent_type="general-purpose" and prompt prefixed with:
-   "Using model: haiku, ..." for Tier 1
-   "Using model: sonnet, ..." for Tier 2
-   "Using model: opus, ..." for Tier 3
-   ```
+   The `vaultcraft` agent runs on Opus and only decides: it plans, builds the inventory,
+   sorts work into queues, writes briefs, reads short worker reports and judges the audit.
+   It does not write bulk notes itself. Three worker agents do the writing, each pinned to
+   its model in its own file, so the routing is real and not a prompt hint:
 
-   If the harness doesn't honour explicit model overrides, structure the work so cheaper models handle bulk and the orchestrator (you) handles judgment calls.
+   | Worker | Model | Job |
+   |---|---|---|
+   | `vaultcraft-extractor` | Haiku | One source file per call: text, slide list, figures, named items |
+   | `vaultcraft-writer` | Haiku | Batches of notes from briefs + template + exemplar; audit fixes |
+   | `vaultcraft-drafter` | Sonnet | Exemplar notes, hard concepts (difficulty 4-5), lecture walkthroughs, `Tables.md`, MOC, bridges |
 
-   **Decision flow when starting a new phase:**
+   Dispatch them with the Agent tool, `subagent_type` set to the worker name (from the
+   plugin: `vaultcraft:vaultcraft-writer` and so on). Workers write files and reply with at
+   most 10 lines, so your own context stays small: never ask a worker to paste note text
+   back, and read a written note only to judge it.
 
-   1. Is this *mostly template-filling from a brief*? → Tier 1 (haiku)
-   2. Is this *narrative synthesis with judgment, but on familiar material*? → Tier 2 (sonnet)
-   3. Is this *hard reasoning, novel analogy creation, or conflict resolution*? → Tier 3 (opus)
+   **The work loop.** Run it once per source batch (one lecture, lab or paper set):
+
+   1. **Extract (Haiku).** One `vaultcraft-extractor` per source, up to 5 in parallel,
+      writing to `<vault>/.vaultcraft/extract/`.
+   2. **Decide (you).** Read the extraction files' `## Named items` and build the inventory
+      (Principle 14 depth rules). Sort it: difficulty 1-3 and well-known items to the Haiku
+      queue; difficulty 4-5, abstract or ambiguous items to the Sonnet queue. Update the
+      link registry.
+   3. **Set the bar (Sonnet).** On the first batch, one `vaultcraft-drafter` call writes one
+      exemplar per note type in use (concept, lecture, lab) plus the Sonnet queue.
+   4. **Bulk (Haiku).** Split the Haiku queue into batches of at most 10 briefs and run up
+      to 5 `vaultcraft-writer` calls in parallel. Each brief: target path, concept name,
+      source extraction file and slide, difficulty, link registry, template and exemplar paths.
+   5. **Check, then loop.** Run the Phase 9 audit (broken links, orphans, missing
+      definition or example) over the notes this batch touched. If it finds issues, send
+      them to one `vaultcraft-writer` as a fix list and audit again. Stop after 3 rounds;
+      report what is left instead of retrying a fourth time.
+   6. **Record.** Update `.vault-progress.md` (done sources, queues, audit result), print the
+      status footer, then start the next batch at step 1.
+
+   After the last batch, the drafter writes `Tables.md`, the MOC and any bridges; then run
+   the step 5 loop over the whole vault once.
+
+   **Without the worker agents** (claude.ai chat, ChatGPT, Codex, Cursor, or the `vaultcraft`
+   agent when the Agent tool is missing): do the same loop yourself, in the same order,
+   with the same 3-round cap on fixes.
+
+   **Decision flow for anything not listed above:**
+
+   1. Is this *mostly template-filling from a brief*? → `vaultcraft-writer` (Haiku)
+   2. Is this *narrative synthesis with judgment, but on familiar material*? → `vaultcraft-drafter` (Sonnet)
+   3. Is this *hard reasoning, novel analogy creation, or conflict resolution*? → decide it yourself (Opus)
 
    **Other token-saving rules:**
 

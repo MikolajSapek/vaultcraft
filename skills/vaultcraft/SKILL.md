@@ -135,7 +135,7 @@ skill alone): run the pipeline in this conversation.
 
 | The references say | If you don't have it, do this instead |
 |---|---|
-| `Task` sub-agents, haiku/sonnet/opus delegation | Write those notes yourself, in order. Keep the same templates and quality bar. |
+| The `vaultcraft-*` worker agents (Haiku/Sonnet) | Run the same work loop yourself, batch by batch, with the same 3-round cap on audit fixes. Keep the same templates and quality bar. |
 | `Skill` (obsidian-markdown, json-canvas, docs, …) | Use the syntax rules already in the references and your own knowledge. |
 | `AskUserQuestion` | Ask in plain text, as in Step 3. |
 | `Bash` + `pdfimages` / `brew install poppler` | Use the code tool's Python (`pypdf`, `pymupdf`/`fitz`, `pdfplumber`, whichever imports). Never install system packages without asking. If figures can't be extracted, embed the source PDF and say so. |

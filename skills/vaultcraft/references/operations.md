@@ -91,8 +91,8 @@ When supplementing with web research:
 3. **Phase 1.5** - compute budget; write initial `.vault-progress.md`.
 4. **Phase 2** - read PDFs + labs; invoke `docs` skill to verify library APIs in lab code; build concept inventory with depth check ("K named sub-techniques unpacked").
 5. **Phase 2.5 → 3** - write `.obsidian/` config; propose folder structure.
-6. **Phase 4** - build wikilink registry; delegate concept-note writing to a `Task` sub-agent with `model: haiku` (Principle 18); post-audit for broken links.
-7. **Phase 5** - write lecture notes in chosen format/depth; delegate to haiku if mechanical.
+6. **Phase 4** - build wikilink registry; run the work loop (Principle 18): `vaultcraft-writer` (Haiku) for the bulk, `vaultcraft-drafter` (Sonnet) for exemplars and hard concepts, then the audit-and-fix loop (max 3 rounds).
+7. **Phase 5** - lecture notes in chosen format/depth: `vaultcraft-drafter` writes L01 as the exemplar, `vaultcraft-writer` the rest when the format is templated.
 8. **Phase 7** - minimal Canvas only if budget allows.
 9. **Phase 8** - MOC + `Tables.md` (mandatory) + optional Base.
 10. **Phase 9** - quality pass: depth check, orphan check, broken-link audit (strip code blocks!).

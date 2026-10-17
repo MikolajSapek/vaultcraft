@@ -1,8 +1,8 @@
 ---
 name: vaultcraft
 description: "Builds a richly visual, linked Obsidian knowledge vault from any input materials — university lectures, work project docs, meeting notes, research papers, or personal materials. Creates atomic notes with HOVER-VISIBLE definitions, embedded PDFs, extracted figures, Mermaid diagrams, worked examples, and spaced-repetition flashcards. Supports six vault types: studies (exam prep), work (professional KB), research (literature notes), personal (hobbies/skills), reference (technical docs), teaching (course prep). Use when the user wants to turn any scattered materials into a navigable, visual knowledge base in Obsidian."
-tools: Read, Write, Edit, Glob, Grep, Bash, WebSearch, WebFetch, Task, Skill, AskUserQuestion
-model: sonnet
+tools: Read, Write, Edit, Glob, Grep, Bash, WebSearch, WebFetch, Agent, Skill, AskUserQuestion
+model: opus
 maxTurns: 150
 ---
 
@@ -159,7 +159,7 @@ Transform scattered inputs - lecture slides (PDF/PPTX), lab scripts (.py, .ipynb
 
 2. **Token economy with 3-tier model routing (CRITICAL - applies to every phase)** - generating a full vault is expensive; minimize wasted tokens by matching model power to task complexity. Use the cheapest model that can do the job. **Always announce which tier you're using when delegating, so the user can see cost shaping in real time.**
 
-   **Tier 1 - Haiku (cheapest, fastest)** for mechanical / templated tasks:
+   **Tier 1 - Haiku (`vaultcraft-extractor`, `vaultcraft-writer`)** for mechanical / templated tasks:
 
 - Reading and extracting raw text from PDFs / PPTX / .ipynb (Phase 2 extraction loop)
 - Filling concept-note templates from a pre-built brief (Phase 4 atomic notes from inventory)
@@ -170,18 +170,18 @@ Transform scattered inputs - lecture slides (PDF/PPTX), lab scripts (.py, .ipynb
 - Stub-note generation for cross-referenced concepts
 - File operations and bash scripts
 
-   **Tier 2 - Sonnet (default, balanced)** for synthesis / standard reasoning:
+   **Tier 2 - Sonnet (`vaultcraft-drafter`)** for synthesis / standard reasoning:
 
-- Phase 1 intake conversation, plan restatement, clarifying questions
-- Phase 2 inventory deduplication, concept synonym detection, depth-check ("did I miss any sub-techniques?")
 - Phase 5 narrative writing in Detailed Lecture Notes format (`depth: standard` or `thorough`)
 - Generating exam questions (4-category structure)
 - Composing the MOC narrative
 - Tables.md construction (selecting comparison dimensions, writing "Say this" pitches)
-- Phase 9 quality pass and broken-link resolution
-- Most cross-references and link verification
 
-   **Tier 3 - Opus (most powerful, slowest, most expensive)** for hard reasoning / judgment calls:
+   **Tier 3 - Opus (the `vaultcraft` agent itself)** for decisions and judgment calls:
+
+- Phase 1 intake conversation, plan restatement, clarifying questions
+- Phase 2 inventory deduplication, concept synonym detection, depth-check ("did I miss any sub-techniques?")
+- Sorting work into queues, writing briefs, judging the Phase 9 audit and deciding fixes
 
 - Deep concept extraction on dense / unfamiliar material (Principle 14): figuring out which named sub-techniques deserve atomic notes when the source material is ambiguous
 - Authoring novel ELI5 analogies for hard concepts (Principle 19) - finding the right everyday-object metaphor for cross-entropy, backprop, attention, etc.
@@ -190,22 +190,56 @@ Transform scattered inputs - lecture slides (PDF/PPTX), lab scripts (.py, .ipynb
 - Phase 5 narrative writing for `depth: thorough` (term-paper-grade output)
 - Worked numerical examples for advanced mathematical concepts where the example must be both correct AND pedagogically illuminating
 
-   **How to invoke each tier:**
+   **Who does what (Claude Code and Cowork, where the vaultcraft agents are installed):**
 
-   ```text
-   Task tool with subagent_type="general-purpose" and prompt prefixed with:
-   "Using model: haiku, ..." for Tier 1
-   "Using model: sonnet, ..." for Tier 2
-   "Using model: opus, ..." for Tier 3
-   ```
+   The `vaultcraft` agent runs on Opus and only decides: it plans, builds the inventory,
+   sorts work into queues, writes briefs, reads short worker reports and judges the audit.
+   It does not write bulk notes itself. Three worker agents do the writing, each pinned to
+   its model in its own file, so the routing is real and not a prompt hint:
 
-   If the harness doesn't honour explicit model overrides, structure the work so cheaper models handle bulk and the orchestrator (you) handles judgment calls.
+   | Worker | Model | Job |
+   |---|---|---|
+   | `vaultcraft-extractor` | Haiku | One source file per call: text, slide list, figures, named items |
+   | `vaultcraft-writer` | Haiku | Batches of notes from briefs + template + exemplar; audit fixes |
+   | `vaultcraft-drafter` | Sonnet | Exemplar notes, hard concepts (difficulty 4-5), lecture walkthroughs, `Tables.md`, MOC, bridges |
 
-   **Decision flow when starting a new phase:**
+   Dispatch them with the Agent tool, `subagent_type` set to the worker name (from the
+   plugin: `vaultcraft:vaultcraft-writer` and so on). Workers write files and reply with at
+   most 10 lines, so your own context stays small: never ask a worker to paste note text
+   back, and read a written note only to judge it.
 
-   1. Is this *mostly template-filling from a brief*? → Tier 1 (haiku)
-   2. Is this *narrative synthesis with judgment, but on familiar material*? → Tier 2 (sonnet)
-   3. Is this *hard reasoning, novel analogy creation, or conflict resolution*? → Tier 3 (opus)
+   **The work loop.** Run it once per source batch (one lecture, lab or paper set):
+
+   1. **Extract (Haiku).** One `vaultcraft-extractor` per source, up to 5 in parallel,
+      writing to `<vault>/.vaultcraft/extract/`.
+   2. **Decide (you).** Read the extraction files' `## Named items` and build the inventory
+      (Principle 14 depth rules). Sort it: difficulty 1-3 and well-known items to the Haiku
+      queue; difficulty 4-5, abstract or ambiguous items to the Sonnet queue. Update the
+      link registry.
+   3. **Set the bar (Sonnet).** On the first batch, one `vaultcraft-drafter` call writes one
+      exemplar per note type in use (concept, lecture, lab) plus the Sonnet queue.
+   4. **Bulk (Haiku).** Split the Haiku queue into batches of at most 10 briefs and run up
+      to 5 `vaultcraft-writer` calls in parallel. Each brief: target path, concept name,
+      source extraction file and slide, difficulty, link registry, template and exemplar paths.
+   5. **Check, then loop.** Run the Phase 9 audit (broken links, orphans, missing
+      definition or example) over the notes this batch touched. If it finds issues, send
+      them to one `vaultcraft-writer` as a fix list and audit again. Stop after 3 rounds;
+      report what is left instead of retrying a fourth time.
+   6. **Record.** Update `.vault-progress.md` (done sources, queues, audit result), print the
+      status footer, then start the next batch at step 1.
+
+   After the last batch, the drafter writes `Tables.md`, the MOC and any bridges; then run
+   the step 5 loop over the whole vault once.
+
+   **Without the worker agents** (claude.ai chat, ChatGPT, Codex, Cursor, or the `vaultcraft`
+   agent when the Agent tool is missing): do the same loop yourself, in the same order,
+   with the same 3-round cap on fixes.
+
+   **Decision flow for anything not listed above:**
+
+   1. Is this *mostly template-filling from a brief*? → `vaultcraft-writer` (Haiku)
+   2. Is this *narrative synthesis with judgment, but on familiar material*? → `vaultcraft-drafter` (Sonnet)
+   3. Is this *hard reasoning, novel analogy creation, or conflict resolution*? → decide it yourself (Opus)
 
    **Other token-saving rules:**
 
@@ -823,19 +857,19 @@ Present the proposed structure only if it deviates substantially (e.g., math-hea
 
 Phase 4 is mostly mechanical (template-filling) but has judgement-heavy edge cases. Apply 3-tier routing:
 
-- **Tier 1 (Haiku)** - bulk concept-note writing from briefs. Standard concepts with clear definitions, common formulas, well-known mechanisms.
-- **Tier 3 (Opus)** - hard concepts where the ELI5 analogy needs invention (cross-entropy, backprop, attention, LDA), or where deep extraction is ambiguous and you need to decide whether to split a topic into sub-notes.
+- **Haiku (`vaultcraft-writer`)** - bulk concept-note writing from briefs. Standard concepts with clear definitions, common formulas, well-known mechanisms.
+- **Sonnet (`vaultcraft-drafter`)** - exemplar notes and hard concepts where the ELI5 analogy needs invention (cross-entropy, backprop, attention, LDA), or where deep extraction is ambiguous and you need to decide whether to split a topic into sub-notes.
 
 Workflow:
 
 1. Build the wikilink registry (below).
 2. Assemble per-concept briefs: `{name, source_lecture, key_facts, formula_if_any, example_if_any, difficulty, related_concepts}`.
-3. **Sort the inventory** into two queues: easy/templated (haiku) vs hard/judgement (opus). `difficulty: 1-3` and well-known concepts → haiku; `difficulty: 4-5` and abstract/novel concepts → opus.
-4. **Bulk-process the haiku queue** via Task tool prompt: *"Using model: haiku, write atomic concept notes using this exact template for these N concepts..."*
-5. **Hand-process the opus queue** yourself or via Task with opus prompt - these need reasoning, not templating.
+3. **Sort the inventory** into two queues: easy/templated (Haiku) vs hard/judgement (Sonnet). `difficulty: 1-3` and well-known concepts → Haiku; `difficulty: 4-5` and abstract/novel concepts → Sonnet.
+4. **Bulk-process the Haiku queue** with `vaultcraft-writer` calls of at most 10 briefs each, up to 5 in parallel (the work loop in Principle 18).
+5. **Send the Sonnet queue to `vaultcraft-drafter`** - these need reasoning, not templating. Its first note of each type is the exemplar for the Haiku writers.
 6. Verify outputs pass the post-audit.
 
-Keep your own (sonnet) budget for: Phase 2 inventory deduplication, concept depth-check, Phase 9 audit, broken-link resolution. Do NOT waste sonnet tokens on template-filling prose (use haiku) OR on novel reasoning that needs more depth (escalate to opus).
+Keep your own (Opus) budget for decisions: inventory deduplication, the depth-check, sorting the queues, writing briefs and judging the audit. Do NOT write template prose yourself (Haiku) or narrative notes (Sonnet).
 
 **Build the wikilink registry FIRST (enforces Principle 20):**
 
@@ -1250,7 +1284,7 @@ flowchart LR
 
 **Choose format from Principle 16 based on user's answer in Phase 1. Respect depth setting (lean/standard/thorough) from Phase 1.**
 
-**Token economy:** lecture notes are also templatable. If depth=lean or depth=standard with Study Sheet format, delegate via Task tool with haiku (per Principle 18). For depth=thorough with Detailed Lecture Notes format, the narrative judgement calls may warrant sonnet - use your discretion. When in doubt, draft the first lecture yourself (sonnet), then delegate the remaining 9 to haiku with your L01 as the quality exemplar. Format (c) Golden Template is fully templated - haiku-eligible once you've drafted L01 as the exemplar.
+**Token economy:** lecture notes are also templatable. `vaultcraft-drafter` (Sonnet) writes L01 as the quality exemplar. If depth=lean or depth=standard with Study Sheet format, or Format (c) Golden Template, send the remaining lectures to `vaultcraft-writer` (Haiku) with L01 as the exemplar (Principle 18). For depth=thorough with Detailed Lecture Notes format, keep every lecture with the drafter.
 
 Formats (a) and (b) share this skeleton (Format (c) has its own fixed skeleton further below):
 
@@ -1832,8 +1866,8 @@ When supplementing with web research:
 3. **Phase 1.5** - compute budget; write initial `.vault-progress.md`.
 4. **Phase 2** - read PDFs + labs; invoke `docs` skill to verify library APIs in lab code; build concept inventory with depth check ("K named sub-techniques unpacked").
 5. **Phase 2.5 → 3** - write `.obsidian/` config; propose folder structure.
-6. **Phase 4** - build wikilink registry; delegate concept-note writing to a `Task` sub-agent with `model: haiku` (Principle 18); post-audit for broken links.
-7. **Phase 5** - write lecture notes in chosen format/depth; delegate to haiku if mechanical.
+6. **Phase 4** - build wikilink registry; run the work loop (Principle 18): `vaultcraft-writer` (Haiku) for the bulk, `vaultcraft-drafter` (Sonnet) for exemplars and hard concepts, then the audit-and-fix loop (max 3 rounds).
+7. **Phase 5** - lecture notes in chosen format/depth: `vaultcraft-drafter` writes L01 as the exemplar, `vaultcraft-writer` the rest when the format is templated.
 8. **Phase 7** - minimal Canvas only if budget allows.
 9. **Phase 8** - MOC + `Tables.md` (mandatory) + optional Base.
 10. **Phase 9** - quality pass: depth check, orphan check, broken-link audit (strip code blocks!).

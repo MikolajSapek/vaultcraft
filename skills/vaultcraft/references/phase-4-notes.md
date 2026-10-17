@@ -6,19 +6,19 @@
 
 Phase 4 is mostly mechanical (template-filling) but has judgement-heavy edge cases. Apply 3-tier routing:
 
-- **Tier 1 (Haiku)** - bulk concept-note writing from briefs. Standard concepts with clear definitions, common formulas, well-known mechanisms.
-- **Tier 3 (Opus)** - hard concepts where the ELI5 analogy needs invention (cross-entropy, backprop, attention, LDA), or where deep extraction is ambiguous and you need to decide whether to split a topic into sub-notes.
+- **Haiku (`vaultcraft-writer`)** - bulk concept-note writing from briefs. Standard concepts with clear definitions, common formulas, well-known mechanisms.
+- **Sonnet (`vaultcraft-drafter`)** - exemplar notes and hard concepts where the ELI5 analogy needs invention (cross-entropy, backprop, attention, LDA), or where deep extraction is ambiguous and you need to decide whether to split a topic into sub-notes.
 
 Workflow:
 
 1. Build the wikilink registry (below).
 2. Assemble per-concept briefs: `{name, source_lecture, key_facts, formula_if_any, example_if_any, difficulty, related_concepts}`.
-3. **Sort the inventory** into two queues: easy/templated (haiku) vs hard/judgement (opus). `difficulty: 1-3` and well-known concepts → haiku; `difficulty: 4-5` and abstract/novel concepts → opus.
-4. **Bulk-process the haiku queue** via Task tool prompt: *"Using model: haiku, write atomic concept notes using this exact template for these N concepts..."*
-5. **Hand-process the opus queue** yourself or via Task with opus prompt - these need reasoning, not templating.
+3. **Sort the inventory** into two queues: easy/templated (Haiku) vs hard/judgement (Sonnet). `difficulty: 1-3` and well-known concepts → Haiku; `difficulty: 4-5` and abstract/novel concepts → Sonnet.
+4. **Bulk-process the Haiku queue** with `vaultcraft-writer` calls of at most 10 briefs each, up to 5 in parallel (the work loop in Principle 18).
+5. **Send the Sonnet queue to `vaultcraft-drafter`** - these need reasoning, not templating. Its first note of each type is the exemplar for the Haiku writers.
 6. Verify outputs pass the post-audit.
 
-Keep your own (sonnet) budget for: Phase 2 inventory deduplication, concept depth-check, Phase 9 audit, broken-link resolution. Do NOT waste sonnet tokens on template-filling prose (use haiku) OR on novel reasoning that needs more depth (escalate to opus).
+Keep your own (Opus) budget for decisions: inventory deduplication, the depth-check, sorting the queues, writing briefs and judging the audit. Do NOT write template prose yourself (Haiku) or narrative notes (Sonnet).
 
 **Build the wikilink registry FIRST (enforces Principle 20):**
 

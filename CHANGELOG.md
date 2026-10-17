@@ -6,6 +6,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) 
 
 ## [Unreleased]
 
+## [0.5.0] - 2026-10-17
+
+### Changed
+
+- Model routing is real: the `vaultcraft` agent runs on Opus and only decides, and three
+  worker agents pinned to their models do the writing: `vaultcraft-extractor` and
+  `vaultcraft-writer` (Haiku), `vaultcraft-drafter` (Sonnet). Before, the agent asked for
+  cheaper models in the prompt text, which does not switch models.
+- Generation runs as a loop per source batch: extract, decide, write, audit and fix (at
+  most 3 rounds), record progress.
+- `install.sh` installs the worker agents; `tests/manifest-test.sh` checks each agent's model.
+
 ## [0.4.0] - 2026-10-16
 
 ### Added

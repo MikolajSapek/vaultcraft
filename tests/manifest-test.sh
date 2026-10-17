@@ -84,6 +84,17 @@ while IFS= read -r f; do
 done < <(git ls-files)
 [ "$(git ls-files | wc -l)" -le 512 ] || fail "more than 512 files"
 
+# Model routing is real only when each agent pins its model; workers must not spawn agents.
+model_of() { sed -n 's/^model: //p' "agents/$1.md"; }
+[ "$(model_of vaultcraft)" = opus ] || fail "vaultcraft orchestrator must run on opus"
+grep -q '^tools:.*\bAgent\b' agents/vaultcraft.md || fail "vaultcraft orchestrator needs the Agent tool"
+for w in vaultcraft-extractor:haiku vaultcraft-writer:haiku vaultcraft-drafter:sonnet; do
+  [ "$(model_of "${w%%:*}")" = "${w##*:}" ] || fail "${w%%:*} must run on ${w##*:}"
+  ! grep -q '^tools:.*\bAgent\b' "agents/${w%%:*}.md" || fail "${w%%:*} must not spawn agents"
+  grep -q "${w%%:*}" skills/vaultcraft/references/principles.md || fail "${w%%:*} missing from the work loop"
+done
+! grep -rq "Using model:" skills agents || fail "prompt-prefix model routing does not switch models; use the worker agents"
+
 tmp_agent="$(mktemp)"; trap 'rm -f "${tmp_agent}"' EXIT
 ./scripts/build-agent.sh "${tmp_agent}"
 cmp -s "${tmp_agent}" agents/vaultcraft.md || fail "agents/vaultcraft.md is stale: run ./scripts/build-agent.sh"

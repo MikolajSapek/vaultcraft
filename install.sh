@@ -44,8 +44,11 @@ install_files() {
   mkdir -p "${CLAUDE_DIR}"
   touch "${MANIFEST}"
 
-  echo -e "${BLUE}→${RESET} Installing agent to ${AGENTS_DIR}/vaultcraft.md"
-  install_file "${REPO_ROOT}/agents/vaultcraft.md" "${AGENTS_DIR}/vaultcraft.md"
+  echo -e "${BLUE}→${RESET} Installing agents (vaultcraft + Haiku/Sonnet workers) to ${AGENTS_DIR}/"
+  local agent
+  for agent in "${REPO_ROOT}"/agents/vaultcraft*.md; do
+    install_file "${agent}" "${AGENTS_DIR}/$(basename "${agent}")"
+  done
 
   echo -e "${BLUE}→${RESET} Installing skill (SKILL.md, references, templates) to ${SKILLS_DIR}/vaultcraft/"
   local src
