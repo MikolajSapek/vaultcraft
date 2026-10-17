@@ -42,3 +42,6 @@ jobs:
 
       - name: Manifest and directory-rule checks
         run: ./tests/manifest-test.sh
+
+      - name: Goal check regression test
+        run: ./tests/check-vault-test.sh

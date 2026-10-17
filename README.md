@@ -250,7 +250,7 @@ The script copies the agent and the `skills/vaultcraft/` folder, records every f
 
 | Where | How it works | Where the vault ends up |
 |---|---|---|
-| Claude Code, Cowork | The skill runs the intake, then the vaultcraft agent (Opus) runs the work loop with Haiku and Sonnet workers | Written straight to your vault folder |
+| Claude Code, Cowork | The skill runs the intake, then the vaultcraft agent (on your session's model) runs the work loop with Haiku and Sonnet workers | Written straight to your vault folder |
 | Codex, Cursor | The skill runs the whole pipeline itself | Written straight to your vault folder |
 | claude.ai chat, ChatGPT | The skill runs the whole pipeline in the chat's sandbox | A `.zip` you unzip and open in Obsidian with **Open folder as vault** |
 
@@ -258,12 +258,16 @@ Optional helpers on your own machine: **poppler** (`brew install poppler`) extra
 
 ### What the plugin does on your machine
 
-vaultcraft is instructions only: no server, no telemetry, no code that runs on install. When you run it, the assistant:
+vaultcraft is instructions plus one small check script: no telemetry, no code that runs on install. When you run it, the assistant:
 
 - reads the files and folders you point it at;
 - writes notes, `.obsidian/` settings and copies of your sources only inside the vault folder you chose (or into the zip in a sandbox);
 - runs local commands such as `pdfimages` and `soffice --convert-to pdf` to extract figures and convert slides. It asks before installing anything;
 - searches the web (your assistant's own web tool) only to fill gaps in a concept, and cites every source in the note. Those search queries leave your machine; your files do not.
+- runs `python3 skills/vaultcraft/scripts/check_vault.py <vault>` (standard library only, reads the vault, writes nothing) to check the goal: coverage, links, definitions, examples;
+- in Claude Code and Cowork, starts its own worker agents (`vaultcraft-extractor`, `vaultcraft-writer`, `vaultcraft-drafter`) on your account, with the same file access.
+
+Only the ChatGPT and Codex directory version adds an optional server (`https://vaultcraft.sapcorp.eu/mcp`) that returns vault settings, note templates and a link check; it keeps nothing. The Claude and Cursor versions never contact it.
 
 Full details: [Privacy](https://github.com/MikolajSapek/vaultcraft/blob/main/PRIVACY.md).
 
@@ -325,16 +329,16 @@ For work vaults, Batch C also asks: *"List your key stakeholders (names / compan
 | Work — 10 stakeholders, 20 meetings | ~45 min |
 | Research — 20 papers | ~40 min |
 
-In Claude Code and Cowork the work is split across agents, each pinned to its model, so the expensive model only decides:
+In Claude Code and Cowork the work is split across agents, each pinned to its model, so your own model only decides:
 
 | Agent | Model | Does |
 |---|---|---|
-| `vaultcraft` | Opus | Plans, builds the concept inventory, sorts the work, writes briefs, judges the audit |
+| `vaultcraft` | Your session's model (Opus recommended) | Plans, builds the concept inventory, sorts the work, writes briefs, judges the audit |
 | `vaultcraft-drafter` | Sonnet | Exemplar notes, hard concepts, lecture walkthroughs, comparison tables |
 | `vaultcraft-extractor` | Haiku | Reads each source: text, slides, figures, named items |
 | `vaultcraft-writer` | Haiku | Writes the bulk of the notes from briefs, and applies audit fixes |
 
-It works in a loop, one batch of sources at a time: extract, decide, write, then audit and fix until the batch is clean (at most 3 fix rounds), and record progress before the next batch. Full rules in [Principle 18](skills/vaultcraft/references/principles.md).
+It works in a loop, one batch of sources at a time: extract, decide, write, then run the goal check and fix until the batch is clean, and record progress before the next batch. At the start the agent writes a measurable goal (every named technique in your sources has a note, no broken links or orphans, every concept has a definition and an example), and the run is not finished until `skills/vaultcraft/scripts/check_vault.py` says the goal is met. The check runs on your own machine, free. Full rules in [Principle 18](skills/vaultcraft/references/principles.md).
 
 ---
 
@@ -369,7 +373,7 @@ vaultcraft/
 ├── .cursor-plugin/plugin.json   ← Cursor plugin manifest
 ├── assets/                      ← Plugin logo and icon
 ├── agents/
-│   ├── vaultcraft.md            ← Opus orchestrator for Claude Code and Cowork, generated from the skill
+│   ├── vaultcraft.md            ← Orchestrator (your session's model) for Claude Code and Cowork, generated from the skill
 │   └── vaultcraft-*.md          ← Workers: extractor and writer (Haiku), drafter (Sonnet)
 ├── skills/
 │   ├── vaultcraft/
@@ -413,7 +417,7 @@ vaultcraft/
 - **PDF embedding** — source slides and documents embed inline in every lecture or topic note automatically.
 - **Bidirectional link audit** — Phase 9 verifies that concept → source lecture and lecture → concept list are mutually consistent.
 - **Quality report** — after every run: count of notes missing definition / example / flashcards, status breakdown, difficulty distribution.
-- **Token economy** — mechanical writing delegated to Haiku (~60% token savings); synthesis on Sonnet; hard reasoning on Opus.
+- **Token economy** — bulk writing on Haiku workers, exemplars and hard concepts on a Sonnet worker, decisions on your session's model.
 
 See [`docs/conventions.md`](docs/conventions.md) for the full spec.
 

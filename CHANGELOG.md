@@ -10,12 +10,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) 
 
 ### Changed
 
-- Model routing is real: the `vaultcraft` agent runs on Opus and only decides, and three
+- Model routing is real: the `vaultcraft` agent runs on your session's model and only decides, and three
   worker agents pinned to their models do the writing: `vaultcraft-extractor` and
   `vaultcraft-writer` (Haiku), `vaultcraft-drafter` (Sonnet). Before, the agent asked for
   cheaper models in the prompt text, which does not switch models.
-- Generation runs as a loop per source batch: extract, decide, write, audit and fix (at
-  most 3 rounds), record progress.
+- Generation runs as a loop per source batch until a measurable goal is met: extract,
+  decide, write, goal check, fix (Haiku, then Sonnet, then the orchestrator decides),
+  record progress.
+- `skills/vaultcraft/scripts/check_vault.py`: the goal check (coverage of named items,
+  links, orphans, definitions, examples, lecture backlinks). Standard library only, so it
+  runs locally in every host with code execution; `tests/check-vault-test.sh` covers it.
 - `install.sh` installs the worker agents; `tests/manifest-test.sh` checks each agent's model.
 
 ## [0.4.0] - 2026-10-16

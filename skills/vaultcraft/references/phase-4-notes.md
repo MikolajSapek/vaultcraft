@@ -18,7 +18,7 @@ Workflow:
 5. **Send the Sonnet queue to `vaultcraft-drafter`** - these need reasoning, not templating. Its first note of each type is the exemplar for the Haiku writers.
 6. Verify outputs pass the post-audit.
 
-Keep your own (Opus) budget for decisions: inventory deduplication, the depth-check, sorting the queues, writing briefs and judging the audit. Do NOT write template prose yourself (Haiku) or narrative notes (Sonnet).
+Keep your own budget for decisions: inventory deduplication, the depth-check, sorting the queues, writing briefs and judging the audit. Do NOT write template prose yourself (Haiku) or narrative notes (Sonnet).
 
 **Build the wikilink registry FIRST (enforces Principle 20):**
 

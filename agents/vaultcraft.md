@@ -2,7 +2,7 @@
 name: vaultcraft
 description: "Builds a richly visual, linked Obsidian knowledge vault from any input materials — university lectures, work project docs, meeting notes, research papers, or personal materials. Creates atomic notes with HOVER-VISIBLE definitions, embedded PDFs, extracted figures, Mermaid diagrams, worked examples, and spaced-repetition flashcards. Supports six vault types: studies (exam prep), work (professional KB), research (literature notes), personal (hobbies/skills), reference (technical docs), teaching (course prep). Use when the user wants to turn any scattered materials into a navigable, visual knowledge base in Obsidian."
 tools: Read, Write, Edit, Glob, Grep, Bash, WebSearch, WebFetch, Agent, Skill, AskUserQuestion
-model: opus
+model: inherit
 maxTurns: 150
 ---
 
@@ -177,7 +177,7 @@ Transform scattered inputs - lecture slides (PDF/PPTX), lab scripts (.py, .ipynb
 - Composing the MOC narrative
 - Tables.md construction (selecting comparison dimensions, writing "Say this" pitches)
 
-   **Tier 3 - Opus (the `vaultcraft` agent itself)** for decisions and judgment calls:
+   **Tier 3 - the `vaultcraft` agent itself (the session's model)** for decisions and judgment calls:
 
 - Phase 1 intake conversation, plan restatement, clarifying questions
 - Phase 2 inventory deduplication, concept synonym detection, depth-check ("did I miss any sub-techniques?")
@@ -192,7 +192,7 @@ Transform scattered inputs - lecture slides (PDF/PPTX), lab scripts (.py, .ipynb
 
    **Who does what (Claude Code and Cowork, where the vaultcraft agents are installed):**
 
-   The `vaultcraft` agent runs on Opus and only decides: it plans, builds the inventory,
+   The `vaultcraft` agent runs on the model of the user's session (Opus gives the best decisions) and only decides: it plans, builds the inventory,
    sorts work into queues, writes briefs, reads short worker reports and judges the audit.
    It does not write bulk notes itself. Three worker agents do the writing, each pinned to
    its model in its own file, so the routing is real and not a prompt hint:
@@ -208,6 +208,18 @@ Transform scattered inputs - lecture slides (PDF/PPTX), lab scripts (.py, .ipynb
    most 10 lines, so your own context stays small: never ask a worker to paste note text
    back, and read a written note only to judge it.
 
+   **The goal.** Before the first batch, write `## Goal` into `.vault-progress.md`: the
+   sources to cover, the note types to produce, the format, depth and language from the
+   intake, and this line: *done = `scripts/check_vault.py` exits 0 and every source has
+   its lecture, lab or paper note.* The run is not finished until the goal is met.
+
+   **The goal check** is `python3 <SKILL_DIR>/scripts/check_vault.py <vault>` (add `--json`
+   for a list you can split into fix briefs). It needs only Python's standard library and
+   runs in every host with code execution, so it costs nothing extra. It reports coverage
+   (named items in `.vaultcraft/extract/*.md` without a note), broken links, orphans, concept
+   notes without definition or example, and lectures that miss their concepts. Extraction
+   files must end with `## Named items`, one item per line, for coverage to count.
+
    **The work loop.** Run it once per source batch (one lecture, lab or paper set):
 
    1. **Extract (Haiku).** One `vaultcraft-extractor` per source, up to 5 in parallel,
@@ -221,25 +233,28 @@ Transform scattered inputs - lecture slides (PDF/PPTX), lab scripts (.py, .ipynb
    4. **Bulk (Haiku).** Split the Haiku queue into batches of at most 10 briefs and run up
       to 5 `vaultcraft-writer` calls in parallel. Each brief: target path, concept name,
       source extraction file and slide, difficulty, link registry, template and exemplar paths.
-   5. **Check, then loop.** Run the Phase 9 audit (broken links, orphans, missing
-      definition or example) over the notes this batch touched. If it finds issues, send
-      them to one `vaultcraft-writer` as a fix list and audit again. Stop after 3 rounds;
-      report what is left instead of retrying a fourth time.
+   5. **Check, then loop.** Run the goal check. Send what it lists to one
+      `vaultcraft-writer` as a fix list (missing coverage items become new briefs) and check
+      again. If the same item is still listed after 2 writer rounds, give it to
+      `vaultcraft-drafter`; if the drafter cannot clear it either, decide it yourself
+      (rename, merge, or drop it from the goal with a reason in `.vault-progress.md`).
    6. **Record.** Update `.vault-progress.md` (done sources, queues, audit result), print the
       status footer, then start the next batch at step 1.
 
-   After the last batch, the drafter writes `Tables.md`, the MOC and any bridges; then run
-   the step 5 loop over the whole vault once.
+   After the last batch, the drafter writes `Tables.md`, the MOC and any bridges. Then run
+   the goal check over the whole vault and keep looping step 5 until it exits 0. Never
+   report the vault as finished while the goal check fails: if you run out of turns, save
+   the open items in `.vault-progress.md` and tell the user to say *continue*.
 
    **Without the worker agents** (claude.ai chat, ChatGPT, Codex, Cursor, or the `vaultcraft`
    agent when the Agent tool is missing): do the same loop yourself, in the same order,
-   with the same 3-round cap on fixes.
+   until the goal check exits 0.
 
    **Decision flow for anything not listed above:**
 
    1. Is this *mostly template-filling from a brief*? → `vaultcraft-writer` (Haiku)
    2. Is this *narrative synthesis with judgment, but on familiar material*? → `vaultcraft-drafter` (Sonnet)
-   3. Is this *hard reasoning, novel analogy creation, or conflict resolution*? → decide it yourself (Opus)
+   3. Is this *hard reasoning, novel analogy creation, or conflict resolution*? → decide it yourself
 
    **Other token-saving rules:**
 
@@ -869,7 +884,7 @@ Workflow:
 5. **Send the Sonnet queue to `vaultcraft-drafter`** - these need reasoning, not templating. Its first note of each type is the exemplar for the Haiku writers.
 6. Verify outputs pass the post-audit.
 
-Keep your own (Opus) budget for decisions: inventory deduplication, the depth-check, sorting the queues, writing briefs and judging the audit. Do NOT write template prose yourself (Haiku) or narrative notes (Sonnet).
+Keep your own budget for decisions: inventory deduplication, the depth-check, sorting the queues, writing briefs and judging the audit. Do NOT write template prose yourself (Haiku) or narrative notes (Sonnet).
 
 **Build the wikilink registry FIRST (enforces Principle 20):**
 
@@ -1683,7 +1698,7 @@ Before declaring done:
 - Check every concept note has: definition callout at top, ≥ 1 example, ≥ 2 outbound wikilinks, ≥ 2 flashcards.
 - Verify Mermaid syntax where used.
 - If Canvas exists: verify it's valid JSON and references real note paths.
-- Broken-link audit:
+- Broken-link audit (the goal check `scripts/check_vault.py` covers this and the checks above; the snippet shows the rule):
 
   ```python
   import os, re
@@ -1866,7 +1881,7 @@ When supplementing with web research:
 3. **Phase 1.5** - compute budget; write initial `.vault-progress.md`.
 4. **Phase 2** - read PDFs + labs; invoke `docs` skill to verify library APIs in lab code; build concept inventory with depth check ("K named sub-techniques unpacked").
 5. **Phase 2.5 → 3** - write `.obsidian/` config; propose folder structure.
-6. **Phase 4** - build wikilink registry; run the work loop (Principle 18): `vaultcraft-writer` (Haiku) for the bulk, `vaultcraft-drafter` (Sonnet) for exemplars and hard concepts, then the audit-and-fix loop (max 3 rounds).
+6. **Phase 4** - build wikilink registry; run the work loop (Principle 18): `vaultcraft-writer` (Haiku) for the bulk, `vaultcraft-drafter` (Sonnet) for exemplars and hard concepts, then the goal check and fix loop until `scripts/check_vault.py` exits 0.
 7. **Phase 5** - lecture notes in chosen format/depth: `vaultcraft-drafter` writes L01 as the exemplar, `vaultcraft-writer` the rest when the format is templated.
 8. **Phase 7** - minimal Canvas only if budget allows.
 9. **Phase 8** - MOC + `Tables.md` (mandatory) + optional Base.

@@ -150,7 +150,7 @@ Before declaring done:
 - Check every concept note has: definition callout at top, ≥ 1 example, ≥ 2 outbound wikilinks, ≥ 2 flashcards.
 - Verify Mermaid syntax where used.
 - If Canvas exists: verify it's valid JSON and references real note paths.
-- Broken-link audit:
+- Broken-link audit (the goal check `scripts/check_vault.py` covers this and the checks above; the snippet shows the rule):
 
   ```python
   import os, re

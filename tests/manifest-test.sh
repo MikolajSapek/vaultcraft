@@ -86,7 +86,7 @@ done < <(git ls-files)
 
 # Model routing is real only when each agent pins its model; workers must not spawn agents.
 model_of() { sed -n 's/^model: //p' "agents/$1.md"; }
-[ "$(model_of vaultcraft)" = opus ] || fail "vaultcraft orchestrator must run on opus"
+[ "$(model_of vaultcraft)" = inherit ] || fail "vaultcraft orchestrator must inherit the session model"
 grep -q '^tools:.*\bAgent\b' agents/vaultcraft.md || fail "vaultcraft orchestrator needs the Agent tool"
 for w in vaultcraft-extractor:haiku vaultcraft-writer:haiku vaultcraft-drafter:sonnet; do
   [ "$(model_of "${w%%:*}")" = "${w##*:}" ] || fail "${w%%:*} must run on ${w##*:}"
