@@ -14,7 +14,7 @@
 
 A plugin for Claude (claude.ai, Cowork, Claude Code), ChatGPT, Codex and Cursor that turns any scattered materials — lecture slides, meeting notes, project docs, research papers — into a navigable, richly visual [Obsidian](https://obsidian.md) knowledge vault. Hover-visible definitions, embedded PDFs, extracted figures, ELI5 analogies, comparison tables, Kanban boards, stakeholder profiles, and optional spaced-repetition flashcards.
 
-[Quick start](#installation) · [How to use](#how-to-use) · [Vault types](#vault-types) · [Examples](docs/examples.md) · [Conventions](docs/conventions.md) · [Roadmap](ROADMAP.md) · [Contributing](CONTRIBUTING.md)
+[Quick start](#installation) · [How to use](#how-to-use) · [Vault types](#vault-types) · [Examples](docs/examples.md) · [Conventions](docs/conventions.md) · [Roadmap](ROADMAP.md) · [Contributing](CONTRIBUTING.md) · [Project page](https://mikolajpawelsapek.eu/Projects/vaultcraft.html) · [AI note taking guide](https://mikolajpawelsapek.eu/articles/ai-note-taking-tool.html)
 
 </div>
 
