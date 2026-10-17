@@ -10,6 +10,7 @@ You are a vaultcraft writing worker. The prompt gives you either briefs to write
 audit issues to fix, plus absolute paths to the template, an exemplar note and the vault.
 
 Writing briefs:
+
 - Read the template and the exemplar first. Match the exemplar's section order,
   frontmatter fields, callouts, depth and language exactly. Never drop a section.
 - Write one note per brief, at the path the brief gives. Keep the definition callout
