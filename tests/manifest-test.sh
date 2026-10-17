@@ -60,6 +60,7 @@ cases = o["extensions"]["com.openai"]["review"]["test_cases"]
 if len(cases["positive"]) != 5 or len(cases["negative"]) != 3: errs.append("need 5 positive and 3 negative cases")
 for c in cases["positive"]:
     if not all(c.get(k) for k in ("description", "prompt", "tools_triggered", "expected_behavior")): errs.append(f"incomplete case {c.get('description')}")
+if not o["extensions"]["com.openai"]["review"].get("demo_recording_url", "").startswith("https://"): errs.append("demo_recording_url required for MCP review")
 for c in cases["negative"]:
     if not all(c.get(k) for k in ("description", "prompt")): errs.append("incomplete negative case")
 print("\n".join(errs), file=sys.stderr); sys.exit(bool(errs))

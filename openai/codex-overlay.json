@@ -56,7 +56,8 @@
           ]
         },
         "commerce": false,
-        "commerce_description": "vaultcraft is free. It does not sell anything or process payments."
+        "commerce_description": "vaultcraft is free. It does not sell anything or process payments.",
+        "demo_recording_url": "https://mikolajpawelsapek.eu/files/vaultcraft-review-demo.mp4"
       },
       "publication": {
         "release_notes": "Adds the optional vaultcraft server: Obsidian vault settings, note templates and a link check for finished notes."
