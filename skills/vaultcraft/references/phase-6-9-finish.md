@@ -148,7 +148,7 @@ Before declaring done:
 - **Depth check (CRITICAL)** - for each lecture, re-read slides and verify: "Did I create a note for every named technique, variant, algorithm, metric, or method? If a slide lists {A, B, C, D}, do I have notes for A, B, C, and D?" If a named sub-technique is only in prose inside another note, extract it.
 - Scan for orphan notes (0 backlinks) - add wikilinks from a natural parent to connect them. Exclude MOC and README from this check.
 - Check every concept note has: definition callout at top, ≥ 1 example, ≥ 2 outbound wikilinks, ≥ 2 flashcards.
-- Verify Mermaid syntax where used.
+- Verify every diagram with Pele: `node <skill-dir>/scripts/check_diagrams.mjs <vault>` must print `DONE` (exit 0). It needs Node and installs `pele` next to itself on first run.
 - If Canvas exists: verify it's valid JSON and references real note paths.
 - Broken-link audit (the goal check `scripts/check_vault.py` covers this and the checks above; the snippet shows the rule):
 

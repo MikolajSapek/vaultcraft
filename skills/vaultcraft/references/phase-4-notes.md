@@ -150,7 +150,7 @@ When to AVOID <Name>?::<condition>
 **Rules:**
 
 - Fill every applicable section - if a section genuinely does not apply, delete it (don't leave "TODO" or "N/A").
-- Mermaid diagrams for: workflows, state machines, hierarchies, data flows, decision trees. Keep ≤ 12 nodes.
+- Mermaid diagrams for: workflows, state machines, hierarchies, data flows, decision trees. Keep ≤ 12 nodes. Numbers become a Mermaid chart (`xychart`, `pie`, `quadrantChart`), never a hand-made image. Follow the Pele diagram standard in the principles.
 - Python examples must be runnable as-is (include imports, use small illustrative data).
 - Flashcards use `::` (inline) - compatible with `obsidian-spaced-repetition`.
 - Frontmatter fields: `tags` (single classifier), `aliases`, `source`, `status` (`new` | `review` | `mastered`), `difficulty` (1–5), `created`, `exam-likely` (bool).

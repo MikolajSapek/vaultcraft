@@ -20,3 +20,6 @@ temp/
 
 # Built plugin zips
 dist/
+
+# Pele installed by check_diagrams.mjs on first run
+skills/vaultcraft/scripts/.pele/

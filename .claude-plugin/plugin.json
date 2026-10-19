@@ -2,7 +2,7 @@
   "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
   "name": "vaultcraft",
   "displayName": "vaultcraft",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "Turns lecture slides, labs, meeting notes and papers into a linked Obsidian study vault: atomic notes with hover definitions, embedded slides, comparison tables and cross-course bridges.",
   "author": {
     "name": "Mikołaj Sapek",

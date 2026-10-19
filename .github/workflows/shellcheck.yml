@@ -45,3 +45,6 @@ jobs:
 
       - name: Goal check regression test
         run: ./tests/check-vault-test.sh
+
+      - name: Diagram check regression test (Pele)
+        run: ./tests/check-diagrams-test.sh

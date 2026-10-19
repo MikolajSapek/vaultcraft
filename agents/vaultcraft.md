@@ -112,6 +112,13 @@ Transform scattered inputs - lecture slides (PDF/PPTX), lab scripts (.py, .ipynb
 
 5. **Visualize what is structural** - hierarchies, processes, state machines, taxonomies go into Mermaid (inside notes). Never describe a tree in prose if a diagram fits.
 
+   **Diagram and chart standard: Pele.** Every diagram and chart is a ```` ```mermaid ```` block that parses with [Pele](https://pele.run), the Mermaid renderer built for Obsidian (Mermaid 12.1 syntax, themed SVG). Rules:
+   - **Charts are Mermaid too, not images.** Numbers from the material go into `xychart` (bar/line), `pie`, `quadrantChart`, `sankey`, `radar-beta` or `treemap-beta`; dates into `timeline` or `gantt`. A PNG chart is only for a figure extracted from the source slides.
+   - **Only types today's Obsidian also draws** (it still ships Mermaid 11.13): never `swimlane-beta`, `agentflow-beta`, `railroad-*`, `treeView-beta`, `cynefin-beta`, `wardley-beta`, `eventmodeling`, `usecase-beta`.
+   - **No colour in the diagram.** No `%%{init}%%` theme, no `themeVariables`: Pele ignores them. Colour comes from the theme through the `--pele-*` CSS variables.
+   - **Plain labels.** No HTML in labels; bold, italic and line breaks only. No `click` callbacks (links are fine).
+   - **Goal check:** `node <skill-dir>/scripts/check_diagrams.mjs <vault>` parses every block with Pele and exits 0 only when all pass. Fix every line it prints.
+
 6. **Build for recall, not just reference** - structure notes so they can be self-tested: a definition callout that stands alone, an Example section, and Exam cues with model answers. Flashcards are OPTIONAL and OFF by default: only generate a `## Flashcards` section when the user explicitly asked for spaced repetition in intake. Never add one to a vault that does not already use them, and never reintroduce them when rewriting a note that has none.
 
 7. **Respect Obsidian Flavored Markdown** - use wikilinks `[[Note]]`, embeds `![[Note]]`, callouts `> [!definition]`, frontmatter properties, Mermaid fenced blocks. Do not output GitHub-flavored markdown where Obsidian syntax is richer.
@@ -1016,7 +1023,7 @@ When to AVOID <Name>?::<condition>
 **Rules:**
 
 - Fill every applicable section - if a section genuinely does not apply, delete it (don't leave "TODO" or "N/A").
-- Mermaid diagrams for: workflows, state machines, hierarchies, data flows, decision trees. Keep ≤ 12 nodes.
+- Mermaid diagrams for: workflows, state machines, hierarchies, data flows, decision trees. Keep ≤ 12 nodes. Numbers become a Mermaid chart (`xychart`, `pie`, `quadrantChart`), never a hand-made image. Follow the Pele diagram standard in the principles.
 - Python examples must be runnable as-is (include imports, use small illustrative data).
 - Flashcards use `::` (inline) - compatible with `obsidian-spaced-repetition`.
 - Frontmatter fields: `tags` (single classifier), `aliases`, `source`, `status` (`new` | `review` | `mastered`), `difficulty` (1–5), `created`, `exam-likely` (bool).
@@ -1696,7 +1703,7 @@ Before declaring done:
 - **Depth check (CRITICAL)** - for each lecture, re-read slides and verify: "Did I create a note for every named technique, variant, algorithm, metric, or method? If a slide lists {A, B, C, D}, do I have notes for A, B, C, and D?" If a named sub-technique is only in prose inside another note, extract it.
 - Scan for orphan notes (0 backlinks) - add wikilinks from a natural parent to connect them. Exclude MOC and README from this check.
 - Check every concept note has: definition callout at top, ≥ 1 example, ≥ 2 outbound wikilinks, ≥ 2 flashcards.
-- Verify Mermaid syntax where used.
+- Verify every diagram with Pele: `node <skill-dir>/scripts/check_diagrams.mjs <vault>` must print `DONE` (exit 0). It needs Node and installs `pele` next to itself on first run.
 - If Canvas exists: verify it's valid JSON and references real note paths.
 - Broken-link audit (the goal check `scripts/check_vault.py` covers this and the checks above; the snippet shows the rule):
 

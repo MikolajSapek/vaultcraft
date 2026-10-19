@@ -6,6 +6,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) 
 
 ## [Unreleased]
 
+## [0.6.0] - 2026-10-19
+
+### Added
+
+- Diagram and chart standard: [Pele](https://pele.run), the Mermaid renderer built for Obsidian.
+  Charts are Mermaid blocks (`xychart`, `pie`, `quadrantChart`, ...), not images; only diagram
+  types today's Obsidian also draws; no `themeVariables`, colour comes from `--pele-*` CSS.
+- `skills/vaultcraft/scripts/check_diagrams.mjs`: goal check that parses every Mermaid block
+  with Pele and flags Pele-only types and `themeVariables`. Needs Node; installs `pele` on
+  first run. Regression test `tests/check-diagrams-test.sh` runs in CI.
+
 ## [0.5.0] - 2026-10-17
 
 ### Changed
