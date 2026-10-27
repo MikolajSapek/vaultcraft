@@ -50,12 +50,15 @@ get() { python3 -c "import json,sys; print(json.dumps(json.loads(sys.argv[1])[sy
 [ "$(get coverage_missing)" = '["Zipf'"'"'s law (L01.md)"]' ] || fail "coverage: $(get coverage_missing)"
 [ "$(get missing_example)" = '["TF-IDF"]' ] || fail "missing example: $(get missing_example)"
 [ "$(get lecture_misses_concept)" = '["L01 - Intro -> TF-IDF"]' ] || fail "lecture backlinks: $(get lecture_misses_concept)"
+[ "$(get missing_visual)" = '["Bag of Words", "TF-IDF", "L01 - Intro"]' ] || fail "missing visual: $(get missing_visual)"
 python3 "${CHECK}" "${V}" >/dev/null && fail "exit code 0 for an unfinished vault"
 
 # Fix everything; the goal must now be met.
-printf -- '---\ntags: [concept]\nsource: "[[L01 - Intro]]"\n---\n> [!definition] TF-IDF\n> Weights a word by how rare it is.\n\n> [!example] Example\n> rare words\n\nBuilds on [[Bag of Words]] and [[Zipf'"'"'s law]].\n' > "${V}/Concepts/TF-IDF.md"
-printf -- '---\ntags: [concept]\n---\n> [!definition] Zipf'"'"'s law\n> Word frequency falls with rank.\n\n> [!example] Example\n> the, of\n\n[[TF-IDF]] [[BoW]]\n' > "${V}/Concepts/Zipf's law.md"
-echo "First lecture. [[BoW]] [[TF-IDF]]" > "${V}/Lectures/L01 - Intro.md"
+printf -- '---\ntags: [concept]\nsource: "[[L01 - Intro]]"\n---\n> [!definition] TF-IDF\n> Weights a word by how rare it is.\n\n> [!example] Example\n> rare words\n\n```mermaid\npie\n  "rare" : 1\n  "common" : 9\n```\n\nBuilds on [[Bag of Words]] and [[Zipf'"'"'s law]].\n' > "${V}/Concepts/TF-IDF.md"
+printf -- '---\ntags: [concept]\n---\n> [!definition] Zipf'"'"'s law\n> Word frequency falls with rank.\n\n> [!example] Example\n> the, of\n\n![[zipf.svg]]\n\n[[TF-IDF]] [[BoW]]\n' > "${V}/Concepts/Zipf's law.md"
+printf 'First lecture. [[BoW]] [[TF-IDF]]\n\n![[l01-p04.png|560]]\n' > "${V}/Lectures/L01 - Intro.md"
+touch "${V}/Assets/l01-p04.png" "${V}/Assets/zipf.svg"
+printf '\n```mermaid\nflowchart LR\n  A[Words] --> B[Counts]\n```\n' >> "${V}/Concepts/Bag of Words.md"
 python3 "${CHECK}" "${V}" >/dev/null || { python3 "${CHECK}" "${V}"; fail "fixed vault not reported done"; }
 
 echo "check_vault.py: all checks passed"

@@ -10,6 +10,8 @@ the goal written at the start of a run:
   concepts  each concept note has a definition callout (<= 200 chars) and an example,
             and links to at least 2 other notes
   lectures  each lecture lists the concepts that name it as their source
+  visuals   every concept and lecture note has a visual: a ```mermaid block (Pele) or an
+            embedded image (extracted slide/figure)
 
 Usage:  python3 check_vault.py <vault> [--json]
 Exit code 0 when the goal is met, 1 when something is left to do.
@@ -24,6 +26,7 @@ DEFINITION_MAX = 200
 LIST_CAP = 50
 SKIP_DIRS = {".obsidian", ".vaultcraft", ".trash", ".git"}
 
+VISUAL_RE = re.compile(r"^```mermaid|!\[\[[^\]]+\.(?:png|jpe?g|gif|svg|webp)(?:\|[^\]]*)?\]\]|!\[[^\]]*\]\([^)]+\.(?:png|jpe?g|gif|svg|webp)\)", re.M | re.I)
 LINK_RE = re.compile(r"(!?)\[\[([^\]|#^]+)(?:[|#^][^\]]*)?\]\]")
 
 
@@ -60,6 +63,10 @@ def is_concept(fm):
 def definition(text):
     m = re.search(r"^>\s*\[!definition\][^\n]*\n((?:>[^\n]*\n?)+)", text, re.M | re.I)
     return re.sub(r"^>\s?", "", m.group(1), flags=re.M).strip() if m else None
+
+
+def is_lecture(path, fm):
+    return "Lectures" in path.replace(os.sep, "/").split("/")[:-1] or bool(re.search(r"^tags:.*lecture", fm, re.M))
 
 
 def has_example(text):
@@ -129,10 +136,12 @@ def check(root):
             inbound[t] += 1
 
     orphans = [base_name(p) for p, c in inbound.items() if c == 0 and key(base_name(p)) not in NAV_NOTES]
-    gaps = {"missing_definition": [], "long_definition": [], "missing_example": [], "under_2_links": [], "lecture_misses_concept": []}
+    gaps = {"missing_definition": [], "long_definition": [], "missing_example": [], "under_2_links": [], "lecture_misses_concept": [], "missing_visual": []}
     for path in paths:
         text = notes[path]
         fm = frontmatter(text)
+        if (is_concept(fm) or is_lecture(path, fm)) and not VISUAL_RE.search(text):
+            gaps["missing_visual"].append(base_name(path))
         if not is_concept(fm):
             continue
         name = base_name(path)

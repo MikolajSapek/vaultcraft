@@ -264,7 +264,7 @@ vaultcraft is instructions plus one small check script: no telemetry, no code th
 - writes notes, `.obsidian/` settings and copies of your sources only inside the vault folder you chose (or into the zip in a sandbox);
 - runs local commands such as `pdfimages` and `soffice --convert-to pdf` to extract figures and convert slides. It asks before installing anything;
 - searches the web (your assistant's own web tool) only to fill gaps in a concept, and cites every source in the note. Those search queries leave your machine; your files do not.
-- runs `python3 skills/vaultcraft/scripts/check_vault.py <vault>` (standard library only, reads the vault, writes nothing) to check the goal: coverage, links, definitions, examples;
+- runs `python3 skills/vaultcraft/scripts/check_vault.py <vault>` (standard library only, reads the vault, writes nothing) to check the goal: coverage, links, definitions, examples, visuals (every concept and lecture note needs a Pele diagram or a slide image);
 - in Claude Code and Cowork, starts its own worker agents (`vaultcraft-extractor`, `vaultcraft-writer`, `vaultcraft-drafter`) on your account, with the same file access.
 
 Only the ChatGPT and Codex directory version adds an optional server (`https://vaultcraft.sapcorp.eu/mcp`) that returns vault settings, note templates and a link check; it keeps nothing. The Claude and Cursor versions never contact it.
@@ -338,7 +338,7 @@ In Claude Code and Cowork the work is split across agents, each pinned to its mo
 | `vaultcraft-extractor` | Haiku | Reads each source: text, slides, figures, named items |
 | `vaultcraft-writer` | Haiku | Writes the bulk of the notes from briefs, and applies audit fixes |
 
-It works in a loop, one batch of sources at a time: extract, decide, write, then run the goal check and fix until the batch is clean, and record progress before the next batch. At the start the agent writes a measurable goal (every named technique in your sources has a note, no broken links or orphans, every concept has a definition and an example), and the run is not finished until `skills/vaultcraft/scripts/check_vault.py` says the goal is met. The check runs on your own machine, free. Full rules in [Principle 18](skills/vaultcraft/references/principles.md).
+It works in a loop, one batch of sources at a time: extract, decide, write, then run the goal check and fix until the batch is clean, and record progress before the next batch. At the start the agent writes a measurable goal (every named technique in your sources has a note, no broken links or orphans, every concept has a definition and an example, every concept and lecture note has a visual), and the run is not finished until `skills/vaultcraft/scripts/check_vault.py` says the goal is met. The check runs on your own machine, free. Full rules in [Principle 18](skills/vaultcraft/references/principles.md).
 
 ---
 

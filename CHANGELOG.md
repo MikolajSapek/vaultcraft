@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) 
 
 ## [Unreleased]
 
+### Added
+
+- Visuals are mandatory: every concept and lecture note must contain a Pele-valid Mermaid
+  diagram/chart or an embedded image (extracted slide, figure, or openly licensed web image).
+  Slide images in lecture notes go inline under the paragraph they illustrate, never in a gallery.
+- Goal check: `check_vault.py` reports `missing_visual` and fails until every concept and
+  lecture note has a visual.
+
 ## [0.6.0] - 2026-10-19
 
 ### Added

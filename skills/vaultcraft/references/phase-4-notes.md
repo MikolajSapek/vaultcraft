@@ -111,7 +111,7 @@ import numpy as np
 
 Or, for math: a worked numerical calculation with real numbers.
 
-## Visualization (optional)
+## Visualization (required)
 
 ```mermaid
 flowchart LR
