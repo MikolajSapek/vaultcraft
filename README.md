@@ -6,6 +6,8 @@
 
 **study · work · research**
 
+[![Get it in ChatGPT](https://img.shields.io/badge/Get%20it%20in%20ChatGPT-official%20plugin%20directory-7C5CB8?style=for-the-badge)](https://chatgpt.com/plugins/plugin_asdk_app_6ad2d875b8648191b6e43ed5675b2c0b)
+
 [![License: MIT](https://img.shields.io/badge/License-MIT-violet.svg)](LICENSE)
 [![Claude](https://img.shields.io/badge/Claude-install%20from%20GitHub-7C5CB8)](#installation)
 [![ChatGPT and Codex](https://img.shields.io/badge/ChatGPT%20%26%20Codex-plugin-7C5CB8)](https://chatgpt.com/plugins/plugin_asdk_app_6ad2d875b8648191b6e43ed5675b2c0b)
