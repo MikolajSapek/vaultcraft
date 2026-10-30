@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) 
 
 ## [Unreleased]
 
+### Changed
+
+- New pixel art obsidian crystal icon (`assets/logo.svg`, `.claude-plugin/icon.png`) replaces the three-dot logo.
+- README links the live ChatGPT directory listing.
+
 ### Added
 
 - Visuals are mandatory: every concept and lecture note must contain a Pele-valid Mermaid

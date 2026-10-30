@@ -8,7 +8,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-violet.svg)](LICENSE)
 [![Claude](https://img.shields.io/badge/Claude-plugin-7C5CB8)](https://claude.ai/directory)
-[![ChatGPT and Codex](https://img.shields.io/badge/ChatGPT%20%26%20Codex-plugin-7C5CB8)](https://chatgpt.com)
+[![ChatGPT and Codex](https://img.shields.io/badge/ChatGPT%20%26%20Codex-plugin-7C5CB8)](https://chatgpt.com/plugins/plugin_asdk_app_6ad2d875b8648191b6e43ed5675b2c0b)
 [![Obsidian](https://img.shields.io/badge/Obsidian-compatible-7C5CB8)](https://obsidian.md)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
@@ -215,7 +215,7 @@ Phase 6 runs automatically. The agent copies source materials into the vault, co
 **From the plugin directory (no GitHub needed, after directory approval).**
 
 - **Claude** (claude.ai, the desktop app, Cowork and Claude Code): open **Customize > Plugins > Discover**, search for **vaultcraft** and add it. In Claude Code you can also run `/plugin directory`. A plugin added on claude.ai shows up in Claude Code too.
-- **ChatGPT and Codex**: open the **Plugins** tab in ChatGPT or the ChatGPT desktop app, search for **vaultcraft** and select **+**. In the Codex CLI, run `/plugins`.
+- **ChatGPT and Codex**: [open vaultcraft in ChatGPT](https://chatgpt.com/plugins/plugin_asdk_app_6ad2d875b8648191b6e43ed5675b2c0b) and select **+**, or search for **vaultcraft** in the **Plugins** tab of ChatGPT or the ChatGPT desktop app. In the Codex CLI, run `/plugins`.
 - **Cursor**: open the [Cursor Marketplace](https://cursor.com/marketplace), find **vaultcraft** and install it, or type `/add-plugin` in the agent chat.
 
 Then ask: *"Build an Obsidian study vault from these lecture slides"*, or type `/vaultcraft`.
