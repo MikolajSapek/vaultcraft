@@ -7,14 +7,14 @@
 **study · work · research**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-violet.svg)](LICENSE)
-[![Claude](https://img.shields.io/badge/Claude-plugin-7C5CB8)](https://claude.ai/directory)
+[![Claude](https://img.shields.io/badge/Claude-install%20from%20GitHub-7C5CB8)](#installation)
 [![ChatGPT and Codex](https://img.shields.io/badge/ChatGPT%20%26%20Codex-plugin-7C5CB8)](https://chatgpt.com/plugins/plugin_asdk_app_6ad2d875b8648191b6e43ed5675b2c0b)
 [![Obsidian](https://img.shields.io/badge/Obsidian-compatible-7C5CB8)](https://obsidian.md)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
-A plugin for Claude (claude.ai, Cowork, Claude Code), ChatGPT, Codex and Cursor that turns any scattered materials — lecture slides, meeting notes, project docs, research papers — into a navigable, richly visual [Obsidian](https://obsidian.md) knowledge vault. Hover-visible definitions, embedded PDFs, extracted figures, ELI5 analogies, comparison tables, Kanban boards, stakeholder profiles, and optional spaced-repetition flashcards.
+A plugin for ChatGPT and Codex that turns any scattered materials (lecture slides, meeting notes, project docs, research papers) into a navigable, richly visual [Obsidian](https://obsidian.md) knowledge vault. Hover-visible definitions, embedded PDFs, extracted figures, ELI5 analogies, comparison tables, Kanban boards, stakeholder profiles, and optional spaced-repetition flashcards.
 
-**Now in the official ChatGPT plugin directory.** vaultcraft passed OpenAI's review, so you can [add it from ChatGPT](https://chatgpt.com/plugins/plugin_asdk_app_6ad2d875b8648191b6e43ed5675b2c0b) without touching GitHub. The same listing covers Codex.
+**Now in the official ChatGPT plugin directory.** vaultcraft passed OpenAI's review, so you can [add it from ChatGPT](https://chatgpt.com/plugins/plugin_asdk_app_6ad2d875b8648191b6e43ed5675b2c0b) without touching GitHub. The same listing covers Codex. Listings in the Claude and Cursor directories are in review; until then, Claude users can install it from this repository.
 
 [Quick start](#installation) · [How to use](#how-to-use) · [Vault types](#vault-types) · [Examples](docs/examples.md) · [Conventions](docs/conventions.md) · [Roadmap](ROADMAP.md) · [Contributing](CONTRIBUTING.md) · [Project page](https://mikolajpawelsapek.eu/Projects/vaultcraft.html) · [AI note taking guide](https://mikolajpawelsapek.eu/articles/ai-note-taking-tool.html)
 
@@ -214,15 +214,15 @@ Phase 6 runs automatically. The agent copies source materials into the vault, co
 
 ### Install
 
-**From the plugin directory (no GitHub needed, after directory approval).**
+**From the plugin directory (no GitHub needed).**
 
-- **Claude** (claude.ai, the desktop app, Cowork and Claude Code): open **Customize > Plugins > Discover**, search for **vaultcraft** and add it. In Claude Code you can also run `/plugin directory`. A plugin added on claude.ai shows up in Claude Code too.
 - **ChatGPT and Codex**: [open vaultcraft in ChatGPT](https://chatgpt.com/plugins/plugin_asdk_app_6ad2d875b8648191b6e43ed5675b2c0b) and select **+**, or search for **vaultcraft** in the **Plugins** tab of ChatGPT or the ChatGPT desktop app. In the Codex CLI, run `/plugins`.
-- **Cursor**: open the [Cursor Marketplace](https://cursor.com/marketplace), find **vaultcraft** and install it, or type `/add-plugin` in the agent chat.
+
+Claude and Cursor directory listings are in review, so vaultcraft is not in **Discover** or the Cursor Marketplace yet.
 
 Then ask: *"Build an Obsidian study vault from these lecture slides"*, or type `/vaultcraft`.
 
-**Straight from this repository** (works today, before or without a directory listing):
+**Straight from this repository** (works without a directory listing):
 
 ```text
 # Claude Code
