@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) 
 
 ## [Unreleased]
 
+## [0.6.0] - 2026-10-30
+
 ### Changed
 
 - New pixel art obsidian crystal icon (`assets/logo.svg`, `.claude-plugin/icon.png`) replaces the three-dot logo.
@@ -18,11 +20,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) 
   Slide images in lecture notes go inline under the paragraph they illustrate, never in a gallery.
 - Goal check: `check_vault.py` reports `missing_visual` and fails until every concept and
   lecture note has a visual.
-
-## [0.6.0] - 2026-10-19
-
-### Added
-
 - Diagram and chart standard: [Pele](https://pele.run), the Mermaid renderer built for Obsidian.
   Charts are Mermaid blocks (`xychart`, `pie`, `quadrantChart`, ...), not images; only diagram
   types today's Obsidian also draws; no `themeVariables`, colour comes from `--pele-*` CSS.
