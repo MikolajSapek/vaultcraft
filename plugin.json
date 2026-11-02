@@ -1,0 +1,19 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "vaultcraft",
+  "version": "1.0.0",
+  "description": "Turns lecture slides, labs, meeting notes and papers into a linked Obsidian study vault.",
+  "author": {
+    "name": "Mikołaj Sapek"
+  },
+  "homepage": "https://github.com/MikolajSapek/vaultcraft",
+  "repository": "https://github.com/MikolajSapek/vaultcraft",
+  "license": "MIT",
+  "keywords": [
+    "obsidian",
+    "study",
+    "notes",
+    "knowledge-vault",
+    "education"
+  ]
+}
