@@ -24,7 +24,7 @@ The Claude and Cursor versions, and installs from GitHub, do not connect to this
 
 - **What it receives.** For `get_vault_config` and `get_note_template`: the vault type, a language code and a template name. For `check_vault`: the paths and Markdown text of the notes the assistant passes in, and the names of attachment files. Notes can contain whatever personal data your materials contain.
 - **Why.** Only to return the requested settings, template or link report in the same request.
-- **Retention.** None. Each request is processed in memory and discarded when the response is sent. The server has no database, writes no files and does not log request bodies. The only log is of failed requests (method and path, nothing else), kept in a rotating 2 MB file.
+- **Retention.** None. Each request is processed in memory and discarded when the response is sent. The server has no database, writes no files and does not log request bodies. It logs one line per request to count usage: the MCP method, the tool name, the client app's name and version (for example `codex-mcp-client/0.0.0`) and the HTTP status. No IP address and no note content. Failed requests are logged with method and path only. Logs rotate and are capped at 100 MB.
 - **Recipients.** Nobody. The server runs on the author's own machine behind Cloudflare, which carries the traffic to it under [Cloudflare's privacy policy](https://www.cloudflare.com/privacypolicy/). No data is sold or shared.
 - **Your control.** Don't connect the server, or ask the assistant not to call `check_vault`. The plugin works without it.
 
