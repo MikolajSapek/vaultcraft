@@ -108,7 +108,7 @@ Each topic section expands into full narrative paragraphs:
 
 **Formal detail.** <1 paragraph + formula if applicable. Explain each symbol. Walk through derivations. 80–120 words.>
 
-**Worked example.** <A concrete numerical OR code example with actual values. Show the computation. For math-heavy lectures this is essential. 100–200 words or a code block with real numbers.>
+**Worked example.** <A concrete numerical OR code example with actual values. Numerical examples follow the calculation format in principles.md, Principle 3: Given, numbered steps with `text` code blocks, results table, Interpretation. For math-heavy lectures this is essential.>
 
 **Why it matters / when to use.** <1 paragraph on practical relevance, what it solves, what its alternative is, when it fails. 60–100 words.>
 

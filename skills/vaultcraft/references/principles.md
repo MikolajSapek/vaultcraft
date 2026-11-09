@@ -48,6 +48,13 @@ Transform scattered inputs - lecture slides (PDF/PPTX), lab scripts (.py, .ipynb
 
    A concept without a worked example is opaque at exam time - students can recite definitions but not apply them. Choose the form of example that actually teaches the concept, not a checkbox form.
 
+   **Calculation format (every worked numerical example, in concept notes, lecture notes and slide explanations):** the reader must be able to redo the exam question from the note alone. Use these parts in this order:
+   1. **Given** (`**Dane:**` in a Polish vault): every input with its symbol, value and unit; convert percentages to fractions (25% = 0.25) and compute any derived input first (e.g. H = C × I = 50 USD/(unit·year)). Name what is sought.
+   2. **Numbered bold steps**, one action each (`**1. Find the EOQ.**`). Put each formula derivation in a fenced `text` code block with aligned `=` lines: formula, substitution, intermediate results, final value with unit. Say how the result is rounded and why (`Q = 32 units, EOQ rounded to whole units`).
+   3. **Results table** when there are two or more components (`| Component | Calculation | Result |`, numbers right-aligned, a bold total row).
+   4. **Interpretation** (`**Interpretacja:**` in a Polish vault): what the number means for the decision, which terms matter and which do not, a sanity check (e.g. ordering ≈ carrying cost at the EOQ), and any correction of the source (an illegible or wrong handwritten total).
+   Use the vault's number style consistently (Polish: decimal comma and space as thousands separator). Do not mix a "How to solve" paragraph and a separate worked paragraph for the same numbers: the steps above are the procedure.
+
 4. **Link aggressively** - wikilink every related concept (`[[Concept]]`). Aim for 3–8 outbound links per note. Orphans are a smell.
 
 5. **Visualize what is structural** - hierarchies, processes, state machines, taxonomies go into Mermaid (inside notes). Never describe a tree in prose if a diagram fits.

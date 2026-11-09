@@ -28,7 +28,7 @@ course: COURSE_NAME
 
 **Formal detail.** 1 paragraph + formula if applicable. Explain each symbol. Walk through any derivation. 80–120 words.
 
-**Worked example.** Concrete numerical OR code example with actual values. Show the computation. For math-heavy lectures this is essential. 100–200 words.
+**Worked example.** Concrete numerical OR code example with actual values. Numerical: Given, numbered steps with `text` code blocks, results table, Interpretation (principles.md, Principle 3). For math-heavy lectures this is essential.
 
 **Why it matters / when to use.** 1 paragraph on practical relevance and alternatives. 60–100 words.
 
