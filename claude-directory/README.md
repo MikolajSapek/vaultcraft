@@ -7,7 +7,7 @@ vault until every source is covered, every link resolves and every note has a vi
 
 This is the instructions-only build of vaultcraft for the Claude plugin directory: skills, agents, templates and
 references in Markdown. The full version, with the goal-check scripts, is on GitHub:
-https://github.com/MikolajSapek/vaultcraft
+<https://github.com/MikolajSapek/vaultcraft>
 
 ## How to use
 
