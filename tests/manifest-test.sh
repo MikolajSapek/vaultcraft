@@ -78,7 +78,7 @@ case "${desc}" in *"<"*|*">"*) fail "SKILL.md description contains angle bracket
 [ -z "$(git ls-files | grep -E '(^|/)(\.DS_Store|Thumbs\.db|desktop\.ini|__MACOSX)')" ] || fail "OS junk files tracked"
 # The whole repo is the plugin, and the Claude scan holds any image a file names.
 # README images live on the media branch; the only image is the Claude directory icon.
-binaries="$(git ls-files | grep -iE '\.(png|jpe?g|gif|webp|ico|pdf|zip)$' | grep -vx '.claude-plugin/icon.png' || true)"
+binaries="$(git ls-files | grep -iE '\.(png|jpe?g|gif|webp|ico|pdf|zip)$' | grep -vx -e '.claude-plugin/icon.png' -e 'claude-directory/.claude-plugin/icon.png' || true)"
 [ -z "${binaries}" ] || fail "binary files tracked (move them to the media branch): ${binaries}"
 while IFS= read -r f; do
   [ "$(wc -c < "${f}")" -le 262144 ] || fail "${f} is over 256 KiB"
@@ -101,3 +101,18 @@ tmp_agent="$(mktemp)"; trap 'rm -f "${tmp_agent}"' EXIT
 cmp -s "${tmp_agent}" agents/vaultcraft.md || fail "agents/vaultcraft.md is stale: run ./scripts/build-agent.sh"
 
 echo "manifests: all checks passed (version ${v_claude})"
+
+# Claude directory build: fresh and only the file types an unverified organisation may ship
+tmp_dir="$(mktemp -d)"; trap 'rm -rf "${tmp_dir}"' EXIT
+bash scripts/build-claude-directory.sh "${tmp_dir}/cd"
+diff -r "${tmp_dir}/cd" claude-directory >/dev/null || fail "claude-directory/ is stale: run scripts/build-claude-directory.sh"
+while IFS= read -r f; do
+  case "${f}" in
+    */LICENSE) ;;
+    *.md|*.txt|*.json|*.yaml|*.yml|*.png|*.jpg|*.jpeg|*.gif|*.webp|*.ico) ;;
+    *) fail "claude-directory holds a refused file type: ${f}" ;;
+  esac
+  [ "$(head -c2 "${f}")" = '#!' ] && fail "claude-directory file starts with #!: ${f}"
+  case "${f}" in *.png|*.jpg|*.jpeg|*.gif|*.webp|*.ico) ;; *) python3 -c "import sys; b=open(sys.argv[1],'rb').read(); b.decode('utf-8'); sys.exit(b'\\0' in b)" "${f}" || fail "not UTF-8 or NUL byte in ${f}" ;; esac
+done < <(find claude-directory -type f)
+echo "claude-directory ok"

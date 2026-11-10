@@ -11,7 +11,7 @@ out="${1:-${REPO_ROOT}/agents/vaultcraft.md}"
 {
   cat "${REPO_ROOT}/scripts/agent-header.md"
   for f in principles phase-0-1-intake phase-2-3-extract phase-4-notes \
-           phase-5-lectures phase-6-9-finish operations; do
+           phase-5-lectures phase-6-9-finish operations goal-checks; do
     echo
     tail -n +3 "${refs}/${f}.md"   # drop the file's own H1 title and blank line
   done

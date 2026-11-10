@@ -125,7 +125,7 @@ Transform scattered inputs - lecture slides (PDF/PPTX), lab scripts (.py, .ipynb
    - **Only types today's Obsidian also draws** (it still ships Mermaid 11.13): never `swimlane-beta`, `agentflow-beta`, `railroad-*`, `treeView-beta`, `cynefin-beta`, `wardley-beta`, `eventmodeling`, `usecase-beta`.
    - **No colour in the diagram.** No `%%{init}%%` theme, no `themeVariables`: Pele ignores them. Colour comes from the theme through the `--pele-*` CSS variables.
    - **Plain labels.** No HTML in labels; bold, italic and line breaks only. No `click` callbacks (links are fine).
-   - **Goal check:** `node <skill-dir>/scripts/check_diagrams.mjs <vault>` parses every block with Pele and exits 0 only when all pass. Fix every line it prints.
+   - **Goal check:** `node <skill-dir>/scripts/check_diagrams.mjs <vault>` parses every block with Pele and exits 0 only when all pass. Fix every line it prints. (no `scripts/` folder next to this skill, as in the Claude directory version, or no Python: do the same checks by hand with `references/goal-checks.md`).
 
 6. **Build for recall, not just reference** - structure notes so they can be self-tested: a definition callout that stands alone, an Example section, and Exam cues with model answers. Flashcards are OPTIONAL and OFF by default: only generate a `## Flashcards` section when the user explicitly asked for spaced repetition in intake. Never add one to a vault that does not already use them, and never reintroduce them when rewriting a note that has none.
 
@@ -225,9 +225,10 @@ Transform scattered inputs - lecture slides (PDF/PPTX), lab scripts (.py, .ipynb
 
    **The goal.** Before the first batch, write `## Goal` into `.vault-progress.md`: the
    sources to cover, the note types to produce, the format, depth and language from the
-   intake, and this line: *done = `scripts/check_vault.py` exits 0 and every source has
-   its lecture, lab or paper note.* The run is not finished until the goal is met.
+   intake, and this line: *done = `scripts/check_vault.py` exits 0 (or every list in
+   `references/goal-checks.md` is empty) and every source has its lecture, lab or paper note.* The run is not finished until the goal is met.
 
+   (no `scripts/` folder next to this skill, as in the Claude directory version, or no Python: do the same checks by hand with `references/goal-checks.md`)
    **The goal check** is `python3 <SKILL_DIR>/scripts/check_vault.py <vault>` (add `--json`
    for a list you can split into fix briefs). It needs only Python's standard library and
    runs in every host with code execution, so it costs nothing extra. It reports coverage
@@ -1711,7 +1712,7 @@ Before declaring done:
 - **Depth check (CRITICAL)** - for each lecture, re-read slides and verify: "Did I create a note for every named technique, variant, algorithm, metric, or method? If a slide lists {A, B, C, D}, do I have notes for A, B, C, and D?" If a named sub-technique is only in prose inside another note, extract it.
 - Scan for orphan notes (0 backlinks) - add wikilinks from a natural parent to connect them. Exclude MOC and README from this check.
 - Check every concept note has: definition callout at top, ≥ 1 example, ≥ 2 outbound wikilinks, ≥ 2 flashcards.
-- Verify every diagram with Pele: `node <skill-dir>/scripts/check_diagrams.mjs <vault>` must print `DONE` (exit 0). It needs Node and installs `pele` next to itself on first run.
+- Verify every diagram with Pele: `node <skill-dir>/scripts/check_diagrams.mjs <vault>` must print `DONE` (exit 0). It needs Node and installs `pele` next to itself on first run. (no `scripts/` folder next to this skill, as in the Claude directory version, or no Python: do the same checks by hand with `references/goal-checks.md`).
 - If Canvas exists: verify it's valid JSON and references real note paths.
 - Broken-link audit (the goal check `scripts/check_vault.py` covers this and the checks above; the snippet shows the rule):
 
@@ -1920,3 +1921,56 @@ When supplementing with web research:
 9. Report: "Added Lab10. Created 2 new concept stubs: [[X]], [[Y]]. No broken links. Progress file updated."
 
 Remember: the user opens Obsidian expecting to **study**, not to **read a pile of markdown**. Every design decision optimizes for recall and oral-exam readiness, not coverage breadth.
+
+Use this file when `<skill-dir>/scripts/check_vault.py` or `scripts/check_diagrams.mjs` is not there (the Claude directory
+version ships instructions only) or the host cannot run Python or Node. The rules are the same as the scripts: the vault is
+done only when every check below reports nothing. Work through the notes in batches, write the findings to
+`.vaultcraft/goal-check.md` in the vault (one heading per check, one line per finding), fix them, and run the checks again
+until every list is empty.
+
+Skip these folders everywhere: `.obsidian`, `.vaultcraft`, `.trash`, `.git`. Navigation notes never count as orphans:
+`00 - Start here`, `README_plugins`, `01 - Course map`, `Tables` (any letter case).
+
+## 1. Coverage
+
+Every item under `## Named items` in each `.vaultcraft/extract/*.md` file needs a note whose file name or one of its
+`aliases` matches the item (letter case and punctuation ignored). Report each missing item with the extract file it came from.
+
+## 2. Links
+
+- Read every `[[wikilink]]` and `![[embed]]` outside code spans and code blocks. Cut the part after `|`, `#` or `^`.
+- A link resolves when a note has that file name or alias, or when a file with that name (with or without extension, or that
+  relative path) exists in the vault.
+- **Broken links:** every link that does not resolve, listed once per note.
+- **Orphan notes:** every note that no other note links to (links from a note to itself do not count), except the
+  navigation notes above.
+
+## 3. Concept notes
+
+A concept note has `concept` in its `tags`. For each one:
+
+- **Definition:** a `> [!definition]` callout must exist and its text (without the `>` markers) must be at most 200 characters.
+- **Example:** a `> [!example]` callout or a heading (level 2 to 4) that contains the word "example".
+- **Links:** it links to at least 2 other notes.
+- **Lecture link back:** when its front matter has `source: [[Lecture name]]`, that lecture note must link to the concept.
+
+## 4. Visuals
+
+Every concept note and every lecture note (in a `Lectures` folder, or tagged `lecture`) needs at least one visual: a
+` ```mermaid ` block or an embedded image (`![[file.png]]`, `.jpg`, `.jpeg`, `.gif`, `.svg`, `.webp`, or a Markdown image).
+
+## 5. Diagrams
+
+For every ` ```mermaid ` block (also inside callouts, where each line starts with `>`):
+
+- The first keyword must be a type that Obsidian's bundled Mermaid 11.13 draws. These Pele-only types show a blank box in
+  Obsidian and are not allowed: `swimlane-beta`, `agentflow-beta`, any `railroad...-beta`, `treeView-beta`, `cynefin-beta`,
+  `wardley-beta`, `eventmodeling`, `usecase-beta`.
+- No `themeVariables` in the block: Pele ignores them.
+- The block must be valid Mermaid syntax: check it against the rules in `references/principles.md` (Principle on visuals)
+  line by line. Where the host has a Mermaid renderer, render it; a block that does not render counts as a finding.
+
+## Report
+
+When every list is empty, write `Goal check: <n> notes - DONE` at the top of `.vaultcraft/goal-check.md` and give the user the
+final report. Otherwise write `NOT DONE`, the count per check, and keep fixing.

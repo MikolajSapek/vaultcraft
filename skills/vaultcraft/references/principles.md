@@ -65,7 +65,7 @@ Transform scattered inputs - lecture slides (PDF/PPTX), lab scripts (.py, .ipynb
    - **Only types today's Obsidian also draws** (it still ships Mermaid 11.13): never `swimlane-beta`, `agentflow-beta`, `railroad-*`, `treeView-beta`, `cynefin-beta`, `wardley-beta`, `eventmodeling`, `usecase-beta`.
    - **No colour in the diagram.** No `%%{init}%%` theme, no `themeVariables`: Pele ignores them. Colour comes from the theme through the `--pele-*` CSS variables.
    - **Plain labels.** No HTML in labels; bold, italic and line breaks only. No `click` callbacks (links are fine).
-   - **Goal check:** `node <skill-dir>/scripts/check_diagrams.mjs <vault>` parses every block with Pele and exits 0 only when all pass. Fix every line it prints.
+   - **Goal check:** `node <skill-dir>/scripts/check_diagrams.mjs <vault>` parses every block with Pele and exits 0 only when all pass. Fix every line it prints. (no `scripts/` folder next to this skill, as in the Claude directory version, or no Python: do the same checks by hand with `references/goal-checks.md`).
 
 6. **Build for recall, not just reference** - structure notes so they can be self-tested: a definition callout that stands alone, an Example section, and Exam cues with model answers. Flashcards are OPTIONAL and OFF by default: only generate a `## Flashcards` section when the user explicitly asked for spaced repetition in intake. Never add one to a vault that does not already use them, and never reintroduce them when rewriting a note that has none.
 
@@ -165,9 +165,10 @@ Transform scattered inputs - lecture slides (PDF/PPTX), lab scripts (.py, .ipynb
 
    **The goal.** Before the first batch, write `## Goal` into `.vault-progress.md`: the
    sources to cover, the note types to produce, the format, depth and language from the
-   intake, and this line: *done = `scripts/check_vault.py` exits 0 and every source has
-   its lecture, lab or paper note.* The run is not finished until the goal is met.
+   intake, and this line: *done = `scripts/check_vault.py` exits 0 (or every list in
+   `references/goal-checks.md` is empty) and every source has its lecture, lab or paper note.* The run is not finished until the goal is met.
 
+   (no `scripts/` folder next to this skill, as in the Claude directory version, or no Python: do the same checks by hand with `references/goal-checks.md`)
    **The goal check** is `python3 <SKILL_DIR>/scripts/check_vault.py <vault>` (add `--json`
    for a list you can split into fix briefs). It needs only Python's standard library and
    runs in every host with code execution, so it costs nothing extra. It reports coverage

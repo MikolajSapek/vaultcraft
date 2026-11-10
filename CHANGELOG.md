@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) 
 
 ## [Unreleased]
 
+## [0.6.1] - 2026-11-10
+
+### Added
+
+- `claude-directory/`: an instructions-only build of the plugin for the Claude plugin directory (Markdown, JSON and the icon only, no scripts), built by `scripts/build-claude-directory.sh` and guarded by `tests/manifest-test.sh`. Submit it with the path `claude-directory`.
+- `skills/vaultcraft/references/goal-checks.md`: the goal checks of `check_vault.py` and `check_diagrams.mjs` as steps, used when the scripts are not there or the host cannot run Python or Node.
+
 ## [0.6.0] - 2026-10-30
 
 ### Changed
